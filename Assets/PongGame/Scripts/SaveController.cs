@@ -30,8 +30,8 @@ public class SaveController : MonoBehaviour {
         FileStream file = File.Open(Application.persistentDataPath + "/saveinfo.dat", FileMode.OpenOrCreate);
 
         SaveData data = new SaveData();
-        data.playerScoreInt = Ball.playerScoreInt;
-        data.aiScoreInt = Ball.aiScoreInt;
+        data.playerScoreInt = Ball.playerScoreLoad;
+        data.aiScoreInt = Ball.aiScoreLoad;
 
         bf.Serialize(file, data);
         file.Close();
@@ -48,8 +48,8 @@ public class SaveController : MonoBehaviour {
             SaveData data = (SaveData)bf.Deserialize(file);
             file.Close();
             Debug.Log("data:" + data.aiScoreInt + "/" + data.playerScoreInt);
-            Ball.playerScoreInt = data.playerScoreInt;
-            Ball.aiScoreInt = data.aiScoreInt;
+            Ball.playerScoreLoad = data.playerScoreInt;
+            Ball.aiScoreLoad = data.aiScoreInt;
             Ball.load = true;
 
         }

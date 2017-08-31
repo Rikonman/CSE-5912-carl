@@ -8,9 +8,11 @@ public class Ball : MonoBehaviour
 
     public Vector3 vel;
     public TextMesh aiScore;
-    public static int aiScoreInt = 0;
+    public static int aiScoreLoad = 0;
+    int aiScoreInt = 0;
     public TextMesh playerScore;
-    public static int playerScoreInt = 0;
+    int playerScoreInt = 0;
+    public static int playerScoreLoad = 0;
     float moveSpeed = 35f;
     public static bool load = false;
 
@@ -33,6 +35,8 @@ public class Ball : MonoBehaviour
 
         if (load)
         {
+            aiScoreInt = aiScoreLoad;
+            playerScoreInt = playerScoreLoad;
             aiScore.text = "" + aiScoreInt;
             playerScore.text = "" + playerScoreInt;
             load = false;
@@ -48,12 +52,14 @@ public class Ball : MonoBehaviour
         {
             aiScoreInt++;
             aiScore.text = ""+aiScoreInt;
+            aiScoreLoad = aiScoreInt;
             transform.position = Vector3.zero;
         }
         else if (transform.position.x <= -Screen.width / 10)
         {
             playerScoreInt++;
             playerScore.text = "" + playerScoreInt;
+            playerScoreLoad = playerScoreInt;
             transform.position = Vector3.zero;
         }
     }
