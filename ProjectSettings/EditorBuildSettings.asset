@@ -11,6 +11,3 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/PongGame/pong.unity
     guid: 709e61d950043b541b16d07e535db306
-  - enabled: 0
-    path: 
-    guid: 09a431433f8190c4f9a3d67455c21881
