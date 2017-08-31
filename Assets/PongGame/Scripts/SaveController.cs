@@ -42,12 +42,10 @@ public class SaveController : MonoBehaviour {
 
         if (File.Exists(Application.persistentDataPath + "/saveinfo.dat"))
         {
-            Debug.Log("Hello", gameObject);
             BinaryFormatter bf = new BinaryFormatter();
             FileStream file = File.Open(Application.persistentDataPath + "/saveinfo.dat", FileMode.Open);
             SaveData data = (SaveData)bf.Deserialize(file);
             file.Close();
-            Debug.Log("data:" + data.aiScoreInt + "/" + data.playerScoreInt);
             Ball.playerScoreLoad = data.playerScoreInt;
             Ball.aiScoreLoad = data.aiScoreInt;
             Ball.load = true;
