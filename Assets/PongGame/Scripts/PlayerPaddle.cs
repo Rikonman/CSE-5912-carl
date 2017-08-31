@@ -15,8 +15,8 @@ public class PlayerPaddle : MonoBehaviour
     {
         KeyboardInput.KeyUp += MoveUp;
         KeyboardInput.KeyDown += MoveDown;
-        AIPaddle.transform.position = new Vector3(-Screen.width / 10f, 0, 0);
-        transform.position = new Vector3(Screen.width / 10f, 0, 0);
+        AIPaddle.transform.position = new Vector3(-40, 0, 0);
+        transform.position = new Vector3(40, 0, 0);
         position = transform.position;
     }
 
