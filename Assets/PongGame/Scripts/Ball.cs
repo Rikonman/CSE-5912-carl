@@ -8,10 +8,11 @@ public class Ball : MonoBehaviour
 
     public Vector3 vel;
     public TextMesh aiScore;
-    int aiScoreInt = 0;
+    public static int aiScoreInt = 0;
     public TextMesh playerScore;
-    int playerScoreInt = 0;
+    public static int playerScoreInt = 0;
     float moveSpeed = 35f;
+    public static bool load = false;
 
     void Start()
     {
@@ -29,6 +30,14 @@ public class Ball : MonoBehaviour
 
     void Update()
     {
+
+        if (load)
+        {
+            aiScore.text = "" + aiScoreInt;
+            playerScore.text = "" + playerScoreInt;
+            load = false;
+        }
+
         if (PauseMenu.isPaused)
         {
             return;

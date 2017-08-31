@@ -27,6 +27,11 @@ public class PauseMenu : MonoBehaviour {
         OpenPauseMenu();
     }
 
+    public void Save_OnClick()
+    {
+        SaveController.saveController.Save();
+    }
+
     void OpenPauseMenu()
     {
         if (!isPaused)
