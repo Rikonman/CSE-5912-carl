@@ -901,7 +901,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1729098765}
-        m_MethodName: btnNewGame_OnClick
+        m_MethodName: Load_OnClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

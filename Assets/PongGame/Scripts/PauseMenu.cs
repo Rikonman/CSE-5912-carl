@@ -12,7 +12,6 @@ public class PauseMenu : MonoBehaviour {
         KeyboardInput.Paused += OpenPauseMenu;
         pausePanel.SetActive(true);
         isPaused = true;
-
     }
 	
     public void MainMenu()
@@ -33,6 +32,7 @@ public class PauseMenu : MonoBehaviour {
 
     void OpenPauseMenu()
     {
+        isPaused = !isPaused;
         if (!isPaused)
         {
             pausePanel.SetActive(true);
@@ -41,6 +41,5 @@ public class PauseMenu : MonoBehaviour {
         {
             pausePanel.SetActive(false);
         }
-        isPaused = !isPaused;
     }
 }
