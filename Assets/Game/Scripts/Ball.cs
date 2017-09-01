@@ -42,7 +42,7 @@ public class Ball : MonoBehaviour
             load = false;
         }
 
-        if (PauseMenu.isPaused)
+        if (PauseMenu.IsPaused)
         {
             return;
         }

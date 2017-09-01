@@ -16,7 +16,7 @@ public class AIPaddle : MonoBehaviour {
 	}
 	
 	void Update () {
-        if (!PauseMenu.isPaused)
+        if (!PauseMenu.IsPaused)
         {
             movingUp = movingDown = false;
             if (ball.vel.normalized.x < 0 && ball.transform.position.x < -10)

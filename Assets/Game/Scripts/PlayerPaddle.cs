@@ -35,7 +35,7 @@ public class PlayerPaddle : MonoBehaviour
 
     void MoveUp()
     {
-        if (!PauseMenu.isPaused)
+        if (!PauseMenu.IsPaused)
         {
             movingUp = true;
             position = Vector3.Lerp(position, position + new Vector3(0, 0, 1), moveSpeed * Time.deltaTime);
@@ -45,7 +45,7 @@ public class PlayerPaddle : MonoBehaviour
     }
     void MoveDown()
     {
-        if (!PauseMenu.isPaused)
+        if (!PauseMenu.IsPaused)
         {
             movingDown = true;
             position = Vector3.Lerp(position, position + new Vector3(0, 0, -1), moveSpeed * Time.deltaTime);

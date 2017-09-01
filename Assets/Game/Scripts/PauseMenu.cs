@@ -9,7 +9,8 @@ public class PauseMenu : MonoBehaviour
     public delegate void Exit();
     public static event Exit ExitGame;
 
-    public static bool isPaused;
+    public static bool IsPaused { get; set; }
+    public static bool IsGameReady { get; set; }
 
     void OnEnable()
     {
@@ -19,6 +20,8 @@ public class PauseMenu : MonoBehaviour
     void Start()
     {
         pausePanel = transform.GetChild(0).gameObject;
+        IsPaused = true;
+        IsGameReady = false;
     }
 
     public void MainMenu()
@@ -41,19 +44,22 @@ public class PauseMenu : MonoBehaviour
 
     void OpenPauseMenu()
     {
-        if (pausePanel == null)
+        if (IsGameReady)
         {
-            pausePanel = transform.GetChild(0).gameObject;
-        }
-        if (!isPaused)
-        {
-            pausePanel.SetActive(true);
-        }
-        else
-        {
-            pausePanel.SetActive(false);
+            if (pausePanel == null)
+            {
+                pausePanel = transform.GetChild(0).gameObject;
+            }
+            if (!IsPaused)
+            {
+                pausePanel.SetActive(true);
+            }
+            else
+            {
+                pausePanel.SetActive(false);
 
+            }
+            IsPaused = !IsPaused;
         }
-        isPaused = !isPaused;
     }
 }
