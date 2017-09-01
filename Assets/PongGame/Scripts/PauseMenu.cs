@@ -6,11 +6,10 @@ using UnityEngine.SceneManagement;
 public class PauseMenu : MonoBehaviour {
     
     public static bool isPaused;
-    GameObject pausePanel;
+    public GameObject pausePanel;
 
 	void Start () {
         KeyboardInput.Paused += OpenPauseMenu;
-        pausePanel = transform.GetChild(0).gameObject;
         pausePanel.SetActive(true);
         isPaused = true;
 
