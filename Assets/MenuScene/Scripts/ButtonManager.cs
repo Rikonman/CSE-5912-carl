@@ -7,12 +7,12 @@ public class ButtonManager : MonoBehaviour
 {
     public void btnNewGame_OnClick()
     {
-        SceneManager.LoadScene("pong");
+        SceneManager.LoadScene("GameScene");
     }
 
     public void Load_OnClick()
     {
-        SceneManager.LoadScene("pong");
+        SceneManager.LoadScene("GameScene");
         SaveController.saveController.Load();
     }
 
