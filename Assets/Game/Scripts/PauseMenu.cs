@@ -19,8 +19,6 @@ public class PauseMenu : MonoBehaviour
     void Start()
     {
         pausePanel = transform.GetChild(0).gameObject;
-        pausePanel.SetActive(true);
-        isPaused = true;
     }
 
     public void MainMenu()
