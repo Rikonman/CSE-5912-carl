@@ -8,8 +8,9 @@ public class PauseMenu : MonoBehaviour
     GameObject pausePanel;
     public delegate void Exit();
     public static event Exit ExitGame;
-
+    
     public static bool IsPaused { get; set; }
+
     public static bool IsGameReady { get; set; }
 
     void OnEnable()
@@ -57,7 +58,6 @@ public class PauseMenu : MonoBehaviour
             else
             {
                 pausePanel.SetActive(false);
-
             }
             IsPaused = !IsPaused;
         }

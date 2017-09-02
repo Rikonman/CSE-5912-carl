@@ -8,6 +8,7 @@ public class NewGameCountdown : MonoBehaviour {
     public int initialWaitTime = 5;
 
     private DateTime timeNewGameStarted;
+    private bool isCountdownActive = true;
 
     void Start()
     {
@@ -33,8 +34,9 @@ public class NewGameCountdown : MonoBehaviour {
         {
             countdownText.text = timeLeft.ToString();
         }
-        if (timeLeft == 0)
+        if (timeLeft == 0 && isCountdownActive)
         {
+            isCountdownActive = false;
             PauseMenu.IsPaused = false;
             PauseMenu.IsGameReady = true;
             countdownText.text = "GO!";

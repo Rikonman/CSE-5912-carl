@@ -99,14 +99,14 @@ AnimationClip:
       - serializedVersion: 2
         time: 4
         value: {x: -26.809462, y: 86.439896, z: -10.391985}
-        inSlope: {x: 5.0754023, y: -11.374792, z: -27.77584}
-        outSlope: {x: 5.0754023, y: -11.374792, z: -27.77584}
+        inSlope: {x: 5.0754023, y: -11.653297, z: -27.77584}
+        outSlope: {x: 5.0754023, y: -11.653297, z: -27.77584}
         tangentMode: 0
       - serializedVersion: 2
         time: 5
-        value: {x: 0.00000025021055, y: 50.55701, z: 0.0000061960927}
-        inSlope: {x: 26.809462, y: -35.882885, z: 10.391991}
-        outSlope: {x: 26.809462, y: -35.882885, z: 10.391991}
+        value: {x: 0.00000025021055, y: 50, z: 0.0000061960927}
+        inSlope: {x: 26.809462, y: -36.439896, z: 10.391991}
+        outSlope: {x: 26.809462, y: -36.439896, z: 10.391991}
         tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
@@ -384,14 +384,14 @@ AnimationClip:
       - serializedVersion: 2
         time: 4
         value: 86.439896
-        inSlope: -11.374792
-        outSlope: -11.374792
+        inSlope: -11.653297
+        outSlope: -11.653297
         tangentMode: 34
       - serializedVersion: 2
         time: 5
-        value: 50.55701
-        inSlope: -35.882885
-        outSlope: -35.882885
+        value: 50
+        inSlope: -36.439896
+        outSlope: -36.439896
         tangentMode: 34
       m_PreInfinity: 2
       m_PostInfinity: 2
@@ -481,7 +481,7 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_GenerateMotionCurves: 0
   m_Events:
-  - time: 5
+  - time: 4.983333
     functionName: CamGameStartAnimCompleted
     data: 
     objectReferenceParameter: {fileID: 0}
