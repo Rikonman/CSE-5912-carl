@@ -7,13 +7,14 @@ public class ButtonManager : MonoBehaviour
 {
     public void btnNewGame_OnClick()
     {
-        SceneManager.LoadScene("GameScene");
+        SaveController.newGame = true;
+        SceneManager.LoadScene("LoadingScene");
     }
 
     public void Load_OnClick()
     {
-        SceneManager.LoadScene("GameScene");
-        SaveController.saveController.Load();
+        SaveController.newGame = false;
+        SceneManager.LoadScene("LoadingScene");
     }
 
     public void btnExitGame_OnClick()

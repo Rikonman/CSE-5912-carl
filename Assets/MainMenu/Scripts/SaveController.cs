@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using UnityEngine.SceneManagement;
 
 public class SaveController : MonoBehaviour {
 
@@ -11,6 +12,7 @@ public class SaveController : MonoBehaviour {
     public Boolean load = false;
     TextMesh aiScore;
     TextMesh playerScore;
+    public static bool newGame;
 
     private void Awake()
     {
@@ -36,11 +38,10 @@ public class SaveController : MonoBehaviour {
         bf.Serialize(file, data);
         file.Close();
 	}
-	
 
-	public void Load () {
+    public void Load () {
 
-        if (File.Exists(Application.persistentDataPath + "/saveinfo.dat"))
+        if (File.Exists(Application.persistentDataPath + "/saveinfo.dat") && !newGame)
         {
             BinaryFormatter bf = new BinaryFormatter();
             FileStream file = File.Open(Application.persistentDataPath + "/saveinfo.dat", FileMode.Open);
