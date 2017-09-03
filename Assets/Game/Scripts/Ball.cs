@@ -56,16 +56,16 @@ public class Ball : MonoBehaviour
         }
         vel = vel.normalized * moveSpeed;
         transform.position = Vector3.Lerp(transform.position, transform.position + vel, Time.deltaTime);
-        if (transform.position.x >= Screen.width / 10)
+        if (transform.position.x >= Screen.width / 10 || transform.position.x > 0 && (transform.position.z < -40 || transform.position.z > 40))
         {
             aiScoreInt++;
-            aiScore.text = ""+aiScoreInt;
+            aiScore.text = "" + aiScoreInt;
             aiScore2.text = aiScore.text;
             aiScoreLoad = aiScoreInt;
             ResetVelocity();
             transform.position = Vector3.zero;
         }
-        else if (transform.position.x <= -Screen.width / 10)
+        else if (transform.position.x <= -Screen.width / 10 || transform.position.x < 0 && (transform.position.z < -40 || transform.position.z > 40))
         {
             playerScoreInt++;
             playerScore.text = "" + playerScoreInt;
