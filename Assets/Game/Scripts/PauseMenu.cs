@@ -25,6 +25,16 @@ public class PauseMenu : MonoBehaviour
         IsGameReady = false;
     }
 
+    public void MainMenuQuery()
+    {
+        GameObject.Find("Main Menu 2").transform.GetChild(1).gameObject.SetActive(true);
+    }
+
+    public void CancelQuery()
+    {
+        GameObject.Find("Main Menu 2").transform.GetChild(1).gameObject.SetActive(false);
+    }
+
     public void MainMenu()
     {
         //Add main menu load
