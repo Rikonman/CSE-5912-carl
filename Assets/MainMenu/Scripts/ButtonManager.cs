@@ -17,6 +17,16 @@ public class ButtonManager : MonoBehaviour
         SceneManager.LoadScene("LoadingScene");
     }
 
+    public void btnExitGameQuery_OnClick()
+    {
+        GameObject.Find("Exit Game").transform.GetChild(1).gameObject.SetActive(true);
+    }
+
+    public void CancelQuery_OnClick()
+    {
+        GameObject.Find("Exit Game").transform.GetChild(1).gameObject.SetActive(false);
+    }
+
     public void btnExitGame_OnClick()
     {
         Application.Quit();
