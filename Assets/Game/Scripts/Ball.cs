@@ -8,9 +8,11 @@ public class Ball : MonoBehaviour
 
     public Vector3 vel;
     public TextMesh aiScore;
+    public TextMesh aiScore2;
     public static int aiScoreLoad = 0;
     int aiScoreInt = 0;
     public TextMesh playerScore;
+    public TextMesh playerScore2;
     int playerScoreInt = 0;
     public static int playerScoreLoad = 0;
     float moveSpeed = 35f;
@@ -52,6 +54,7 @@ public class Ball : MonoBehaviour
         {
             aiScoreInt++;
             aiScore.text = ""+aiScoreInt;
+            aiScore2.text = aiScore.text;
             aiScoreLoad = aiScoreInt;
             transform.position = Vector3.zero;
         }
@@ -59,6 +62,7 @@ public class Ball : MonoBehaviour
         {
             playerScoreInt++;
             playerScore.text = "" + playerScoreInt;
+            playerScore2.text = playerScore.text;
             playerScoreLoad = playerScoreInt;
             transform.position = Vector3.zero;
         }
