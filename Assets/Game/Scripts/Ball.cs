@@ -20,6 +20,11 @@ public class Ball : MonoBehaviour
 
     void Start()
     {
+        ResetVelocity();
+    }
+
+    void ResetVelocity()
+    {
         int direction = Mathf.RoundToInt(Random.value);
         if (direction == 0)
         {
@@ -29,7 +34,8 @@ public class Ball : MonoBehaviour
         {
             direction = 1;
         }
-        vel = new Vector3(1 * moveSpeed, 0, direction * moveSpeed);
+        int side = Mathf.RoundToInt(Random.value);
+        vel = new Vector3(1 * moveSpeed * (side == 0 ? -1 : 1), 0, direction * moveSpeed);
     }
 
     void Update()
@@ -56,6 +62,7 @@ public class Ball : MonoBehaviour
             aiScore.text = ""+aiScoreInt;
             aiScore2.text = aiScore.text;
             aiScoreLoad = aiScoreInt;
+            ResetVelocity();
             transform.position = Vector3.zero;
         }
         else if (transform.position.x <= -Screen.width / 10)
@@ -64,6 +71,7 @@ public class Ball : MonoBehaviour
             playerScore.text = "" + playerScoreInt;
             playerScore2.text = playerScore.text;
             playerScoreLoad = playerScoreInt;
+            ResetVelocity();
             transform.position = Vector3.zero;
         }
     }
@@ -82,6 +90,16 @@ public class Ball : MonoBehaviour
             {
                 vel.z = -Mathf.Abs(vel.z);
             }
+            Vector3 paddleVel = new Vector3(other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position).x - other.transform.position.x,
+                0, other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position).z - other.transform.position.z);
+            paddleVel.Normalize();
+            float velMagnitude = vel.magnitude;
+            Vector3 tempVel = vel;
+            tempVel.Normalize();
+            Vector3 newVel = paddleVel + tempVel;
+            newVel.Normalize();
+            newVel = newVel * velMagnitude;
+            vel = newVel;
         }
         if (other.transform.name == "RightPaddle")
         {
@@ -94,6 +112,16 @@ public class Ball : MonoBehaviour
             {
                 vel.z = -Mathf.Abs(vel.z);
             }
+            Vector3 paddleVel = new Vector3(other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position).x - other.transform.position.x,
+                0, other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position).z - other.transform.position.z);
+            paddleVel.Normalize();
+            float velMagnitude = vel.magnitude;
+            Vector3 tempVel = vel;
+            tempVel.Normalize();
+            Vector3 newVel = paddleVel + tempVel;
+            newVel.Normalize();
+            newVel = newVel * velMagnitude;
+            vel = newVel;
         }
         if (other.transform.name == "TopWall")
         {
