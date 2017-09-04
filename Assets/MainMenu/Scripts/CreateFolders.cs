@@ -10,6 +10,7 @@ public class CreateFolders : MonoBehaviour {
     string pong = System.IO.Path.Combine(filepath, "Pong/");
     string saves = System.IO.Path.Combine(filepath, "Pong/Saves");
     string screenshots = System.IO.Path.Combine(filepath, "Pong/Screenshots");
+    string videos = System.IO.Path.Combine(filepath, "Pong/Videos");
 
     // Use this for initialization
     void Start () {
@@ -24,6 +25,10 @@ public class CreateFolders : MonoBehaviour {
         exists = System.IO.Directory.Exists(screenshots);
         if (!exists)
             System.IO.Directory.CreateDirectory(screenshots);
+
+        exists = System.IO.Directory.Exists(videos);
+        if (!exists)
+            System.IO.Directory.CreateDirectory(videos);
     }
 	
 }
