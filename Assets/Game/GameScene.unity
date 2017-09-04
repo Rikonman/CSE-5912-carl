@@ -491,6 +491,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   countdownText: {fileID: 1468927983}
   initialWaitTime: 5
+  audioSource: {fileID: 1505218338}
+  countClip: {fileID: 8300000, guid: 736c602910657064abb705bfc4b9fb6f, type: 3}
+  beginClip: {fileID: 8300000, guid: 01911fa503ec7684bad7a8f84633486e, type: 3}
 --- !u!1 &299667015
 GameObject:
   m_ObjectHideFlags: 0

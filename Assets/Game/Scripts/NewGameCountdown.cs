@@ -6,6 +6,9 @@ public class NewGameCountdown : MonoBehaviour {
 
     public Text countdownText;
     public int initialWaitTime = 5;
+    public AudioSource audioSource;
+    public AudioClip countClip;
+    public AudioClip beginClip;
 
     private DateTime timeNewGameStarted;
     private bool isCountdownActive = true;
@@ -32,6 +35,7 @@ public class NewGameCountdown : MonoBehaviour {
         int timeLeft = initialWaitTime - timeElapsed;
         if (timeLeft > 0 && timeLeft.ToString() != countdownText.text)
         {
+            audioSource.PlayOneShot(countClip);
             countdownText.text = timeLeft.ToString();
         }
         if (timeLeft == 0 && isCountdownActive)
@@ -39,6 +43,7 @@ public class NewGameCountdown : MonoBehaviour {
             isCountdownActive = false;
             PauseMenu.IsPaused = false;
             PauseMenu.IsGameReady = true;
+            audioSource.PlayOneShot(beginClip);
             countdownText.text = "GO!";
         }
         else if (timeLeft == -1)
