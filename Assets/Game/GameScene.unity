@@ -5252,7 +5252,8 @@ MonoBehaviour:
   audioSource: {fileID: 1505218338}
   pongClip: {fileID: 8300000, guid: 8d8c7ae61220e0c46a5ecf262030297d, type: 3}
   wallClip: {fileID: 8300000, guid: 85aef54c5f9c22845a9ab08c83fb1763, type: 3}
-  scoreClip: {fileID: 8300000, guid: cb9b206487ea5dc48a78e013f27a013b, type: 3}
+  playerScoreClip: {fileID: 8300000, guid: cb9b206487ea5dc48a78e013f27a013b, type: 3}
+  enemyScoreClip: {fileID: 8300000, guid: 87acdd8edc016fb45a1d92545e39253f, type: 3}
   vel: {x: 0, y: 0, z: 0}
   aiScore: {fileID: 1400121614}
   aiScore2: {fileID: 1960129527}

@@ -8,7 +8,8 @@ public class Ball : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip pongClip;
     public AudioClip wallClip;
-    public AudioClip scoreClip;
+    public AudioClip playerScoreClip;
+    public AudioClip enemyScoreClip;
     public Vector3 vel;
     public TextMesh aiScore;
     public TextMesh aiScore2;
@@ -48,6 +49,8 @@ public class Ball : MonoBehaviour
         {
             aiScoreInt = aiScoreLoad;
             playerScoreInt = playerScoreLoad;
+            aiScore2.text = "" + aiScoreInt;
+            playerScore2.text = "" + playerScoreInt;
             aiScore.text = "" + aiScoreInt;
             playerScore.text = "" + playerScoreInt;
             load = false;
@@ -62,7 +65,7 @@ public class Ball : MonoBehaviour
 
         if (transform.position.x >= Screen.width / 10 || transform.position.x > 0 && (transform.position.z < -40 || transform.position.z > 40))
         {
-            audioSource.PlayOneShot(scoreClip);
+            audioSource.PlayOneShot(enemyScoreClip);
             aiScoreInt++;
             aiScore.text = "" + aiScoreInt;
             aiScore2.text = aiScore.text;
@@ -72,7 +75,7 @@ public class Ball : MonoBehaviour
         }
         else if (transform.position.x <= -Screen.width / 10 || transform.position.x < 0 && (transform.position.z < -40 || transform.position.z > 40))
         {
-            audioSource.PlayOneShot(scoreClip);
+            audioSource.PlayOneShot(playerScoreClip);
             playerScoreInt++;
             playerScore.text = "" + playerScoreInt;
             playerScore2.text = playerScore.text;
