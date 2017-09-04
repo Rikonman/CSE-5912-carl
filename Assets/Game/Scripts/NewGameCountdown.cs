@@ -54,7 +54,17 @@ public class NewGameCountdown : MonoBehaviour {
 
     void StartCountdown()
     {
+        initialWaitTime = 5;
         timeNewGameStarted = DateTime.Now;
+    }
+
+    public void DoShortCountdown(int time)
+    {
+        gameObject.SetActive(true);
+        initialWaitTime = time;
+        timeNewGameStarted = DateTime.Now;
+        isCountdownActive = true;
+        PauseMenu.IsGameReady = false;
     }
 
 }

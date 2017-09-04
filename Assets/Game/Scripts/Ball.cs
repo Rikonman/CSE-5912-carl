@@ -21,10 +21,15 @@ public class Ball : MonoBehaviour
     public static int playerScoreLoad = 0;
     float moveSpeed = 35f;
     public static bool load = false;
+    public static int waitTime = 2;
+    float currentTime;
+    NewGameCountdown newGameCountDownRef;
 
     void Start()
     {
         ResetVelocity();
+        currentTime = 3f;
+        newGameCountDownRef = GameObject.Find("NewGameCountdown").GetComponent<NewGameCountdown>();
     }
 
     void ResetVelocity()
@@ -55,14 +60,21 @@ public class Ball : MonoBehaviour
             playerScore.text = "" + playerScoreInt;
             load = false;
         }
-
+        
         if (PauseMenu.IsPaused)
         {
             return;
         }
+        if (currentTime < waitTime)
+        {
+            currentTime += Time.deltaTime;
+        }
         vel = vel.normalized * moveSpeed;
-        transform.position = Vector3.Lerp(transform.position, transform.position + vel, Time.deltaTime);
-
+        if (currentTime >= waitTime)
+        {
+            transform.position = Vector3.Lerp(transform.position, transform.position + vel, Time.deltaTime);
+        }
+        
         if (transform.position.x >= Screen.width / 10 || transform.position.x > 0 && (transform.position.z < -40 || transform.position.z > 40))
         {
             audioSource.PlayOneShot(enemyScoreClip);
@@ -72,6 +84,8 @@ public class Ball : MonoBehaviour
             aiScoreLoad = aiScoreInt;
             ResetVelocity();
             transform.position = Vector3.zero;
+            currentTime = 0f;
+            newGameCountDownRef.DoShortCountdown(waitTime);
         }
         else if (transform.position.x <= -Screen.width / 10 || transform.position.x < 0 && (transform.position.z < -40 || transform.position.z > 40))
         {
@@ -82,6 +96,8 @@ public class Ball : MonoBehaviour
             playerScoreLoad = playerScoreInt;
             ResetVelocity();
             transform.position = Vector3.zero;
+            currentTime = 0f;
+            newGameCountDownRef.DoShortCountdown(waitTime);
         }
     }
 
