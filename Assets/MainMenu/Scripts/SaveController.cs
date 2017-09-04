@@ -29,7 +29,7 @@ public class SaveController : MonoBehaviour {
 
     public void Save () {
         BinaryFormatter bf = new BinaryFormatter();
-        FileStream file = File.Open(Application.persistentDataPath + "/saveinfo.dat", FileMode.OpenOrCreate);
+        FileStream file = File.Open(Environment.SpecialFolder.Desktop + "/Pong/Saves/saveinfo.dat", FileMode.OpenOrCreate);
 
         SaveData data = new SaveData();
         data.playerScoreInt = Ball.playerScoreLoad;
@@ -41,10 +41,10 @@ public class SaveController : MonoBehaviour {
 
     public void Load () {
 
-        if (File.Exists(Application.persistentDataPath + "/saveinfo.dat") && !newGame)
+        if (File.Exists(Environment.SpecialFolder.Desktop + "/Pong/Saves/saveinfo.dat") && !newGame)
         {
             BinaryFormatter bf = new BinaryFormatter();
-            FileStream file = File.Open(Application.persistentDataPath + "/saveinfo.dat", FileMode.Open);
+            FileStream file = File.Open(Environment.SpecialFolder.Desktop + "/Pong/Saves/saveinfo.dat", FileMode.Open);
             SaveData data = (SaveData)bf.Deserialize(file);
             file.Close();
             Ball.playerScoreLoad = data.playerScoreInt;
