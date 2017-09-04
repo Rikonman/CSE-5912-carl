@@ -5,7 +5,10 @@ using UnityEngine.UI;
 
 public class Ball : MonoBehaviour
 {
-
+    public AudioSource audioSource;
+    public AudioClip pongClip;
+    public AudioClip wallClip;
+    public AudioClip scoreClip;
     public Vector3 vel;
     public TextMesh aiScore;
     public TextMesh aiScore2;
@@ -56,6 +59,7 @@ public class Ball : MonoBehaviour
         }
         vel = vel.normalized * moveSpeed;
         transform.position = Vector3.Lerp(transform.position, transform.position + vel, Time.deltaTime);
+
         if (transform.position.x >= Screen.width / 10 || transform.position.x > 0 && (transform.position.z < -40 || transform.position.z > 40))
         {
             aiScoreInt++;
@@ -81,6 +85,7 @@ public class Ball : MonoBehaviour
     {
         if (other.transform.name == "LeftPaddle")
         {
+            audioSource.PlayOneShot(pongClip);
             vel = Vector3.Reflect(vel, new Vector3(1, 0, 0));
             if (other.GetComponent<AIPaddle>().movingUp)
             {
@@ -103,6 +108,7 @@ public class Ball : MonoBehaviour
         }
         if (other.transform.name == "RightPaddle")
         {
+            audioSource.PlayOneShot(pongClip);
             vel = Vector3.Reflect(vel, new Vector3(-1, 0, 0));
             if (other.GetComponent<PlayerPaddle>().movingUp)
             {
@@ -125,10 +131,12 @@ public class Ball : MonoBehaviour
         }
         if (other.transform.name == "TopWall")
         {
+            audioSource.PlayOneShot(wallClip);
             vel = Vector3.Reflect(vel, new Vector3(0, 0, -1));
         }
         if (other.transform.name == "BottomWall")
         {
+            audioSource.PlayOneShot(wallClip);
             vel = Vector3.Reflect(vel, new Vector3(0, 0, 1));
         }
     }
