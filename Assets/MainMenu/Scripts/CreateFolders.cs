@@ -6,9 +6,10 @@ using System;
 public class CreateFolders : MonoBehaviour {
 
     bool exists;
-    string pong = Environment.SpecialFolder.Desktop + "/Pong/";
-    string saves = Environment.SpecialFolder.Desktop + "/Pong/Saves";
-    string screenshots = Environment.SpecialFolder.Desktop + "/Pong/Screenshots";
+    public static string filepath = System.Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+    string pong = System.IO.Path.Combine(filepath, "Pong/");
+    string saves = System.IO.Path.Combine(filepath, "Pong/Saves");
+    string screenshots = System.IO.Path.Combine(filepath, "Pong/Screenshots");
 
     // Use this for initialization
     void Start () {
