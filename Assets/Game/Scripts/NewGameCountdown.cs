@@ -60,11 +60,12 @@ public class NewGameCountdown : MonoBehaviour {
 
     public void DoShortCountdown(int time)
     {
-        gameObject.SetActive(true);
         initialWaitTime = time;
+        countdownText.text = time.ToString();
         timeNewGameStarted = DateTime.Now;
         isCountdownActive = true;
         PauseMenu.IsGameReady = false;
+        gameObject.SetActive(true);
     }
 
 }
