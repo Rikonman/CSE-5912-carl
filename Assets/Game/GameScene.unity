@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.24226668, g: 0.19169891, b: 0.23908427, a: 1}
+  m_IndirectSpecularColor: {r: 0.24223232, g: 0.19170684, b: 0.23909742, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -5249,6 +5249,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0eb4c81d5cca4e4fadcb22f9473df9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioSource: {fileID: 1505218338}
+  pongClip: {fileID: 8300000, guid: 8d8c7ae61220e0c46a5ecf262030297d, type: 3}
+  wallClip: {fileID: 8300000, guid: 85aef54c5f9c22845a9ab08c83fb1763, type: 3}
+  scoreClip: {fileID: 8300000, guid: cb9b206487ea5dc48a78e013f27a013b, type: 3}
   vel: {x: 0, y: 0, z: 0}
   aiScore: {fileID: 1400121614}
   aiScore2: {fileID: 1960129527}

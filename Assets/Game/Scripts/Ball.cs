@@ -62,6 +62,7 @@ public class Ball : MonoBehaviour
 
         if (transform.position.x >= Screen.width / 10 || transform.position.x > 0 && (transform.position.z < -40 || transform.position.z > 40))
         {
+            audioSource.PlayOneShot(scoreClip);
             aiScoreInt++;
             aiScore.text = "" + aiScoreInt;
             aiScore2.text = aiScore.text;
@@ -71,6 +72,7 @@ public class Ball : MonoBehaviour
         }
         else if (transform.position.x <= -Screen.width / 10 || transform.position.x < 0 && (transform.position.z < -40 || transform.position.z > 40))
         {
+            audioSource.PlayOneShot(scoreClip);
             playerScoreInt++;
             playerScore.text = "" + playerScoreInt;
             playerScore2.text = playerScore.text;
