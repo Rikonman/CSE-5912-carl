@@ -16,11 +16,11 @@ public class KeyboardInput : MonoBehaviour {
     bool Started;
 	
 	void Update () {
-        if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKey("up") || Input.GetKey("right"))
         {
             KeyUp();
         }
-        if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow))
+        if (Input.GetKey("down") || Input.GetKey("left"))
         {
             KeyDown();
         }
