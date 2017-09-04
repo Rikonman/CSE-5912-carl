@@ -29,7 +29,7 @@ public class Ball : MonoBehaviour
     {
         ResetVelocity();
         currentTime = 3f;
-        newGameCountDownRef = GameObject.Find("NewGameCountdown").GetComponent<NewGameCountdown>();
+        newGameCountDownRef = GameObject.Find("_UI").transform.GetChild(1).gameObject.GetComponent<NewGameCountdown>();
     }
 
     void ResetVelocity()

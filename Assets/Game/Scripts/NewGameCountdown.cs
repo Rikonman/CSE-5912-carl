@@ -13,17 +13,13 @@ public class NewGameCountdown : MonoBehaviour {
     private DateTime timeNewGameStarted;
     private bool isCountdownActive = true;
 
-    void Start()
+    public void StartInitialCountdown()
     {
-        countdownText.text = "";
-        timeNewGameStarted = DateTime.MinValue;
-        MainCamera.gameStartAnimCompleted += StartCountdown;
-        PauseMenu.ExitGame += ExitingGame;
-    }
-
-    void ExitingGame()
-    {
-        MainCamera.gameStartAnimCompleted -= StartCountdown;
+        Debug.Log("NewGameCountdown StartInitialCountdown()");
+        countdownText.text = initialWaitTime.ToString();
+        timeNewGameStarted = DateTime.Now;
+        if (!gameObject.activeSelf)
+            gameObject.SetActive(true);
     }
 
     // Update is called once per frame

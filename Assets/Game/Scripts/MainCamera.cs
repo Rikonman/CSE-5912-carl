@@ -45,6 +45,8 @@ public class MainCamera : MonoBehaviour {
     void CamGameStartAnimCompleted()
     {
         Is3D = false;
+        NewGameCountdown test = GameObject.Find("_UI").transform.GetChild(1).gameObject.GetComponent<NewGameCountdown>();
+        test.StartInitialCountdown();
         if (gameStartAnimCompleted != null)
             gameStartAnimCompleted();
 

@@ -19,12 +19,14 @@ public class ButtonManager : MonoBehaviour
 
     public void btnExitGameQuery_OnClick()
     {
-        GameObject.Find("Exit Game").transform.GetChild(1).gameObject.SetActive(true);
+        GameObject.Find("Canvas").transform.GetChild(1).gameObject.SetActive(false);
+        GameObject.Find("Canvas").transform.GetChild(2).gameObject.SetActive(true);
     }
 
     public void CancelQuery_OnClick()
     {
-        GameObject.Find("Exit Game").transform.GetChild(1).gameObject.SetActive(false);
+        GameObject.Find("Canvas").transform.GetChild(1).gameObject.SetActive(true);
+        GameObject.Find("Canvas").transform.GetChild(2).gameObject.SetActive(false);
     }
 
     public void btnExitGame_OnClick()
