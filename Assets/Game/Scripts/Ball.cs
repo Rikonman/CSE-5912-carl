@@ -23,6 +23,7 @@ public class Ball : MonoBehaviour
     public static bool load = false;
     public static int waitTime = 2;
     float currentTime;
+    bool pauseBall = false;
     NewGameCountdown newGameCountDownRef;
 
     void Start()
@@ -49,6 +50,10 @@ public class Ball : MonoBehaviour
 
     void Update()
     {
+        
+        if(Input.GetKeyDown(KeyCode.C))
+            transform.position = Vector3.zero;
+
 
         if (load)
         {

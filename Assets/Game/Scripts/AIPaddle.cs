@@ -9,6 +9,7 @@ public class AIPaddle : MonoBehaviour {
     Ball ball;
     public bool movingUp;
     public bool movingDown;
+    bool testing = false;
 
     void Start () {
         ball = GameObject.Find("Ball").GetComponent<Ball>();
@@ -16,7 +17,11 @@ public class AIPaddle : MonoBehaviour {
 	}
 	
 	void Update () {
-        if (!PauseMenu.IsPaused)
+
+        if (Input.GetKeyDown(KeyCode.Space))
+            testing = !testing;
+
+        if (!PauseMenu.IsPaused && !testing)
         {
             movingUp = movingDown = false;
             if (ball.vel.normalized.x < 0 && ball.transform.position.x < -10)
