@@ -54,8 +54,11 @@ public class Ball : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.C))
             transform.position = Vector3.zero;
 
+        if (Input.GetKeyDown(KeyCode.B))
+            pauseBall = !pauseBall;
 
-        if (load)
+
+            if (load)
         {
             aiScoreInt = aiScoreLoad;
             playerScoreInt = playerScoreLoad;
@@ -66,7 +69,7 @@ public class Ball : MonoBehaviour
             load = false;
         }
         
-        if (PauseMenu.IsPaused)
+        if (PauseMenu.IsPaused||pauseBall)
         {
             return;
         }
