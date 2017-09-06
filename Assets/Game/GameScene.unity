@@ -5094,6 +5094,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d079510b65ee72549855c49acb519c6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sfxAudioSource: {fileID: 1505218338}
 --- !u!114 &2019500135
 MonoBehaviour:
   m_ObjectHideFlags: 0
