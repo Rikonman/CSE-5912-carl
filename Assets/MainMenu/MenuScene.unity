@@ -406,7 +406,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 176004652}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22f11e1743547b74b82bfef5fe2fe979, type: 3}
+  m_Script: {fileID: 11500000, guid: d25eaf0d42cb7834983272f05cb771fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &213409538
@@ -3109,7 +3109,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -1105807282
+  randomSeed: 1414007065
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -7607,7 +7607,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Option A
+  m_Text: 
 --- !u!222 &1533996096
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8573,9 +8573,7 @@ MonoBehaviour:
   qualityDropdown: {fileID: 1304577220}
   antiAliasingDropdown: {fileID: 2142899770}
   musicVolumeSlider: {fileID: 2104056702}
-  soundEffectsVolumeSlider: {fileID: 70314383}
-  musicAudioSource: {fileID: 1902126369}
-  sfxAudioSource: {fileID: 2134664655}
+  sfxVolumeSlider: {fileID: 70314383}
 --- !u!1 &1729098764
 GameObject:
   m_ObjectHideFlags: 0
@@ -9014,7 +9012,7 @@ GameObject:
   - component: {fileID: 1902126370}
   - component: {fileID: 1902126369}
   m_Layer: 0
-  m_Name: Music
+  m_Name: MusicAudioSource
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9087,7 +9085,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -10209,7 +10207,7 @@ GameObject:
   - component: {fileID: 2134664656}
   - component: {fileID: 2134664655}
   m_Layer: 0
-  m_Name: Audio Source
+  m_Name: SfxAudioSource
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

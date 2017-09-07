@@ -20,7 +20,7 @@ public class GameSettings : MonoBehaviour
         }
     }
 
-    private static float _musicVolume = 1;
+    private static float _musicVolume = -1;
     public static float MusicVolume
 	{
 		get
@@ -34,7 +34,7 @@ public class GameSettings : MonoBehaviour
 		}
 	}
 
-    private static float _sfxVolume = 1;
+    private static float _sfxVolume = -1;
     public static float SfxVolume
     {
         get
