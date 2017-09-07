@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class MainCamera : MonoBehaviour {
 
+    public AudioSource sfxAudioSource;
+
     public static bool Is3D { get; set; }
 
     public delegate void GameStartAnimCompleted();
@@ -26,6 +28,7 @@ public class MainCamera : MonoBehaviour {
     void Start()
     {
         cameraAnimator = GetComponent<Animator>();
+        sfxAudioSource.volume = GameSettings.SfxVolume;
     }
 
     private void Update()
