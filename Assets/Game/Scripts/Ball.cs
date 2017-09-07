@@ -81,8 +81,9 @@ public class Ball : MonoBehaviour
         if (currentTime >= waitTime)
         {
             transform.position = Vector3.Lerp(transform.position, transform.position + vel, Time.deltaTime);
+            GetComponent<Rigidbody>().AddForceAtPosition(vel, transform.position + new Vector3(0, 1, 0));
         }
-        
+
         if (transform.position.x >= Screen.width / 10 || transform.position.x > 0 && (transform.position.z < -40 || transform.position.z > 40))
         {
             audioSource.PlayOneShot(enemyScoreClip);
