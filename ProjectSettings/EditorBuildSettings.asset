@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/LoadingScene/LoadingScene.unity
     guid: be88a5ae4c9c6884c8ebc5b1c598412f
+  - enabled: 0
+    path: Assets/Game/Pong.unity
+    guid: 709e61d950043b541b16d07e535db306
   - enabled: 1
     path: Assets/Game/GameScene.unity
-    guid: 709e61d950043b541b16d07e535db306
+    guid: 521ed41ed1a6c474dbb971929d499127

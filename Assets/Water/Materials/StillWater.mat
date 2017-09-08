@@ -29,11 +29,11 @@ Material:
     m_Floats:
     - _Direction: 180
     - _EdgeBlend: 1
-    - _Gloss: 0.75
+    - _Gloss: 0.802
     - _Height: 1
     - _Height_: 2
     - _Length: 3.3
-    - _Opacity: 0.75
+    - _Opacity: 0.725
     - _RHeight: 0.5
     - _RHeight_: 1
     - _RSpeed: 1
@@ -41,9 +41,9 @@ Material:
     - _Scale_: 2
     - _Shading: 0
     - _ShoreDistance: 1
-    - _ShoreIntensity: -1
+    - _ShoreIntensity: 0
     - _Smoothness: 1
-    - _Specular: 1
+    - _Specular: 1.58
     - _Speed: 0.5
     - _Speed_: 1
     - _Steepness: 0.5
@@ -58,7 +58,7 @@ Material:
     - __Speed: 0.5
     - __TexSize: 64
     m_Colors:
-    - _Color: {r: 0, g: 0.8792429, b: 1, a: 1}
+    - _Color: {r: 0, g: 0.6312964, b: 0.718, a: 1}
     - _Direction_: {r: -1, g: -0.00000008742278, b: -1.65, a: -0.00000014424758}
     - _ShoreColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
