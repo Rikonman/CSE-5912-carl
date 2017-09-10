@@ -48,7 +48,7 @@ PlayerSettings:
     duration: 2
   - logo: {fileID: 21300000, guid: 7564560fa6738d64f9ce2c18b5d7fcd9, type: 3}
     duration: 2
-  - logo: {fileID: 21300000, guid: ca0b441aa6b48cd4c8e90e4b5ffa89df, type: 3}
+  - logo: {fileID: 21300000, guid: 2bbddb82037d978408baffed16a21907, type: 3}
     duration: 2
   - logo: {fileID: 21300000, guid: 7396acf6769372b48aab82c0e1465278, type: 3}
     duration: 2
@@ -56,8 +56,9 @@ PlayerSettings:
     duration: 2
   - logo: {fileID: 21300000, guid: eba0f02e4d70b674eacd7e151dc134b0, type: 3}
     duration: 2
-  m_SplashScreenBackgroundLandscape: {fileID: 1, guid: 00000000000000000000000000000000,
-    type: 0}
+  - logo: {fileID: 21300000, guid: d7861643fa092c349b41a43210c858a8, type: 3}
+    duration: 4
+  m_SplashScreenBackgroundLandscape: {fileID: 0}
   m_SplashScreenBackgroundPortrait: {fileID: 0}
   m_VirtualRealitySplashScreen: {fileID: 0}
   m_HolographicTrackingLossScreen: {fileID: 0}
