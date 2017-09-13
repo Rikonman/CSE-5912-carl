@@ -8,9 +8,10 @@ public class Gun : MonoBehaviour {
     public float range = 100f;
     public Camera fpsCamera;
     public ParticleSystem flash;
+    public GameObject hitEffect;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
 		
 	}
 	
@@ -31,6 +32,9 @@ public class Gun : MonoBehaviour {
             if (target != null) {
                 target.TakeDamage(damage);
             }
+
+            GameObject tempHitEffect = Instantiate(hitEffect, hit.point, Quaternion.LookRotation(hit.normal));
+            Destroy(tempHitEffect, 0.3f);
         }
     }
 }
