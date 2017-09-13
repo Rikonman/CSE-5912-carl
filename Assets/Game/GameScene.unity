@@ -291,8 +291,8 @@ GameObject:
   - component: {fileID: 628262661}
   - component: {fileID: 628262660}
   - component: {fileID: 628262659}
-  - component: {fileID: 628262658}
   - component: {fileID: 628262657}
+  - component: {fileID: 628262658}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -326,7 +326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe3106a7a3e87d24393a1d7da8f89879, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 5
+  health: 50
 --- !u!23 &628262659
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -340,7 +340,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 86506c91e0af4c047a777531aeb54518, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -483,7 +483,7 @@ MonoBehaviour:
   m_ScriptCRCCheck: 1
   m_MaxDelay: 0.01
   m_LogLevel: 2
-  m_PlayerPrefab: {fileID: 1495074396664694, guid: b3ac64e8438b53d46a6f549131890869,
+  m_PlayerPrefab: {fileID: 1117418622454060, guid: b3ac64e8438b53d46a6f549131890869,
     type: 2}
   m_AutoCreatePlayer: 1
   m_PlayerSpawnMethod: 1
@@ -561,60 +561,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1038747639
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4106164647675782, guid: b3ac64e8438b53d46a6f549131890869, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 4106164647675782, guid: b3ac64e8438b53d46a6f549131890869, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 2.545
-      objectReference: {fileID: 0}
-    - target: {fileID: 4106164647675782, guid: b3ac64e8438b53d46a6f549131890869, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: -20
-      objectReference: {fileID: 0}
-    - target: {fileID: 4106164647675782, guid: b3ac64e8438b53d46a6f549131890869, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4106164647675782, guid: b3ac64e8438b53d46a6f549131890869, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4106164647675782, guid: b3ac64e8438b53d46a6f549131890869, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4106164647675782, guid: b3ac64e8438b53d46a6f549131890869, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4106164647675782, guid: b3ac64e8438b53d46a6f549131890869, type: 2}
-      propertyPath: m_RootOrder
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 114044218468450378, guid: b3ac64e8438b53d46a6f549131890869,
-        type: 2}
-      propertyPath: impact
-      value: 
-      objectReference: {fileID: 1960534658345938, guid: bea493569da8b1d4c9087b08c090ae4b,
-        type: 2}
-    - target: {fileID: 114044218468450378, guid: b3ac64e8438b53d46a6f549131890869,
-        type: 2}
-      propertyPath: hitEffect
-      value: 
-      objectReference: {fileID: 1960534658345938, guid: bea493569da8b1d4c9087b08c090ae4b,
-        type: 2}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: b3ac64e8438b53d46a6f549131890869, type: 2}
-  m_IsPrefabParent: 0
 --- !u!1 &1050443043
 GameObject:
   m_ObjectHideFlags: 0
@@ -708,6 +654,20 @@ MeshCollider:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1278587503}
   m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Convex: 0
+  m_InflateMesh: 0
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 4300002, guid: 2aca3b21ccf248745a7cedc9f2b48f14, type: 3}
+--- !u!64 &1278587508
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1278587503}
+  m_Material: {fileID: 13400000, guid: 3aeb7dadc0c69d54d9e5777e9d5631f1, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
