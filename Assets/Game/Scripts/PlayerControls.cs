@@ -1,13 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI; 
 
 [RequireComponent(typeof(Rigidbody))] 
 public class PlayerControls : MonoBehaviour {
 
 	[SerializeField]
-	private float jumpSensitivity = 1000f;
+	private float jumpSensitivity = 1500f;
+
+	[SerializeField]
 	private float lookSensitivity = 5f;
+
+	//[SerializeField]
+	//private Image crosshair; 
 
     float xRotation;
     float yRotation;
@@ -19,8 +25,14 @@ public class PlayerControls : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+		//crosshair.enabled = true;
 		rb = GetComponent<Rigidbody> (); 
     }
+
+	void OnCreate()
+	{
+		
+	}
 	
 	// Update is called once per frame
 	void Update () {
