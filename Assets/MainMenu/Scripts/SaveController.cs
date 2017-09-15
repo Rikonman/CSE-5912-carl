@@ -34,8 +34,8 @@ public class SaveController : MonoBehaviour {
         FileStream file = File.Open(saves + "\\saveinfo.dat", FileMode.OpenOrCreate);
 
         SaveData data = new SaveData();
-        data.playerScoreInt = Ball.playerScoreLoad;
-        data.aiScoreInt = Ball.aiScoreLoad;
+        //data.playerScoreInt = Ball.playerScoreLoad;
+        //data.aiScoreInt = Ball.aiScoreLoad;
 
         bf.Serialize(file, data);
         file.Close();
@@ -49,9 +49,9 @@ public class SaveController : MonoBehaviour {
             FileStream file = File.Open(saves + "\\saveinfo.dat", FileMode.Open);
             SaveData data = (SaveData)bf.Deserialize(file);
             file.Close();
-            Ball.playerScoreLoad = data.playerScoreInt;
-            Ball.aiScoreLoad = data.aiScoreInt;
-            Ball.load = true;
+            //Ball.playerScoreLoad = data.playerScoreInt;
+            //Ball.aiScoreLoad = data.aiScoreInt;
+            //Ball.load = true;
 
         }
     }
