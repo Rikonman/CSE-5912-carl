@@ -38,27 +38,10 @@ PlayerSettings:
     width: 1
     height: 1
   m_SplashScreenLogos:
-  - logo: {fileID: 21300000, guid: e59c3765056346c48a2e35e365511575, type: 3}
-    duration: 2
   - logo: {fileID: 10404, guid: 0000000000000000e000000000000000, type: 0}
     duration: 2
-  - logo: {fileID: 21300000, guid: 2a5635fa3fff5b74d814bd407eab85cc, type: 3}
-    duration: 2
-  - logo: {fileID: 21300000, guid: efe78bf42b7b0f34db2a600dd657483b, type: 3}
-    duration: 2
-  - logo: {fileID: 21300000, guid: 7564560fa6738d64f9ce2c18b5d7fcd9, type: 3}
-    duration: 2
-  - logo: {fileID: 21300000, guid: 2bbddb82037d978408baffed16a21907, type: 3}
-    duration: 2
-  - logo: {fileID: 21300000, guid: 7396acf6769372b48aab82c0e1465278, type: 3}
-    duration: 2
-  - logo: {fileID: 21300000, guid: 4df3c80dd7a5eb74d831b97d4a160771, type: 3}
-    duration: 2
-  - logo: {fileID: 21300000, guid: eba0f02e4d70b674eacd7e151dc134b0, type: 3}
-    duration: 2
-  - logo: {fileID: 21300000, guid: d7861643fa092c349b41a43210c858a8, type: 3}
-    duration: 4
-  m_SplashScreenBackgroundLandscape: {fileID: 0}
+  m_SplashScreenBackgroundLandscape: {fileID: 1, guid: 00000000000000000000000000000000,
+    type: 0}
   m_SplashScreenBackgroundPortrait: {fileID: 0}
   m_VirtualRealitySplashScreen: {fileID: 0}
   m_HolographicTrackingLossScreen: {fileID: 0}
