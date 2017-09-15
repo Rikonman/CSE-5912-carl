@@ -38,6 +38,14 @@ public class PlayerControls : MonoBehaviour {
 	void Update () {
 
         xRotation -= Input.GetAxis("Mouse Y") * lookSensitivity;
+        if (xRotation > 90)
+        {
+            xRotation = 90;
+        }
+        else if (xRotation < -90) {
+            xRotation = -90;
+        }
+
         yRotation += Input.GetAxis("Mouse X") * lookSensitivity;
         transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
         transform.Translate(Input.GetAxis("Horizontal") * Time.deltaTime * 3.0f, 0, Input.GetAxis("Vertical") * Time.deltaTime * 3.0f);
