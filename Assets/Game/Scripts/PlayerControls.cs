@@ -20,6 +20,9 @@ public class PlayerControls : MonoBehaviour {
     float xRotationV;
     float yRotationV;
     float lookSmoothDamp = 0.1f;
+    float walkingSpeed = 6f;
+    float speed;
+    float sprintSpeed = 12f;
 
 	private Rigidbody rb; 
 
@@ -46,9 +49,17 @@ public class PlayerControls : MonoBehaviour {
             xRotation = -90;
         }
 
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            speed = sprintSpeed;
+        }
+        else {
+            speed = walkingSpeed;
+        }
+
         yRotation += Input.GetAxis("Mouse X") * lookSensitivity;
         transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
-        transform.Translate(Input.GetAxis("Horizontal") * Time.deltaTime * 3.0f, 0, Input.GetAxis("Vertical") * Time.deltaTime * 3.0f);
+        transform.Translate(Input.GetAxis("Horizontal") * Time.deltaTime * speed, 0, Input.GetAxis("Vertical") * Time.deltaTime * speed);
 
 		Vector3 jumpForce = Vector3.zero; 
 
