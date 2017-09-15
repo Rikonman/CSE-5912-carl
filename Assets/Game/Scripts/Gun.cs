@@ -39,26 +39,25 @@ public class Gun : MonoBehaviour {
 	}
 
     void Shoot() {
-		if(this.transform.parent.GetComponent<SpawnController>().localPlayer)
-		{
-			flash.Play();
+		if (this.transform.parent.GetComponent<SpawnController> ().localPlayer) {
+			flash.Play ();
+		
+			RaycastHit hit;
+			if (Physics.Raycast (fpsCamera.transform.position, fpsCamera.transform.forward, out hit, range)) {
+				Debug.Log (hit.transform.name);
+
+				Target target = hit.transform.GetComponent<Target> ();
+				if (target != null) {
+					target.TakeDamage (damage);
+				}
+
+				if (hit.rigidbody != null) {
+					hit.rigidbody.AddForce (-hit.normal * force);
+				}
+
+				GameObject tempHitEffect = Instantiate (hitEffect, hit.point, Quaternion.LookRotation (hit.normal));
+				Destroy (tempHitEffect, 0.3f);
+			}
 		}
-		RaycastHit hit;
-        if (Physics.Raycast(fpsCamera.transform.position, fpsCamera.transform.forward, out hit, range)) {
-            Debug.Log(hit.transform.name);
-
-            Target target = hit.transform.GetComponent<Target>();
-            if (target != null) {
-                target.TakeDamage(damage);
-            }
-
-            if(hit.rigidbody != null)
-            {
-                hit.rigidbody.AddForce(-hit.normal * force);
-            }
-
-            GameObject tempHitEffect = Instantiate(hitEffect, hit.point, Quaternion.LookRotation(hit.normal));
-            Destroy(tempHitEffect, 0.3f);
-        }
     }
 }
