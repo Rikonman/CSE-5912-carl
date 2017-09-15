@@ -8,6 +8,8 @@ public class SpawnController : NetworkBehaviour {
 
 	Camera LobbyCam; 
 
+	public bool localPlayer = false; 
+
 	void Start()
 	{
 		if (!isLocalPlayer) {
@@ -18,6 +20,7 @@ public class SpawnController : NetworkBehaviour {
 			LobbyCam = Camera.main;
 			if(LobbyCam != null)
 				LobbyCam.gameObject.SetActive (false);
+			localPlayer = true; 
 		}
 	}
 		

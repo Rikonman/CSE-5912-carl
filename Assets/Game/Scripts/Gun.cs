@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class Gun : MonoBehaviour {
 
@@ -13,6 +14,7 @@ public class Gun : MonoBehaviour {
     public float fireRate = .1f;
     public float fireDelay = 0f;
     public bool automatic = false;
+
 
     // Use this for initialization
     void Start () {
@@ -37,8 +39,11 @@ public class Gun : MonoBehaviour {
 	}
 
     void Shoot() {
-        flash.Play();
-        RaycastHit hit;
+		if(this.transform.parent.GetComponent<SpawnController>().localPlayer)
+		{
+			flash.Play();
+		}
+		RaycastHit hit;
         if (Physics.Raycast(fpsCamera.transform.position, fpsCamera.transform.forward, out hit, range)) {
             Debug.Log(hit.transform.name);
 
