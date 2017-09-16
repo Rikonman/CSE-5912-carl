@@ -23,6 +23,9 @@ public class PlayerController : NetworkBehaviour
     float tpCameraY = 7f;                   // The height off of the ground that the camera should be
     [SerializeField]
     bool isFirstPerson = true;
+    [SerializeField]
+    public int team;
+    static int numPlayers = 0;
 
     Transform mainCamera;
     Vector3 tpCameraOffset;
@@ -45,6 +48,8 @@ public class PlayerController : NetworkBehaviour
     // Use this for initialization
     void Start()
     {
+        team = numPlayers % 2;
+        numPlayers++;
         // if this player is not the local player...
         if (!isLocalPlayer)
         {
@@ -117,6 +122,28 @@ public class PlayerController : NetworkBehaviour
             tpCameraOffset = new Vector3(0f, tpCameraY, -tpCameraDistance);
             mainCamera.Translate(tpCameraOffset);
             mainCamera.LookAt(transform);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Pick Up (Stone)"))
+        {
+            PickUpController TempController = other.gameObject.GetComponent<PickUpController>();
+            GameObject baseObject = GameObject.Find("Base" + (team + 1));
+            baseObject.GetComponent<ResourceBank>().Add("Stone", TempController.amount);
+            TempController.StartRespawnTimer();
+            other.gameObject.GetComponent<MeshRenderer>().enabled = false;
+            other.gameObject.GetComponent<BoxCollider>().enabled = false;
+        }
+        else if (other.gameObject.CompareTag("Pick Up (Wood)"))
+        {
+            PickUpController TempController = other.gameObject.GetComponent<PickUpController>();
+            GameObject baseObject = GameObject.Find("Base" + (team + 1));
+            baseObject.GetComponent<ResourceBank>().Add("Wood", TempController.amount);
+            TempController.StartRespawnTimer();
+            other.gameObject.GetComponent<MeshRenderer>().enabled = false;
+            other.gameObject.GetComponent<BoxCollider>().enabled = false;
         }
     }
 }

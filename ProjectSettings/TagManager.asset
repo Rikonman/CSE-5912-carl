@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Water Volume
   - PlayerCamera
+  - Pick Up (Stone)
+  - Pick Up (Wood)
   layers:
   - Default
   - TransparentFX
