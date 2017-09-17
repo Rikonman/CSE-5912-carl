@@ -23,6 +23,8 @@ GameObject:
   - component: {fileID: 65367109150075954}
   - component: {fileID: 23620568424222184}
   - component: {fileID: 114331029394278356}
+  - component: {fileID: 114761374088008900}
+  - component: {fileID: 114035102796336706}
   m_Layer: 0
   m_Name: Floor
   m_TagString: Untagged
@@ -94,6 +96,27 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114035102796336706
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1816443313050996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 1
+  m_SendInterval: 1
+  m_SyncRotationAxis: 7
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_VelocityThreshold: 0.0001
+  m_SnapThreshold: 5
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
 --- !u!114 &114331029394278356
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -112,3 +135,35 @@ MonoBehaviour:
     pointType: 
   offset: {x: 0, y: -0.3, z: 0}
   valid: 0
+--- !u!114 &114761374088008900
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1816443313050996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 215
+    i1: 70
+    i2: 113
+    i3: 10
+    i4: 110
+    i5: 94
+    i6: 103
+    i7: 36
+    i8: 168
+    i9: 160
+    i10: 248
+    i11: 226
+    i12: 173
+    i13: 186
+    i14: 152
+    i15: 162
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0

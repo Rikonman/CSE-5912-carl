@@ -1,21 +1,27 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class BuildScript : MonoBehaviour
+public class BuildScript : NetworkBehaviour
 {
-//TODO: Re-add preview material
-//Fix placement rotations to be type independent
-//Clean up code (Getcomponents) and overall structure
+    //TODO: Re-add preview material
+    //Fix placement rotations to be type independent
+    //Clean up code (Getcomponents) and overall structure
+    //Snapped and move away and click causes mount point to be removed
+
+
+    public int teamID;
     public bool buildMode;
     public Material invalidMaterial;
     public Material validMaterial;
     public List<GameObject> objects = new List<GameObject>();
     public Transform baseParent;
 
-
+    Transform camera;
     List<MountPoint> mountPoints = new List<MountPoint>();
     GameObject previewObject;
+    BuildPoints previewBuildPoints;
     MeshRenderer meshRend;
     int currentObject;
     Material originalMaterial;    
@@ -30,12 +36,17 @@ public class BuildScript : MonoBehaviour
 
     void Start()
     {
+        camera = Camera.main.transform;
         currentObject = 0;
+        if(teamID == 0)
+        {
+            baseParent = GameObject.Find("Base1Center").transform;
+        }
     }
 
     void Update()
     {
-        if (buildMode)
+        if (isLocalPlayer && buildMode)
         {
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
@@ -68,11 +79,11 @@ public class BuildScript : MonoBehaviour
 
     void PositionPreview()
     {
-        Ray previewRay = new Ray(transform.position, transform.forward);
+        Ray previewRay = new Ray(camera.position, camera.forward);
         RaycastHit previewHit;
         //meshRend.material = invalidMaterial;
-        previewObject.transform.localEulerAngles = new Vector3(0, transform.localEulerAngles.y - 90, 0);
-        previewObject.GetComponent<BuildPoints>().valid = false;
+        previewObject.transform.localEulerAngles = new Vector3(0, camera.localEulerAngles.y - 90, 0);
+        previewBuildPoints.valid = false;
         if (Physics.Raycast(previewRay, out previewHit, 5f))
         {
             previewObject.transform.position = previewHit.point;
@@ -80,7 +91,7 @@ public class BuildScript : MonoBehaviour
             if (currentObject == 0 && previewHit.collider.gameObject.tag == "Ground")
             {
                 //meshRend.material = validMaterial;
-                previewObject.GetComponent<BuildPoints>().valid = true;
+                previewBuildPoints.valid = true;
             }
 
             SnapPreview();
@@ -88,7 +99,7 @@ public class BuildScript : MonoBehaviour
         else
         {
             //Snap and check
-            previewObject.transform.position = transform.position + previewObject.GetComponent<BuildPoints>().offset + previewRay.direction * 5f;
+            previewObject.transform.position = camera.position + previewBuildPoints.offset + previewRay.direction * 5f;
             SnapPreview();
         }
 
@@ -101,7 +112,7 @@ public class BuildScript : MonoBehaviour
         {
             for (int j = 0; j <  mp.pointType.Count; j++)
             {
-                if (mp.pointType[j] == previewObject.GetComponent<BuildPoints>().type)
+                if (mp.pointType[j] == previewBuildPoints.type)
                 {
                     objectIndex = mountPoints.IndexOf(mp);
                     vertexIndex = j;
@@ -122,25 +133,25 @@ public class BuildScript : MonoBehaviour
                             }
                             if (!near)
                             {
-                                previewObject.transform.position = newVec3 + previewObject.GetComponent<BuildPoints>().offset;
+                                previewObject.transform.position = newVec3 + previewBuildPoints.offset;
                                 previewObject.transform.LookAt(mp.parent);
                                 previewObject.transform.localEulerAngles = new Vector3(0, previewObject.transform.localEulerAngles.y - 90, 0);
-                                if (previewObject.GetComponent<BuildPoints>().type == mp.parent.GetComponent<BuildPoints>().type)
+                                if (previewBuildPoints.type == mp.parent.GetComponent<BuildPoints>().type)
                                 {
                                     previewObject.transform.localEulerAngles = mp.parent.transform.localEulerAngles;
                                 }
-                                if (previewObject.GetComponent<BuildPoints>().type == BuildPoints.MountType.Wall 
+                                if (previewBuildPoints.type == BuildPoints.MountType.Wall 
                                     && mp.parent.GetComponent<BuildPoints>().type == BuildPoints.MountType.Door1)
                                 {
                                     previewObject.transform.localEulerAngles = mp.parent.transform.localEulerAngles;
                                 }
-                                if (previewObject.GetComponent<BuildPoints>().type == BuildPoints.MountType.Door1
+                                if (previewBuildPoints.type == BuildPoints.MountType.Door1
                                    && mp.parent.GetComponent<BuildPoints>().type == BuildPoints.MountType.Wall)
                                 {
                                     previewObject.transform.localEulerAngles = mp.parent.transform.localEulerAngles;
                                 }
                                 //meshRend.material = validMaterial;
-                                previewObject.GetComponent<BuildPoints>().valid = true;
+                                previewBuildPoints.valid = true;
 
                                 finalObjectIndex = mountPoints.IndexOf(mp);
                                 finalVertexIndex = mp.points.IndexOf(v3);
@@ -164,6 +175,8 @@ public class BuildScript : MonoBehaviour
         //originalMaterial = meshRend.material;
         //meshRend.material = invalidMaterial;
         previewObject.layer = 2;
+        previewBuildPoints = previewObject.GetComponent<BuildPoints>();
+        previewObject.transform.localEulerAngles = new Vector3(0, 0, 0);
     }
 
     void PlaceObject()
@@ -172,10 +185,10 @@ public class BuildScript : MonoBehaviour
         {
             pointUsed[finalObjectIndex][finalVertexIndex] = true;
         }
-        if (previewObject.GetComponent<BuildPoints>().valid)
+        if (previewBuildPoints.valid)
         {
-            previewObject.name = (previewObject.GetComponent<BuildPoints>().type.ToString() + " Placed");
-            BuildPoints bp = previewObject.GetComponent<BuildPoints>();
+            previewObject.name = (previewBuildPoints.type.ToString() + " Placed");
+            BuildPoints bp = previewBuildPoints;
             mountPoints.Add(bp.mounting);
             List<bool> newBools = new List<bool>();
             foreach (Vector3 v3 in bp.mounting.points)
@@ -185,10 +198,16 @@ public class BuildScript : MonoBehaviour
             }
             pointUsed.Add(newBools);
             //meshRend.material = originalMaterial;
-            placedObjects.Add(previewObject.transform.position - previewObject.GetComponent<BuildPoints>().offset);
+            placedObjects.Add(previewObject.transform.position - previewBuildPoints.offset);
             previewObject.layer = 0;
+            CmdSpawnBuildingPart(previewObject);
             previewObject = null;
             //meshRend = null;
         }
+    }
+    [Command]
+    void CmdSpawnBuildingPart(GameObject buildingObject)
+    {
+        NetworkServer.Spawn(buildingObject);
     }
 }
