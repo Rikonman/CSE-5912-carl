@@ -8,6 +8,8 @@ TagManager:
   - PlayerCamera
   - Pick Up (Stone)
   - Pick Up (Wood)
+  - Ground
+  - hiddenUI
   layers:
   - Default
   - TransparentFX
