@@ -15,10 +15,33 @@ public class GunController : NetworkBehaviour {
     public float fireDelay = 0f;
     public bool automatic = false;
 
+    //=============================
+    // Ammunition stuffs
+    //=============================
+    public int maxAmmoInMag = 20;
+    public int startingReserveAmmo = 50;
+    public int currentAmmoInMag;
+    public int currentAmmoInReserve;
+
     [SerializeField]
     GameObject projectilePrefab;
     [SerializeField]
     Transform barrellExit;
+
+    void Start()
+    {
+        currentAmmoInReserve = startingReserveAmmo;
+        if (currentAmmoInReserve >= maxAmmoInMag)
+        {
+            currentAmmoInMag = maxAmmoInMag;
+            currentAmmoInReserve -= maxAmmoInMag;
+        }
+        else
+        {
+            currentAmmoInMag = currentAmmoInReserve;
+            currentAmmoInReserve = 0;
+        }
+    }
 
     // the reset method lets us run slow code (like "Find") in the editor where performance
     // won't impact the players at runtime
@@ -33,6 +56,7 @@ public class GunController : NetworkBehaviour {
         if (!isLocalPlayer)
             return;
 
+        
         if (automatic) {
             if (Input.GetButton("Fire1") && Time.time >= fireDelay)
             {
@@ -49,8 +73,17 @@ public class GunController : NetworkBehaviour {
 	}
 
     void Shoot() {
-        flash.Play();
-        CmdSpawnProjectile();
+        if (currentAmmoInMag > 0)
+        {
+            flash.Play();
+            CmdSpawnProjectile();
+            currentAmmoInMag--;
+        }
+        else
+        {
+            // Play empty mag sound here
+        }
+        
         /*RaycastHit hit;
         if (Physics.Raycast(fpsCamera.transform.position, fpsCamera.transform.forward, out hit, range))
         {

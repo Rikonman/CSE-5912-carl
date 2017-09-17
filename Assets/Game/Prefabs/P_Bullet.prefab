@@ -23,9 +23,9 @@ GameObject:
   - component: {fileID: 135587291011066358}
   - component: {fileID: 23286537560610878}
   - component: {fileID: 54746358171706332}
-  - component: {fileID: 114604249900638060}
-  - component: {fileID: 114629669482012826}
   - component: {fileID: 114139538018755128}
+  - component: {fileID: 114629669482012826}
+  - component: {fileID: 114604249900638060}
   m_Layer: 0
   m_Name: P_Bullet
   m_TagString: Untagged

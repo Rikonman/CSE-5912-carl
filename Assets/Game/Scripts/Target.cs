@@ -4,8 +4,14 @@ using UnityEngine;
 
 public class Target : MonoBehaviour {
 
-    public float health = 50f;
-	public bool isVulnerable = true; 
+    public float startingHealth = 50f;
+    public float health;
+	public bool isVulnerable = true;
+
+    void Start()
+    {
+        health = startingHealth;
+    }
 
     public void TakeDamage(float damage) {
 

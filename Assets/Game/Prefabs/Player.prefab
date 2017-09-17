@@ -177,7 +177,7 @@ GameObject:
   - component: {fileID: 114079024415121868}
   - component: {fileID: 114848512960628924}
   - component: {fileID: 114255494998887376}
-  - component: {fileID: 114169430961156674}
+  - component: {fileID: 114962516353617356}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -745,20 +745,6 @@ Light:
   m_Lightmapping: 4
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
-  m_FalloffTable:
-    m_Table[0]: 0
-    m_Table[1]: 0
-    m_Table[2]: 0
-    m_Table[3]: 0
-    m_Table[4]: 0
-    m_Table[5]: 0
-    m_Table[6]: 0
-    m_Table[7]: 0
-    m_Table[8]: 0
-    m_Table[9]: 0
-    m_Table[10]: 0
-    m_Table[11]: 0
-    m_Table[12]: 0
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
@@ -774,6 +760,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe3106a7a3e87d24393a1d7da8f89879, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startingHealth: 50
   health: 50
   isVulnerable: 1
 --- !u!114 &114088814264466152
@@ -808,17 +795,6 @@ MonoBehaviour:
     i15: 213
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 1
---- !u!114 &114169430961156674
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1944990492533402}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2226fb12e1343647b8b988315d94cde, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114255494998887376
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -901,9 +877,24 @@ MonoBehaviour:
   fireRate: 0.2
   fireDelay: 0
   automatic: 0
+  maxAmmoInMag: 20
+  startingReserveAmmo: 50
+  currentAmmoInMag: 0
+  currentAmmoInReserve: 0
   projectilePrefab: {fileID: 1266938302354856, guid: 8bfc41b206862c546b987a5026cabc62,
     type: 2}
   barrellExit: {fileID: 4949458073248528}
+--- !u!114 &114962516353617356
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1944990492533402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59c69003ff5ac5a4db919e547f23ac37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!136 &136532971365009212
 CapsuleCollider:
   m_ObjectHideFlags: 1

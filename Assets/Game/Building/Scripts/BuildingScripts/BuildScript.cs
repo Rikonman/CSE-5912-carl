@@ -68,10 +68,9 @@ public class BuildScript : NetworkBehaviour
             {
                 PositionPreview();
 
-                if (Input.GetMouseButtonDown(0))
+                if (Input.GetKeyDown(KeyCode.B))
                 {
                     PlaceObject();
-
                 }
             }
         }
@@ -200,14 +199,16 @@ public class BuildScript : NetworkBehaviour
             //meshRend.material = originalMaterial;
             placedObjects.Add(previewObject.transform.position - previewBuildPoints.offset);
             previewObject.layer = 0;
-            CmdSpawnBuildingPart(previewObject);
+            CmdSpawnBuildingPart();
             previewObject = null;
             //meshRend = null;
         }
     }
     [Command]
-    void CmdSpawnBuildingPart(GameObject buildingObject)
+    void CmdSpawnBuildingPart()
     {
-        NetworkServer.Spawn(buildingObject);
+        Debug.Log("Placing " + objects[currentObject].ToString() + " at X:" + previewObject.transform.position.x.ToString() + "; Y:" + previewObject.transform.position.y.ToString() + "; Z:" + previewObject.transform.position.z.ToString());
+        GameObject instance = Instantiate(objects[currentObject], previewObject.transform.position, previewObject.transform.rotation);
+        NetworkServer.Spawn(instance);
     }
 }
