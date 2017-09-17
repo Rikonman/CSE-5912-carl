@@ -26,6 +26,9 @@ public class PlayerController : NetworkBehaviour
     [SerializeField]
     public int team;
     static int numPlayers = 0;
+	[Header("UI")]
+	[SerializeField]
+	GameObject HUDLayout;
 
     Transform mainCamera;
     Vector3 tpCameraOffset;
@@ -44,6 +47,7 @@ public class PlayerController : NetworkBehaviour
     float sprintSpeed = 12f;
 
     private Rigidbody rb;
+	private GameObject clientHUD; 
 
     // Use this for initialization
     void Start()
@@ -51,12 +55,14 @@ public class PlayerController : NetworkBehaviour
         team = numPlayers % 2;
         numPlayers++;
         // if this player is not the local player...
-        if (!isLocalPlayer)
-        {
-            // then remove this script. By removing this script all the rest of the code will not run.
-            Destroy(this);
-            return;
-        }
+		if (!isLocalPlayer) {
+			// then remove this script. By removing this script all the rest of the code will not run.
+			Destroy (this);
+			return;
+		} else {
+			clientHUD = Instantiate (HUDLayout);
+			clientHUD.name = HUDLayout.name; 
+		}
         //crosshair.enabled = true;
         rb = GetComponent<Rigidbody>();
 
@@ -146,4 +152,9 @@ public class PlayerController : NetworkBehaviour
             other.gameObject.GetComponent<BoxCollider>().enabled = false;
         }
     }
+
+	void OnDisable()
+	{
+		Destroy (clientHUD);
+	}
 }

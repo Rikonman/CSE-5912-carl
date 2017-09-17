@@ -6,6 +6,11 @@ public class SpawnController : NetworkBehaviour {
 	[SerializeField]
 	Behaviour[] disabled;
 
+	[SerializeField]
+	GameObject HUDLayout; 
+
+	private GameObject clientHUD;
+
 	Camera LobbyCam; 
 
 	public bool localPlayer = false; 
@@ -21,13 +26,28 @@ public class SpawnController : NetworkBehaviour {
 			if(LobbyCam != null)
 				LobbyCam.gameObject.SetActive (false);
 			localPlayer = true; 
+
+			clientHUD = Instantiate (HUDLayout); 
+			clientHUD.name = HUDLayout.name; 
+			MakeClientHUDVisible (clientHUD);
 		}
 	}
 		
 	void OnDisable()
 	{
+		Destroy(clientHUD);
 		if (LobbyCam != null)
 			LobbyCam.gameObject.SetActive (true);
+	}
+
+	void MakeClientHUDVisible(GameObject go)
+	{
+		go.layer = 2; 
+
+		foreach (Transform child in go.transform) 
+		{
+			MakeClientHUDVisible (child.gameObject); 
+		}
 	}
 
 }
