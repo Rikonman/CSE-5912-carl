@@ -23,9 +23,6 @@ public class PlayerController : NetworkBehaviour
     float tpCameraY = 7f;                   // The height off of the ground that the camera should be
     [SerializeField]
     bool isFirstPerson = true;
-    [SerializeField]
-    public int team;
-    static int numPlayers = 0;
 	[Header("UI")]
 	[SerializeField]
 	GameObject HUDLayout;
@@ -45,6 +42,7 @@ public class PlayerController : NetworkBehaviour
     float walkingSpeed = 6f;
     float speed;
     float sprintSpeed = 12f;
+    float uiRefreshTimer;
 
     private Rigidbody rb;
 	private GameObject clientHUD; 
@@ -52,8 +50,6 @@ public class PlayerController : NetworkBehaviour
     // Use this for initialization
     void Start()
     {
-        team = numPlayers % 2;
-        numPlayers++;
         // if this player is not the local player...
 		if (!isLocalPlayer) {
 			// then remove this script. By removing this script all the rest of the code will not run.
@@ -71,6 +67,7 @@ public class PlayerController : NetworkBehaviour
 
         mainCamera = Camera.main.transform;
         MoveCamera();
+        uiRefreshTimer = 0;
     }
 
     // Update is called once per frame
@@ -112,6 +109,17 @@ public class PlayerController : NetworkBehaviour
 
         // Update the camera's position/rotation
         MoveCamera();
+
+        uiRefreshTimer += Time.deltaTime;
+        if (uiRefreshTimer >= .5f)
+        {
+            PlayerTeam tempTeam = GetComponent<PlayerTeam>();
+            ResourceBank tempBank = tempTeam.baseObject.GetComponent<ResourceBank>();
+            UnityEngine.UI.Text textBox = tempTeam.resourceText.GetComponent<UnityEngine.UI.Text>();
+            textBox.text = "Team " + (tempTeam.team + 1) + " \nStone: " + tempBank.stone + "\nWood: " + tempBank.wood;
+
+            uiRefreshTimer = 0f;
+        }
     }
 
     void MoveCamera()
@@ -128,28 +136,6 @@ public class PlayerController : NetworkBehaviour
             tpCameraOffset = new Vector3(0f, tpCameraY, -tpCameraDistance);
             mainCamera.Translate(tpCameraOffset);
             mainCamera.LookAt(transform);
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Pick Up (Stone)"))
-        {
-            PickUpController TempController = other.gameObject.GetComponent<PickUpController>();
-            GameObject baseObject = GameObject.Find("Base" + (team + 1));
-            baseObject.GetComponent<ResourceBank>().Add("Stone", TempController.amount);
-            TempController.StartRespawnTimer();
-            other.gameObject.GetComponent<MeshRenderer>().enabled = false;
-            other.gameObject.GetComponent<BoxCollider>().enabled = false;
-        }
-        else if (other.gameObject.CompareTag("Pick Up (Wood)"))
-        {
-            PickUpController TempController = other.gameObject.GetComponent<PickUpController>();
-            GameObject baseObject = GameObject.Find("Base" + (team + 1));
-            baseObject.GetComponent<ResourceBank>().Add("Wood", TempController.amount);
-            TempController.StartRespawnTimer();
-            other.gameObject.GetComponent<MeshRenderer>().enabled = false;
-            other.gameObject.GetComponent<BoxCollider>().enabled = false;
         }
     }
 

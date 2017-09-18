@@ -82,6 +82,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4876519631550670}
   - component: {fileID: 114963028095491328}
+  - component: {fileID: 114127902847124864}
   m_Layer: 0
   m_Name: Effects
   m_TagString: Untagged
@@ -197,6 +198,38 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1294049246439048}
   m_Mesh: {fileID: 4300022, guid: c1ce7c2aba342d848b29b3680c903304, type: 3}
+--- !u!114 &114127902847124864
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1904598807260568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 62
+    i1: 139
+    i2: 194
+    i3: 145
+    i4: 214
+    i5: 179
+    i6: 185
+    i7: 180
+    i8: 89
+    i9: 229
+    i10: 151
+    i11: 171
+    i12: 47
+    i13: 12
+    i14: 119
+    i15: 130
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
 --- !u!114 &114963028095491328
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -209,8 +242,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 10
-  ownership: 0
   captureTime: 15
   resourcePerSecond: 2
+  ownership: 0
   resourceTimer: 0
   currentOwner: 
