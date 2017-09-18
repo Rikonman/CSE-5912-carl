@@ -857,7 +857,7 @@ MonoBehaviour:
   tpCameraDistance: 6
   tpCameraY: 7
   isFirstPerson: 1
-  HUDLayout: {fileID: 1330608851572878, guid: 852614a35c44e314f8c3d8c80f18986b, type: 2}
+  HUDLayout: {fileID: 1116641536544642, guid: e6a03c3d7ec960546aeafa9d0edf15c2, type: 2}
 --- !u!114 &114801335604920884
 MonoBehaviour:
   m_ObjectHideFlags: 1

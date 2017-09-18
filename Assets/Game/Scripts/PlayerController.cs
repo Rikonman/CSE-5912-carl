@@ -113,7 +113,7 @@ public class PlayerController : NetworkBehaviour
         // Update the camera's position/rotation
         MoveCamera();
 
-        /*uiRefreshTimer += Time.deltaTime;
+        uiRefreshTimer += Time.deltaTime;
         if (uiRefreshTimer >= .5f)
         {
             PlayerTeam tempTeam = GetComponent<PlayerTeam>();
@@ -122,7 +122,7 @@ public class PlayerController : NetworkBehaviour
             textBox.text = "Team " + (tempTeam.team + 1) + " \nStone: " + tempBank.stone + "\nWood: " + tempBank.wood;
 
             uiRefreshTimer = 0f;
-        }*/
+        }
     }
 
     void MoveCamera()
