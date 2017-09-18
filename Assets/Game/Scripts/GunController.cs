@@ -14,9 +14,6 @@ public class GunController : NetworkBehaviour {
     public float fireRate = .1f;
     public float fireDelay = 0f;
     public bool automatic = false;
-    float xRotation;
-    float yRotation;
-    float lookSensitivity = 5f;
 
     //=============================
     // Ammunition stuffs
@@ -73,8 +70,6 @@ public class GunController : NetworkBehaviour {
                 Shoot();
             }
         }
-
-        //GunMove();
 	}
 
     void Shoot() {
@@ -119,19 +114,4 @@ public class GunController : NetworkBehaviour {
 
         NetworkServer.Spawn(instance);
     }
-
-    /*void GunMove() {
-        xRotation -= Input.GetAxis("Mouse Y") * lookSensitivity;
-        if (xRotation > 90)
-        {
-            xRotation = 90;
-        }
-        else if (xRotation < -90)
-        {
-            xRotation = -90;
-        }
-
-        yRotation += Input.GetAxis("Mouse X") * lookSensitivity;
-        transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
-    }*/
 }
