@@ -1,56 +1,30 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
 
-public class ResourceBank : NetworkBehaviour
-{
-    [SyncVar(hook = "SetStone")]
-    public int stone;
-    [SyncVar(hook = "SetWood")]
-    public int wood;
+public class ResourceBank : MonoBehaviour {
+    public int Stone;
+    public int Wood;
     // Use this for initialization
-    void Start()
-    {
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    public void SetStone(int Stone)
-    {
-        stone = Stone;
-    }
-
-    public void SetWood(int Wood)
-    {
-        wood = Wood;
-    }
-
-    public void AddStone(int Amount)
-    {
-        stone += Amount;
-    }
-
-    public void AddWood(int Amount)
-    {
-        wood += Amount;
-    }
+    void Start () {
+        Stone = 100;
+        Wood = 100;
+	}
+	
+	// Update is called once per frame
+	void Update () {
+		
+	}
 
     public void Add(string Type, int Amount)
     {
         if (Type == "Stone")
         {
-            AddStone(Amount);
+            Stone += Amount;
         }
         else
         {
-            AddWood(Amount);
+            Wood += Amount;
         }
     }
-
-
 }

@@ -178,7 +178,6 @@ GameObject:
   - component: {fileID: 114848512960628924}
   - component: {fileID: 114255494998887376}
   - component: {fileID: 114962516353617356}
-  - component: {fileID: 114801335604920884}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -857,6 +856,7 @@ MonoBehaviour:
   tpCameraDistance: 6
   tpCameraY: 7
   isFirstPerson: 1
+<<<<<<< HEAD
   HUDLayout: {fileID: 1330608851572878, guid: 852614a35c44e314f8c3d8c80f18986b, type: 2}
 --- !u!114 &114801335604920884
 MonoBehaviour:
@@ -873,6 +873,10 @@ MonoBehaviour:
   playerID: 0
   resourceText: {fileID: 0}
   baseObject: {fileID: 0}
+=======
+  team: 0
+  HUDLayout: {fileID: 1876009039249902, guid: 28848a864f73c9e49b61b856981bd56c, type: 2}
+>>>>>>> parent of 14d3936... Merge remote-tracking branch 'origin/master'
 --- !u!114 &114848512960628924
 MonoBehaviour:
   m_ObjectHideFlags: 1

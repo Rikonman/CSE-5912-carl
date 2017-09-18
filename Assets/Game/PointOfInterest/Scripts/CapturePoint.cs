@@ -1,19 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
-public class CapturePoint : NetworkBehaviour
-{
 
+public class CapturePoint : MonoBehaviour {
     public float radius;
+    public float ownership;
     public float captureTime;
     public int resourcePerSecond;
-
-    [SyncVar]
-    public float ownership;
-    [SyncVar]
     public float resourceTimer;
-    [SyncVar]
     public string currentOwner;
 
     public float Ownership
@@ -50,43 +44,40 @@ public class CapturePoint : NetworkBehaviour
             }
         }
     }
-    // Use this for initialization
-    void Start()
-    {
+	// Use this for initialization
+	void Start () {
         resourceTimer = 0;
-        Ownership = 0f;
-    }
 
-    // Update is called once per frame
-    void FixedUpdate()
-    {
+    }
+	
+	// Update is called once per frame
+	void FixedUpdate () {
         GameObject[] tempPlayers = GameObject.FindGameObjectsWithTag("Player");
-        float timeAdded = 0f;
+        int TeamOnePlayers = 0;
+        int TeamTwoPlayers = 0;
         foreach (GameObject tempPlayer in tempPlayers)
         {
             float magnitude = (transform.position - tempPlayer.transform.position).magnitude;
             if (magnitude < radius)
             {
-                PlayerTeam tempTeam = tempPlayer.GetComponent<PlayerTeam>();
-                if (tempTeam.team == 0)
+                if (tempPlayer.GetComponent<PlayerController>().team == 0)
                 {
-                    timeAdded += Time.deltaTime;
+                    TeamOnePlayers++;
                 }
                 else
                 {
-                    timeAdded -= Time.deltaTime;
+                    TeamTwoPlayers++;
                 }
             }
-
         }
-        Ownership += timeAdded;
+        Ownership += (TeamOnePlayers - TeamTwoPlayers) * Time.deltaTime;
         if (currentOwner != "No One")
         {
             if (resourceTimer >= 1f)
             {
                 resourceTimer = 0;
                 int teamNumber = currentOwner == "Team One" ? 1 : 2;
-                GameObject baseObject = GameObject.Find("Base" + teamNumber + "Center");
+                GameObject baseObject = GameObject.Find("Base" + teamNumber);
                 baseObject.GetComponent<ResourceBank>().Add("Stone", resourcePerSecond);
                 baseObject.GetComponent<ResourceBank>().Add("Wood", resourcePerSecond);
             }
@@ -95,6 +86,6 @@ public class CapturePoint : NetworkBehaviour
                 resourceTimer += Time.deltaTime;
             }
         }
-
-    }
+        
+	}
 }
