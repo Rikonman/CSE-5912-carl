@@ -152,6 +152,14 @@ public class PlayerController : NetworkBehaviour
             other.gameObject.GetComponent<BoxCollider>().enabled = false;
         }
     }
+<<<<<<< HEAD
+=======
+
+	void OnDisable()
+	{
+		//death state
+	}
+>>>>>>> parent of 14d3936... Merge remote-tracking branch 'origin/master'
 
 	void OnDisable()
 	{
