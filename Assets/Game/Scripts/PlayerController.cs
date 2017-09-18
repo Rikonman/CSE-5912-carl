@@ -101,6 +101,13 @@ public class PlayerController : NetworkBehaviour
 
 
         //transform.Translate(Input.GetAxis("Horizontal") * Time.deltaTime * speed, 0, Input.GetAxis("Vertical") * Time.deltaTime * speed);
+
+        if ((Input.GetKey(KeyCode.W) && (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))) || (Input.GetKey(KeyCode.S) && (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))))
+            speed /= 1.414f;
+
+
+        //get rid of the y axis components before moving
+        //simple fix for timebox 2
         if (Input.GetKey(KeyCode.W))
         {
             flatTransform = transform.forward;
