@@ -58,6 +58,9 @@ public class PlayerController : NetworkBehaviour
 		} else {
 			clientHUD = Instantiate (HUDLayout);
 			clientHUD.name = HUDLayout.name; 
+			clientHUD.transform.SetParent(GameObject.Find ("_UI").transform);
+			clientHUD.transform.localPosition = new Vector3 (50.0f, 100.0f, 0f);
+			clientHUD.transform.localScale = Vector3.one;  
 		}
         //crosshair.enabled = true;
         rb = GetComponent<Rigidbody>();
@@ -110,7 +113,7 @@ public class PlayerController : NetworkBehaviour
         // Update the camera's position/rotation
         MoveCamera();
 
-        uiRefreshTimer += Time.deltaTime;
+        /*uiRefreshTimer += Time.deltaTime;
         if (uiRefreshTimer >= .5f)
         {
             PlayerTeam tempTeam = GetComponent<PlayerTeam>();
@@ -119,7 +122,7 @@ public class PlayerController : NetworkBehaviour
             textBox.text = "Team " + (tempTeam.team + 1) + " \nStone: " + tempBank.stone + "\nWood: " + tempBank.wood;
 
             uiRefreshTimer = 0f;
-        }
+        }*/
     }
 
     void MoveCamera()
@@ -140,6 +143,11 @@ public class PlayerController : NetworkBehaviour
     }
 
 	void OnDisable()
+	{
+		//death state
+	}
+	
+	void OnStopServer()
 	{
 		Destroy (clientHUD);
 	}
