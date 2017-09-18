@@ -23,9 +23,9 @@ public class PlayerController : NetworkBehaviour
     float tpCameraY = 7f;                   // The height off of the ground that the camera should be
     [SerializeField]
     bool isFirstPerson = true;
-	[Header("UI")]
-	[SerializeField]
-	GameObject HUDLayout;
+    [Header("UI")]
+    [SerializeField]
+    GameObject HUDLayout;
 
     Transform mainCamera;
     Vector3 tpCameraOffset;
@@ -39,29 +39,30 @@ public class PlayerController : NetworkBehaviour
     float xRotationV;
     float yRotationV;
     float lookSmoothDamp = 0.1f;
-    float walkingSpeed = 6f;
     float speed;
-    float sprintSpeed = 12f;
+    float walkingSpeed = 1500f;
+    float sprintSpeed = 3000f;
     float uiRefreshTimer;
+    Vector3 flatTransform;
 
     private Rigidbody rb;
-	private GameObject clientHUD; 
+    private GameObject clientHUD;
 
     // Use this for initialization
     void Start()
     {
         // if this player is not the local player...
-		if (!isLocalPlayer) {
-			// then remove this script. By removing this script all the rest of the code will not run.
-			Destroy (this);
-			return;
-		} else {
-			clientHUD = Instantiate (HUDLayout);
-			clientHUD.name = HUDLayout.name; 
-			clientHUD.transform.SetParent(GameObject.Find ("_UI").transform);
-			clientHUD.transform.localPosition = new Vector3 (50.0f, 100.0f, 0f);
-			clientHUD.transform.localScale = Vector3.one;  
-		}
+        if (!isLocalPlayer) {
+            // then remove this script. By removing this script all the rest of the code will not run.
+            Destroy(this);
+            return;
+        } else {
+            clientHUD = Instantiate(HUDLayout);
+            clientHUD.name = HUDLayout.name;
+            clientHUD.transform.SetParent(GameObject.Find("_UI").transform);
+            clientHUD.transform.localPosition = new Vector3(50.0f, 100.0f, 0f);
+            clientHUD.transform.localScale = Vector3.one;
+        }
         //crosshair.enabled = true;
         rb = GetComponent<Rigidbody>();
 
@@ -77,9 +78,9 @@ public class PlayerController : NetworkBehaviour
     void FixedUpdate()
     {
         xRotation -= Input.GetAxis("Mouse Y") * lookSensitivity;
-        if (xRotation > 90)
+        if (xRotation > 60)
         {
-            xRotation = 90;
+            xRotation = 60;
         }
         else if (xRotation < -90)
         {
@@ -97,7 +98,29 @@ public class PlayerController : NetworkBehaviour
 
         yRotation += Input.GetAxis("Mouse X") * lookSensitivity;
         transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
-        transform.Translate(Input.GetAxis("Horizontal") * Time.deltaTime * speed, 0, Input.GetAxis("Vertical") * Time.deltaTime * speed);
+
+
+        //transform.Translate(Input.GetAxis("Horizontal") * Time.deltaTime * speed, 0, Input.GetAxis("Vertical") * Time.deltaTime * speed);
+        if (Input.GetKey(KeyCode.W))
+        {
+            flatTransform = transform.forward;
+            flatTransform.y = 0;
+            rb.AddForce(Time.fixedDeltaTime * flatTransform * speed, ForceMode.Acceleration);
+        }
+        if (Input.GetKey(KeyCode.S))
+        {
+            flatTransform = -transform.forward;
+            flatTransform.y = 0;
+            rb.AddForce(Time.fixedDeltaTime * flatTransform * speed, ForceMode.Acceleration);
+        }
+        if (Input.GetKey(KeyCode.A))
+        {
+            rb.AddForce(Time.fixedDeltaTime * -transform.right * speed, ForceMode.Acceleration);
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            rb.AddForce(Time.fixedDeltaTime * transform.right * speed, ForceMode.Acceleration);
+        }
 
         Vector3 jumpForce = Vector3.zero;
 
