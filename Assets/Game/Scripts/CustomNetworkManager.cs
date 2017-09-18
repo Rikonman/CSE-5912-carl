@@ -16,7 +16,7 @@ public class CustomNetworkManager : NetworkManager {
         base.OnStartClient(client);
         canRotate = false;
         // Turn on the gameplay's HUD
-        GameObject.Find("_UI").transform.GetChild(1).gameObject.SetActive(true);
+        //GameObject.Find("_UI").transform.GetChild(1).gameObject.SetActive(true);
         // Hide and lock the cursor to the game window
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = (false);
@@ -27,7 +27,7 @@ public class CustomNetworkManager : NetworkManager {
         base.OnStartHost();
         canRotate = false;
         // Turn on the gameplay's HUD
-        GameObject.Find("_UI").transform.GetChild(1).gameObject.SetActive(true);
+        //GameObject.Find("_UI").transform.GetChild(1).gameObject.SetActive(true);
         // Hide and lock the cursor to the game window
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = (false);
@@ -38,7 +38,7 @@ public class CustomNetworkManager : NetworkManager {
         base.OnStopClient();
         canRotate = true;
         // Turn off the gameplay's HUD
-        GameObject.Find("_UI").transform.GetChild(1).gameObject.SetActive(false);
+        //GameObject.Find("_UI").transform.GetChild(1).gameObject.SetActive(false);
         // Show and unlock the cursor from the game window
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = (true);

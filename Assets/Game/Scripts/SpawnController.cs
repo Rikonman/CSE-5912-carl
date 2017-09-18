@@ -29,6 +29,9 @@ public class SpawnController : NetworkBehaviour {
 
 			clientHUD = Instantiate (HUDLayout); 
 			clientHUD.name = HUDLayout.name; 
+
+			clientHUD.transform.parent = GameObject.Find ("_UI").transform;
+			//clientHUD.transform.gameobject.SetActive (true);
 			MakeClientHUDVisible (clientHUD);
 		}
 	}
