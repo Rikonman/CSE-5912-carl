@@ -58,6 +58,9 @@ public class PlayerController : NetworkBehaviour
 		} else {
 			clientHUD = Instantiate (HUDLayout);
 			clientHUD.name = HUDLayout.name; 
+			clientHUD.transform.SetParent(GameObject.Find ("_UI").transform);
+			clientHUD.transform.localPosition = new Vector3 (50.0f, 100.0f, 0f);
+			clientHUD.transform.localScale = Vector3.one; 
 		}
         //crosshair.enabled = true;
         rb = GetComponent<Rigidbody>();
@@ -142,6 +145,12 @@ public class PlayerController : NetworkBehaviour
 
 	void OnDisable()
 	{
+		//death state
+	}
+
+	void OnStopServer()
+	{
 		Destroy (clientHUD);
 	}
+
 }
