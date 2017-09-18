@@ -93,7 +93,7 @@ public class PlayerController : NetworkBehaviour
         }
 
         yRotation += Input.GetAxis("Mouse X") * lookSensitivity;
-        transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
+        transform.rotation = Quaternion.Euler(0, yRotation, 0);
         transform.Translate(Input.GetAxis("Horizontal") * Time.deltaTime * speed, 0, Input.GetAxis("Vertical") * Time.deltaTime * speed);
 
         Vector3 jumpForce = Vector3.zero;
@@ -130,6 +130,7 @@ public class PlayerController : NetworkBehaviour
         {
             fpCameraOffset = new Vector3(fpCameraX, fpCameraY, fpCameraZ);
             mainCamera.Translate(fpCameraOffset);
+            mainCamera.transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
         }
         else
         {
