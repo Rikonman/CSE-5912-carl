@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,6 +31,8 @@ public class ResourceBank : MonoBehaviour {
     }
 }
 =======
+=======
+>>>>>>> parent of 14d3936... Merge remote-tracking branch 'origin/master'
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
