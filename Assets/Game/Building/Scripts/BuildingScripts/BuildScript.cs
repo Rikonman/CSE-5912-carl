@@ -199,16 +199,17 @@ public class BuildScript : NetworkBehaviour
             //meshRend.material = originalMaterial;
             placedObjects.Add(previewObject.transform.position - previewBuildPoints.offset);
             previewObject.layer = 0;
-            CmdSpawnBuildingPart(objects[currentObject].ToString(), previewObject.transform.position, previewObject.transform.rotation);
+            Debug.Log("Placing " + objects[currentObject].ToString()+ "With Object ID:" + currentObject + " at X:" + previewObject.transform.position.x + "; Y:" + previewObject.transform.position.y + "; Z:" + previewObject.transform.position.z);
+            CmdSpawnBuildingPart(objects[currentObject].ToString(), currentObject, previewObject.transform.position, previewObject.transform.rotation);
             previewObject = null;
             //meshRend = null;
         }
     }
     [Command]
-    void CmdSpawnBuildingPart(string objectString, Vector3 position, Quaternion rotation)
+    void CmdSpawnBuildingPart(string objectString, int objectID, Vector3 position, Quaternion rotation)
     {
-        Debug.Log("Placing " + objectString + " at X:" + position.x + "; Y:" + position.y + "; Z:" + position.z);
-        GameObject instance = Instantiate(objects[currentObject], position, rotation);
+        Debug.Log("Placing " + objectString + "With Object ID:" + currentObject + " at X:" + position.x + "; Y:" + position.y + "; Z:" + position.z);
+        GameObject instance = Instantiate(objects[objectID], position, rotation);
         NetworkServer.Spawn(instance);
     }
 }
