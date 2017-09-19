@@ -42,21 +42,35 @@ public class PlayerTeam : NetworkBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Pick Up (Stone)"))
+        if (isLocalPlayer)
         {
-            PickUpController TempController = other.gameObject.GetComponent<PickUpController>();
-            baseObject.GetComponent<ResourceBank>().Add("Stone", TempController.amount);
-            TempController.StartRespawnTimer();
-            other.gameObject.GetComponent<MeshRenderer>().enabled = false;
-            other.gameObject.GetComponent<BoxCollider>().enabled = false;
+            if (other.gameObject.CompareTag("Pick Up (Stone)"))
+            {
+                PickUpController TempController = other.gameObject.GetComponent<PickUpController>();
+                //baseObject.GetComponent<ResourceBank>().Add("Stone", TempController.amount);
+                CmdAddToResources("Stone", TempController.amount, team);
+                TempController.StartRespawnTimer();
+                other.gameObject.GetComponent<MeshRenderer>().enabled = false;
+                other.gameObject.GetComponent<BoxCollider>().enabled = false;
+            }
+            else if (other.gameObject.CompareTag("Pick Up (Wood)"))
+            {
+                PickUpController TempController = other.gameObject.GetComponent<PickUpController>();
+                //baseObject.GetComponent<ResourceBank>().Add("Wood", TempController.amount);
+                CmdAddToResources("Wood", TempController.amount, team);
+                TempController.StartRespawnTimer();
+                other.gameObject.GetComponent<MeshRenderer>().enabled = false;
+                other.gameObject.GetComponent<BoxCollider>().enabled = false;
+            }
         }
-        else if (other.gameObject.CompareTag("Pick Up (Wood)"))
-        {
-            PickUpController TempController = other.gameObject.GetComponent<PickUpController>();
-            baseObject.GetComponent<ResourceBank>().Add("Wood", TempController.amount);
-            TempController.StartRespawnTimer();
-            other.gameObject.GetComponent<MeshRenderer>().enabled = false;
-            other.gameObject.GetComponent<BoxCollider>().enabled = false;
-        }
+        
+
+    }
+
+    [Command]
+    void CmdAddToResources(string Type, int amount, int Team)
+    {
+        GameObject serverBaseObject = GameObject.Find("Base" + (team + 1) + "Center");
+        serverBaseObject.GetComponent<ResourceBank>().Add(Type, amount);
     }
 }
