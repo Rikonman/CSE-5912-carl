@@ -54,9 +54,8 @@ public class GunController : NetworkBehaviour {
     void Update () {
         // Only the local player can fire a weapon
         if (!isLocalPlayer)
-            return;
+            return;     
 
-        
         if (automatic) {
             if (Input.GetButton("Fire1") && Time.time >= fireDelay)
             {
@@ -70,7 +69,19 @@ public class GunController : NetworkBehaviour {
                 Shoot();
             }
         }
-	}
+
+        if (currentAmmoInReserve >= maxAmmoInMag - currentAmmoInMag && Input.GetKeyDown(KeyCode.R))
+        {
+            currentAmmoInReserve -= (maxAmmoInMag - currentAmmoInMag);
+            currentAmmoInMag = maxAmmoInMag;
+
+        }
+        else if (currentAmmoInReserve < maxAmmoInMag - currentAmmoInMag && Input.GetKeyDown(KeyCode.R))
+        {
+            currentAmmoInMag += currentAmmoInReserve;
+            currentAmmoInReserve = 0;
+        }
+    }
 
     void Shoot() {
         if (currentAmmoInMag > 0)
