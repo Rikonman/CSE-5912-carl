@@ -60,8 +60,10 @@ public class PlayerController : NetworkBehaviour
             clientHUD = Instantiate(HUDLayout);
             clientHUD.name = HUDLayout.name;
             clientHUD.transform.SetParent(GameObject.Find("_UI").transform);
-            clientHUD.transform.localPosition = new Vector3(50.0f, 100.0f, 0f);
             clientHUD.transform.localScale = Vector3.one;
+            clientHUD.transform.localPosition = new Vector3(0, 0, 0);
+            clientHUD.GetComponent<RectTransform>().offsetMin = new Vector2(0, 0);
+            clientHUD.GetComponent<RectTransform>().offsetMax = new Vector2(0, 0);
         }
         //crosshair.enabled = true;
         rb = GetComponent<Rigidbody>();
