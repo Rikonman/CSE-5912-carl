@@ -28,6 +28,7 @@ public class GunController : NetworkBehaviour {
     GameObject projectilePrefab;
     [SerializeField]
     Transform barrellExit;
+    public AudioSource gunshot;
 
     void Start()
     {
@@ -90,6 +91,8 @@ public class GunController : NetworkBehaviour {
         if (currentAmmoInMag > 0)
         {
             flash.Play();
+            gunshot.Play();
+            gunshot.loop = false;
             CmdSpawnProjectile();
             currentAmmoInMag--;
         }

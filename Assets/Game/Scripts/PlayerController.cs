@@ -31,6 +31,8 @@ public class PlayerController : NetworkBehaviour
     Vector3 tpCameraOffset;
     Vector3 fpCameraOffset;
 
+    public AudioSource walking;
+
     //[SerializeField]
     //private Image crosshair; 
 
@@ -100,8 +102,19 @@ public class PlayerController : NetworkBehaviour
         yRotation += Input.GetAxis("Mouse X") * lookSensitivity;
         transform.rotation = Quaternion.Euler(0, yRotation, 0);
 
-
-        transform.Translate(Input.GetAxis("Horizontal") * Time.deltaTime * speed, 0, Input.GetAxis("Vertical") * Time.deltaTime * speed);
+        Vector3 direction = new Vector3(Input.GetAxis("Horizontal") * Time.deltaTime * speed, 0, Input.GetAxis("Vertical") * Time.deltaTime * speed);
+        transform.Translate(direction);
+        if (direction.magnitude > 0)
+        {
+            if (!walking.isPlaying)
+            {
+                walking.Play();
+            }
+        }
+        else
+        {
+            walking.Stop();
+        }
 
         Vector3 jumpForce = Vector3.zero;
 
