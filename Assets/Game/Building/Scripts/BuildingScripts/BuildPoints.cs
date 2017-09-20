@@ -30,7 +30,8 @@ public class BuildPoints : MonoBehaviour
         {
             if (str.Length > 0)
             {
-                if (str.Substring(0, str.IndexOf('\n') - 2) == type.ToString())
+                string str2 = str.Substring(0, str.IndexOf(']'));
+                if (str.Substring(0, str.IndexOf(']')) == type.ToString())
                 {
                     typeData = str;
                 }
