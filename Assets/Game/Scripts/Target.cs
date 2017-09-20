@@ -21,6 +21,7 @@ public class Target : NetworkBehaviour {
     }
     Renderer rend;
     CapsuleCollider col;
+    Rigidbody rb;
 
     void Start()
     {
@@ -31,6 +32,7 @@ public class Target : NetworkBehaviour {
         isDead = false;
         rend = transform.GetComponent<Renderer>();
         col = transform.GetComponent<CapsuleCollider>();
+        rb = transform.GetComponent<Rigidbody>();
     }
 
     private void Update()
@@ -61,7 +63,8 @@ public class Target : NetworkBehaviour {
     private void Die() {
         isDead = true;
         rend.enabled = false;
-        col.enabled = false;    
+        col.enabled = false;
+        rb.useGravity = false;
     }
 
     private void Respawn()
@@ -70,6 +73,7 @@ public class Target : NetworkBehaviour {
         transform.position = startingPos;
         rend.enabled = true;
         col.enabled = true;
+        rb.useGravity = true;
         health = startingHealth;
         isDead = false;
         timer = 0;
