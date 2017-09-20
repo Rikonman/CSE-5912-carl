@@ -40,8 +40,8 @@ public class PlayerController : NetworkBehaviour
     float yRotationV;
     float lookSmoothDamp = 0.1f;
     float speed;
-    float walkingSpeed = 1500f;
-    float sprintSpeed = 3000f;
+    float walkingSpeed = 6f;
+    float sprintSpeed = 12f;
     float uiRefreshTimer;
     Vector3 flatTransform;
 
@@ -68,8 +68,7 @@ public class PlayerController : NetworkBehaviour
 
         tpCameraOffset = new Vector3(0f, tpCameraY, -tpCameraDistance);
         fpCameraOffset = new Vector3(fpCameraX, fpCameraY, fpCameraZ);
-
-        mainCamera = Camera.main.transform;
+        mainCamera = transform.GetChild(0);
         MoveCamera();
         uiRefreshTimer = 0;
     }
@@ -78,13 +77,13 @@ public class PlayerController : NetworkBehaviour
     void FixedUpdate()
     {
         xRotation -= Input.GetAxis("Mouse Y") * lookSensitivity;
-        if (xRotation > 60)
+        if (xRotation > 70)
         {
-            xRotation = 60;
+            xRotation = 70;
         }
-        else if (xRotation < -90)
+        else if (xRotation < -80)
         {
-            xRotation = -90;
+            xRotation = -80;
         }
 
         if (Input.GetKey(KeyCode.LeftShift))
@@ -97,37 +96,10 @@ public class PlayerController : NetworkBehaviour
         }
 
         yRotation += Input.GetAxis("Mouse X") * lookSensitivity;
-        transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
+        transform.rotation = Quaternion.Euler(0, yRotation, 0);
 
 
-        //transform.Translate(Input.GetAxis("Horizontal") * Time.deltaTime * speed, 0, Input.GetAxis("Vertical") * Time.deltaTime * speed);
-
-        if ((Input.GetKey(KeyCode.W) && (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))) || (Input.GetKey(KeyCode.S) && (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))))
-            speed /= 1.414f;
-
-
-        //get rid of the y axis components before moving
-        //simple fix for timebox 2
-        if (Input.GetKey(KeyCode.W))
-        {
-            flatTransform = transform.forward;
-            flatTransform.y = 0;
-            rb.AddForce(Time.fixedDeltaTime * flatTransform * speed, ForceMode.Acceleration);
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            flatTransform = -transform.forward;
-            flatTransform.y = 0;
-            rb.AddForce(Time.fixedDeltaTime * flatTransform * speed, ForceMode.Acceleration);
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            rb.AddForce(Time.fixedDeltaTime * -transform.right * speed, ForceMode.Acceleration);
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            rb.AddForce(Time.fixedDeltaTime * transform.right * speed, ForceMode.Acceleration);
-        }
+        transform.Translate(Input.GetAxis("Horizontal") * Time.deltaTime * speed, 0, Input.GetAxis("Vertical") * Time.deltaTime * speed);
 
         Vector3 jumpForce = Vector3.zero;
 
@@ -163,6 +135,7 @@ public class PlayerController : NetworkBehaviour
         {
             fpCameraOffset = new Vector3(fpCameraX, fpCameraY, fpCameraZ);
             mainCamera.Translate(fpCameraOffset);
+            mainCamera.transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
         }
         else
         {

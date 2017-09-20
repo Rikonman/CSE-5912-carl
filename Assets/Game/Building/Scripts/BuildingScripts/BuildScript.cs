@@ -36,7 +36,7 @@ public class BuildScript : NetworkBehaviour
 
     void Start()
     {
-        camera = Camera.main.transform;
+        camera = transform.GetChild(0);
         currentObject = 0;
         if(teamID == 0)
         {
@@ -81,7 +81,7 @@ public class BuildScript : NetworkBehaviour
         Ray previewRay = new Ray(camera.position, camera.forward);
         RaycastHit previewHit;
         //meshRend.material = invalidMaterial;
-        previewObject.transform.localEulerAngles = new Vector3(0, camera.localEulerAngles.y - 90, 0);
+        previewObject.transform.eulerAngles = new Vector3(0, camera.eulerAngles.y - 90, 0);
         previewBuildPoints.valid = false;
         if (Physics.Raycast(previewRay, out previewHit, 5f))
         {
