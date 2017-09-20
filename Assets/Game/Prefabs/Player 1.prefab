@@ -871,6 +871,7 @@ MonoBehaviour:
   fpsCamera: {fileID: 0}
   flash: {fileID: 198486289802756482}
   hitEffect: {fileID: 1065484811972784, guid: bea493569da8b1d4c9087b08c090ae4b, type: 2}
+  gun: {fileID: 0}
   force: 60
   fireRate: 0.2
   fireDelay: 0
@@ -893,9 +894,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe3106a7a3e87d24393a1d7da8f89879, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingHealth: 50
-  health: 50
+  startingHealth: 100
+  health: 100
   isVulnerable: 1
+  startingPos: {x: 0, y: 0, z: 0}
+  respawnTime: 5
+  timer: 0
 --- !u!114 &114350394702480100
 MonoBehaviour:
   m_ObjectHideFlags: 1

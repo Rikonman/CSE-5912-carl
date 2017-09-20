@@ -10,6 +10,7 @@ public class GunController : NetworkBehaviour {
     public Camera fpsCamera;
     public ParticleSystem flash;
     public GameObject hitEffect;
+    public GameObject gun;
     public float force = 60f;
     public float fireRate = .1f;
     public float fireDelay = 0f;
@@ -41,6 +42,7 @@ public class GunController : NetworkBehaviour {
             currentAmmoInMag = currentAmmoInReserve;
             currentAmmoInReserve = 0;
         }
+        gun = transform.GetChild(0).GetChild(0).gameObject;
     }
 
     // the reset method lets us run slow code (like "Find") in the editor where performance
@@ -53,6 +55,7 @@ public class GunController : NetworkBehaviour {
     // Update is called once per frame
     void Update () {
         // Only the local player can fire a weapon
+
         if (!isLocalPlayer)
             return;     
 
