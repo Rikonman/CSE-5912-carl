@@ -36,7 +36,7 @@ public class BuildScript : NetworkBehaviour
 
     void Start()
     {
-        camera = Camera.main.transform;
+        camera = transform.GetChild(0);
         currentObject = 0;
         if(teamID == 0)
         {
@@ -81,7 +81,7 @@ public class BuildScript : NetworkBehaviour
         Ray previewRay = new Ray(camera.position, camera.forward);
         RaycastHit previewHit;
         //meshRend.material = invalidMaterial;
-        previewObject.transform.localEulerAngles = new Vector3(0, camera.localEulerAngles.y - 90, 0);
+        previewObject.transform.eulerAngles = new Vector3(0, camera.eulerAngles.y - 90, 0);
         previewBuildPoints.valid = false;
         if (Physics.Raycast(previewRay, out previewHit, 5f))
         {
@@ -199,16 +199,17 @@ public class BuildScript : NetworkBehaviour
             //meshRend.material = originalMaterial;
             placedObjects.Add(previewObject.transform.position - previewBuildPoints.offset);
             previewObject.layer = 0;
-            CmdSpawnBuildingPart();
+            Debug.Log("Placing " + objects[currentObject].ToString()+ "With Object ID:" + currentObject + " at X:" + previewObject.transform.position.x + "; Y:" + previewObject.transform.position.y + "; Z:" + previewObject.transform.position.z);
+            CmdSpawnBuildingPart(objects[currentObject].ToString(), currentObject, previewObject.transform.position, previewObject.transform.rotation);
             previewObject = null;
             //meshRend = null;
         }
     }
     [Command]
-    void CmdSpawnBuildingPart()
+    void CmdSpawnBuildingPart(string objectString, int objectID, Vector3 position, Quaternion rotation)
     {
-        Debug.Log("Placing " + objects[currentObject].ToString() + " at X:" + previewObject.transform.position.x.ToString() + "; Y:" + previewObject.transform.position.y.ToString() + "; Z:" + previewObject.transform.position.z.ToString());
-        GameObject instance = Instantiate(objects[currentObject], previewObject.transform.position, previewObject.transform.rotation);
+        Debug.Log("Placing " + objectString + "With Object ID:" + currentObject + " at X:" + position.x + "; Y:" + position.y + "; Z:" + position.z);
+        GameObject instance = Instantiate(objects[objectID], position, rotation);
         NetworkServer.Spawn(instance);
     }
 }
