@@ -4,10 +4,15 @@ timeCreated: 18446744011573954816
 ModelImporter:
   serializedVersion: 21
   fileIDToRecycleName:
+    100000: //RootNode
+    400000: //RootNode
+    2300000: //RootNode
+    3300000: //RootNode
     4300000: Statue_01
     4300002: Statue_01_Coll
     4300004: Statue_01_Lod_01
     4300006: Retopo
+    11100000: //RootNode
   materials:
     importMaterials: 0
     materialName: 0

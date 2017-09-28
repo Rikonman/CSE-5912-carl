@@ -366,7 +366,7 @@ Prefab:
     - target: {fileID: 11475086, guid: c0978251ff7b10d4fb954a4b56acd9f0, type: 2}
       propertyPath: m_GamePlayerPrefab
       value: 
-      objectReference: {fileID: 1251547830001404, guid: a1ae0d6f6ef274d44982b1a0077ea0d5,
+      objectReference: {fileID: 1942077461407942, guid: a9c6263eb68c42042b27e26ee6a33775,
         type: 2}
     - target: {fileID: 11475086, guid: c0978251ff7b10d4fb954a4b56acd9f0, type: 2}
       propertyPath: prematchCountdown

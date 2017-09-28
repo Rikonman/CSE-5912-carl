@@ -4,10 +4,29 @@ timeCreated: 18446744011573954816
 ModelImporter:
   serializedVersion: 21
   fileIDToRecycleName:
+    100000: S_Ceiling
+    100002: S_Planks
+    100004: S_Roof
+    100006: S_Wall
+    100008: //RootNode
+    400000: S_Ceiling
+    400002: S_Planks
+    400004: S_Roof
+    400006: S_Wall
+    400008: //RootNode
+    2300000: S_Ceiling
+    2300002: S_Planks
+    2300004: S_Roof
+    2300006: S_Wall
+    3300000: S_Ceiling
+    3300002: S_Planks
+    3300004: S_Roof
+    3300006: S_Wall
     4300000: S_Wall
     4300002: S_Planks
     4300004: S_Roof
     4300006: S_Ceiling
+    11100000: //RootNode
   materials:
     importMaterials: 0
     materialName: 0
