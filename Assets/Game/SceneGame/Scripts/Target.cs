@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class Target : NetworkBehaviour {
 
@@ -22,6 +23,7 @@ public class Target : NetworkBehaviour {
     Renderer rend;
     CapsuleCollider col;
     Rigidbody rb;
+    public RectTransform healthbar;
 
     void Start()
     {
@@ -33,6 +35,7 @@ public class Target : NetworkBehaviour {
         rend = transform.GetComponent<Renderer>();
         col = transform.GetComponent<CapsuleCollider>();
         rb = transform.GetComponent<Rigidbody>();
+        //healthbar.sizeDelta = new Vector2(health * 2, healthbar.sizeDelta.y);
     }
 
     private void Update()
@@ -55,7 +58,9 @@ public class Target : NetworkBehaviour {
 			if (health <= 0) {
                 Die();
             }
-		} else {
+            Debug.Log("Hit: " + health);
+            healthbar.sizeDelta = new Vector2(health * 2, healthbar.sizeDelta.y);
+        } else {
 			Debug.Log ("This object is invulnerable"); 
 		}
     }

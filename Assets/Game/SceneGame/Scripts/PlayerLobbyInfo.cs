@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class PlayerLobbyInfo : NetworkBehaviour {
 
@@ -7,6 +8,8 @@ public class PlayerLobbyInfo : NetworkBehaviour {
     public Color playerColor;
     [SyncVar]
     public string playerName;
+
+    public Text playerNameIndicator;
 
     MeshRenderer[] rends;
 
@@ -17,6 +20,7 @@ public class PlayerLobbyInfo : NetworkBehaviour {
         {
             rends[i].material.color = playerColor;
         }
+        playerNameIndicator.text = playerName;
         Debug.Log("Player Color: " + playerColor.ToString());
         Debug.Log("Player Name: " + playerName);
 	}
