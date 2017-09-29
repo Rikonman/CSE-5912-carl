@@ -2,7 +2,7 @@
 
 public class Billboard : MonoBehaviour {
 
-    public Camera cameraToStayFixedTo;
+    private Camera cameraToStayFixedTo;
 
     void Start()
     {
