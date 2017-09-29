@@ -46,6 +46,9 @@ public class ProjectileController : NetworkBehaviour {
         GameObject tempHitEffect = Instantiate(hitEffect, gameObject.transform.position, Quaternion.LookRotation(gameObject.transform.forward, Vector3.up));
         Destroy(tempHitEffect, 0.3f);
 
+        if (!isServer)
+            return;
+
         // if the projectile isn't lethal or it hit something that isn't a target, leave
         Target collisionTarget;
         if (!canKill || (collisionTarget = collision.gameObject.GetComponent<Target>()) == null)

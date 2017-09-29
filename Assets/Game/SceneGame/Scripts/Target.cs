@@ -51,9 +51,6 @@ public class Target : NetworkBehaviour {
     }
 
     public void TakeDamage(float damage) {
-        //if (!isServer)
-        //    return;
-
         if (isVulnerable && !isDead)
         {
             currentHealth -= damage;
@@ -72,6 +69,7 @@ public class Target : NetworkBehaviour {
 
     private void OnCurrentHealthChange(float newHealth)
     {
+        currentHealth = newHealth;
         healthbar.sizeDelta = new Vector2(newHealth * 2, healthbar.sizeDelta.y);
     }
 
