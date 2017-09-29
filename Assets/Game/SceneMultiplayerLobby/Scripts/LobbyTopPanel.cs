@@ -36,7 +36,20 @@ namespace Prototype.NetworkLobby
             {
                 t.gameObject.SetActive(isDisplayed);
             }
-
+            if (visible)
+            {
+                Debug.Log("Un-Locking the cursor...");
+                // Lock the cursor to the window
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
+            else
+            {
+                Debug.Log("Locking the cursor...");
+                // Lock the cursor to the window
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
             if (panelImage != null)
             {
                 panelImage.enabled = isDisplayed;

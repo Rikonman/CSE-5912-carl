@@ -1290,7 +1290,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 10
-  range: 300
+  range: 1000
   fpsCamera: {fileID: 0}
   flash: {fileID: 198486289802756482}
   hitEffect: {fileID: 1065484811972784, guid: bea493569da8b1d4c9087b08c090ae4b, type: 2}

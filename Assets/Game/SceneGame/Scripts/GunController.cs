@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 public class GunController : NetworkBehaviour {
 
     public float damage = 1f;
-    public float range = 100f;
+    public float range = 1000f;
     public Camera fpsCamera;
     public ParticleSystem flash;
     public GameObject hitEffect;

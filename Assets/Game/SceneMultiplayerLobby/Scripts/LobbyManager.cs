@@ -385,6 +385,9 @@ namespace Prototype.NetworkLobby
             }
 
             ServerChangeScene(playScene);
+            // Lock the cursor to the window
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
 
         // ----------------- Client callbacks ------------------
