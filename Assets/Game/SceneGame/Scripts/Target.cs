@@ -7,8 +7,8 @@ using UnityEngine.UI;
 public class Target : NetworkBehaviour {
 
     public float startingHealth = 100f;
-    [SyncVar]
-    public float health;
+    [SyncVar(hook = "OnCurrentHealthChange")]
+    public float currentHealth;
 	public bool isVulnerable = true;
     public Vector3 startingPos;
     public int respawnTime = 5;
@@ -27,7 +27,7 @@ public class Target : NetworkBehaviour {
 
     void Start()
     {
-        health = startingHealth;
+        currentHealth = startingHealth;
 
         startingPos = GameObject.Find("SpawnPoint").transform.position;
 
@@ -51,18 +51,28 @@ public class Target : NetworkBehaviour {
     }
 
     public void TakeDamage(float damage) {
+        //if (!isServer)
+        //    return;
 
-		if (isVulnerable && !isDead) {
-			health -= damage;
+        if (isVulnerable && !isDead)
+        {
+            currentHealth -= damage;
 
-			if (health <= 0) {
+            if (currentHealth <= 0)
+            {
                 Die();
             }
-            Debug.Log("Hit: " + health);
-            healthbar.sizeDelta = new Vector2(health * 2, healthbar.sizeDelta.y);
-        } else {
-			Debug.Log ("This object is invulnerable"); 
-		}
+            Debug.Log("Hit: " + currentHealth);
+        }
+        else
+        {
+            Debug.Log("This object is invulnerable");
+        }
+    }
+
+    private void OnCurrentHealthChange(float newHealth)
+    {
+        healthbar.sizeDelta = new Vector2(newHealth * 2, healthbar.sizeDelta.y);
     }
 
     private void Die() {
@@ -79,7 +89,7 @@ public class Target : NetworkBehaviour {
         rend.enabled = true;
         col.enabled = true;
         rb.useGravity = true;
-        health = startingHealth;
+        currentHealth = startingHealth;
         isDead = false;
         timer = 0;
     }

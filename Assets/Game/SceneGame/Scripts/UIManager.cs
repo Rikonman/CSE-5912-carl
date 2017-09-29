@@ -40,9 +40,9 @@ public class UIManager : NetworkBehaviour {
             txtAmmoInReserve.text = txtAmmoInReserve.text.Substring(0, txtAmmoInReserve.text.IndexOf(":")) + ": " + gunController.currentAmmoInReserve.ToString();
         }
         // Only update the text if there is a reason to update it.
-        if (playerTarget.health.ToString() != txtPlayerHealth.text.Substring(txtPlayerHealth.text.IndexOf(":") + 2, txtPlayerHealth.text.IndexOf("/") - (txtPlayerHealth.text.IndexOf(":") + 2)))
+        if (playerTarget.currentHealth.ToString() != txtPlayerHealth.text.Substring(txtPlayerHealth.text.IndexOf(":") + 2, txtPlayerHealth.text.IndexOf("/") - (txtPlayerHealth.text.IndexOf(":") + 2)))
         {
-            txtPlayerHealth.text = txtPlayerHealth.text.Substring(0, txtPlayerHealth.text.IndexOf(":")) + ": " + playerTarget.health.ToString() + "/" + playerTarget.startingHealth.ToString();
+            txtPlayerHealth.text = txtPlayerHealth.text.Substring(0, txtPlayerHealth.text.IndexOf(":")) + ": " + playerTarget.currentHealth.ToString() + "/" + playerTarget.startingHealth.ToString();
         }
     }
 }

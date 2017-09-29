@@ -46,12 +46,6 @@ public class ProjectileController : NetworkBehaviour {
         GameObject tempHitEffect = Instantiate(hitEffect, gameObject.transform.position, Quaternion.LookRotation(gameObject.transform.forward, Vector3.up));
         Destroy(tempHitEffect, 0.3f);
 
-        // if this is not the server, leave. The above code doesn't need to be run only on the server
-        // since it only deals with the graphical explosion. Since the code below handles harming
-        // other objects, it should only be run on the server
-        if (!isServer)
-            return;
-
         // if the projectile isn't lethal or it hit something that isn't a target, leave
         Target collisionTarget;
         if (!canKill || (collisionTarget = collision.gameObject.GetComponent<Target>()) == null)
