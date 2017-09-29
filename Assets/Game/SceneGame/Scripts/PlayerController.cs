@@ -58,15 +58,16 @@ public class PlayerController : NetworkBehaviour
             // then remove this script. By removing this script all the rest of the code will not run.
             Destroy(this);
             return;
-        } else {
-            clientHUD = Instantiate(HUDLayout);
-            clientHUD.name = HUDLayout.name;
-            clientHUD.transform.SetParent(GameObject.Find("_UI").transform);
-            clientHUD.transform.localScale = Vector3.one;
-            clientHUD.transform.localPosition = new Vector3(0, 0, 0);
-            clientHUD.GetComponent<RectTransform>().offsetMin = new Vector2(0, 0);
-            clientHUD.GetComponent<RectTransform>().offsetMax = new Vector2(0, 0);
         }
+        clientHUD = Instantiate(HUDLayout);
+        clientHUD.name = HUDLayout.name;
+        clientHUD.transform.SetParent(GameObject.Find("_UI").transform);
+        clientHUD.transform.localScale = Vector3.one;
+        clientHUD.transform.localPosition = new Vector3(0, 0, 0);
+        clientHUD.GetComponent<RectTransform>().offsetMin = new Vector2(0, 0);
+        clientHUD.GetComponent<RectTransform>().offsetMax = new Vector2(0, 0);
+
+        Billboard.CameraToFocusOn = GetComponentInChildren<Camera>();
         //crosshair.enabled = true;
         rb = GetComponent<Rigidbody>();
 
