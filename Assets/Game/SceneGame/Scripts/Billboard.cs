@@ -6,7 +6,7 @@ public class Billboard : MonoBehaviour {
 
     void Start()
     {
-
+        cameraToStayFixedTo = GameObject.Find("Camera").GetComponentInChildren<Camera>();
     }
 
     // Update is called once per frame
