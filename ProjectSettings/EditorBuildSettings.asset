@@ -6,14 +6,14 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Pong/MainMenu/MenuScene.unity
+    path: Assets/Game/SceneMainMenu/MenuScene.unity
     guid: c202c78dd41b0f945b2226340d4591a3
   - enabled: 1
-    path: Assets/Pong/LoadingScene/LoadingScene.unity
-    guid: be88a5ae4c9c6884c8ebc5b1c598412f
-  - enabled: 0
-    path: Assets/Pong/Pong.unity
-    guid: 709e61d950043b541b16d07e535db306
+    path: Assets/Game/SceneMultiplayerLobby/NetworkLobby.unity
+    guid: 3c0d76c55eed6214f9d3b070caede5d3
   - enabled: 1
-    path: Assets/Game/GameScene.unity
+    path: Assets/Game/SceneLoading/LoadingScene.unity
+    guid: be88a5ae4c9c6884c8ebc5b1c598412f
+  - enabled: 1
+    path: Assets/Game/SceneGame/GameScene.unity
     guid: 521ed41ed1a6c474dbb971929d499127

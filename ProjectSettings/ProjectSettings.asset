@@ -606,9 +606,9 @@ PlayerSettings:
     UNet: 1
   facebookSdkVersion: 7.9.4
   apiCompatibilityLevel: 2
-  cloudProjectId: b89adfc8-882c-4c2a-baf9-e7230abcd685
+  cloudProjectId: b6ba1782-7e3e-4e43-bf04-2f555f8ff50d
   projectName: CSE-5912-carl
-  organizationId: pandahead33
+  organizationId: compman2408
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0
