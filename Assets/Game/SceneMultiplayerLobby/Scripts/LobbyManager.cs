@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Networking;
 using UnityEngine.Networking.Types;
 using UnityEngine.Networking.Match;
+using System;
 using System.Collections;
 
 
@@ -53,6 +54,13 @@ namespace Prototype.NetworkLobby
 
         protected LobbyHook _lobbyHooks;
 
+        // Variables used for custom matchmaking
+        public static DateTime matchSuccessConnectTime = DateTime.MinValue;
+        public static DateTime matchDisconnectTime = DateTime.MinValue;
+        [HideInInspector]
+        public string CurrentNetworkID { get; set; }
+        public GameObject mainMenuObj;
+
         void Start()
         {
             s_Singleton = this;
@@ -64,7 +72,7 @@ namespace Prototype.NetworkLobby
 
             DontDestroyOnLoad(gameObject);
 
-            SetServerInfo("Offline", "None");
+            //SetServerInfo("Offline", "None");
         }
 
         public override void OnLobbyClientSceneChanged(NetworkConnection conn)
@@ -138,7 +146,7 @@ namespace Prototype.NetworkLobby
             else
             {
                 backButton.gameObject.SetActive(false);
-                SetServerInfo("Offline", "None");
+                //SetServerInfo("Offline", "None");
                 _isMatchmaking = false;
             }
         }
@@ -247,7 +255,21 @@ namespace Prototype.NetworkLobby
             _currentMatchID = (System.UInt64)matchInfo.networkId;
 		}
 
-		public override void OnDestroyMatch(bool success, string extendedInfo)
+        public override void OnMatchJoined(bool success, string extendedInfo, MatchInfo matchInfo)
+        {
+            base.OnMatchJoined(success, extendedInfo, matchInfo);
+            if (!success)
+            {
+                Debug.Log("Failed to join match. Possibly because it is already started.");
+            }
+            else
+            {
+                Debug.Log("Match joined successfully!");
+                matchSuccessConnectTime = DateTime.Now;
+            }
+        }
+
+        public override void OnDestroyMatch(bool success, string extendedInfo)
 		{
 			base.OnDestroyMatch(success, extendedInfo);
 			if (_disconnectServer)
@@ -347,7 +369,9 @@ namespace Prototype.NetworkLobby
 			}
 
 			if(allready)
-				StartCoroutine(ServerCountdownCoroutine());
+            {
+                StartCoroutine(ServerCountdownCoroutine());
+            }
         }
 
         public IEnumerator ServerCountdownCoroutine()
@@ -413,6 +437,14 @@ namespace Prototype.NetworkLobby
         {
             base.OnClientDisconnect(conn);
             ChangeTo(mainMenuPanel);
+            matchDisconnectTime = DateTime.Now;
+            if (matchDisconnectTime.Subtract(matchSuccessConnectTime).TotalSeconds < 2)
+            {
+                Debug.Log("Should continue matchmaking! --> " + CurrentNetworkID.ToString());
+                LobbyMainMenu LMM = mainMenuObj.GetComponent<LobbyMainMenu>();
+                LMM.matchesNotToJoin.Add(CurrentNetworkID);
+                LMM.OnClickStartMatchmaking(false);
+            }
         }
 
         public override void OnClientError(NetworkConnection conn, int errorCode)
