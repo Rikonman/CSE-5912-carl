@@ -11,6 +11,7 @@ public class PlayerController : NetworkBehaviour
     private float lookSensitivity = 5f;
     [Header("First Person Camera Position")]
     [SerializeField]
+    bool locked;
     float fpCameraY = 0.45f;                 // The height off of the ground that the camera should be
     [SerializeField]
     float fpCameraX = 0f;                    // The height off of the ground that the camera should be
@@ -54,7 +55,8 @@ public class PlayerController : NetworkBehaviour
     void Start()
     {
         // if this player is not the local player...
-        if (!isLocalPlayer) {
+        if (!isLocalPlayer)
+        {
             // then remove this script. By removing this script all the rest of the code will not run.
             Destroy(this);
             return;
@@ -81,66 +83,69 @@ public class PlayerController : NetworkBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        xRotation -= Input.GetAxis("Mouse Y") * lookSensitivity;
-        if (xRotation > 70)
+        if (!locked)
         {
-            xRotation = 70;
-        }
-        else if (xRotation < -80)
-        {
-            xRotation = -80;
-        }
-
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            speed = sprintSpeed;
-        }
-        else
-        {
-            speed = walkingSpeed;
-        }
-
-        yRotation += Input.GetAxis("Mouse X") * lookSensitivity;
-        transform.rotation = Quaternion.Euler(0, yRotation, 0);
-
-        Vector3 direction = new Vector3(Input.GetAxis("Horizontal") * Time.deltaTime * speed, 0, Input.GetAxis("Vertical") * Time.deltaTime * speed);
-        transform.Translate(direction);
-        if (direction.magnitude > 0)
-        {
-            if (!walking.isPlaying)
+            xRotation -= Input.GetAxis("Mouse Y") * lookSensitivity;
+            if (xRotation > 70)
             {
-                walking.Play();
+                xRotation = 70;
             }
-        }
-        else
-        {
-            walking.Stop();
-        }
-
-        Vector3 jumpForce = Vector3.zero;
-
-        if (Input.GetButton("Jump"))
-        {
-            jumpForce = Vector3.up * jumpSensitivity;
-            if (jumpForce != Vector3.zero)
+            else if (xRotation < -80)
             {
-                rb.AddForce(Time.fixedDeltaTime * jumpForce, ForceMode.Acceleration);
+                xRotation = -80;
             }
+
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                speed = sprintSpeed;
+            }
+            else
+            {
+                speed = walkingSpeed;
+            }
+
+            yRotation += Input.GetAxis("Mouse X") * lookSensitivity;
+            transform.rotation = Quaternion.Euler(0, yRotation, 0);
+
+            Vector3 direction = new Vector3(Input.GetAxis("Horizontal") * Time.deltaTime * speed, 0, Input.GetAxis("Vertical") * Time.deltaTime * speed);
+            transform.Translate(direction);
+            if (direction.magnitude > 0)
+            {
+                if (!walking.isPlaying)
+                {
+                    walking.Play();
+                }
+            }
+            else
+            {
+                walking.Stop();
+            }
+
+            Vector3 jumpForce = Vector3.zero;
+
+            if (Input.GetButton("Jump"))
+            {
+                jumpForce = Vector3.up * jumpSensitivity;
+                if (jumpForce != Vector3.zero)
+                {
+                    rb.AddForce(Time.fixedDeltaTime * jumpForce, ForceMode.Acceleration);
+                }
+            }
+
+            // Update the camera's position/rotation
+            MoveCamera();
+
+            //uiRefreshTimer += Time.deltaTime;
+            //if (uiRefreshTimer >= .5f)
+            //{
+            //    PlayerTeam tempTeam = GetComponent<PlayerTeam>();
+            //    ResourceBank tempBank = tempTeam.baseObject.GetComponent<ResourceBank>();
+            //    UnityEngine.UI.Text textBox = tempTeam.resourceText.GetComponent<UnityEngine.UI.Text>();
+            //    textBox.text = "Team " + (tempTeam.team + 1) + " \nStone: " + tempBank.stone + "\nWood: " + tempBank.wood;
+
+            //    uiRefreshTimer = 0f;
+            //}
         }
-
-        // Update the camera's position/rotation
-        MoveCamera();
-
-        //uiRefreshTimer += Time.deltaTime;
-        //if (uiRefreshTimer >= .5f)
-        //{
-        //    PlayerTeam tempTeam = GetComponent<PlayerTeam>();
-        //    ResourceBank tempBank = tempTeam.baseObject.GetComponent<ResourceBank>();
-        //    UnityEngine.UI.Text textBox = tempTeam.resourceText.GetComponent<UnityEngine.UI.Text>();
-        //    textBox.text = "Team " + (tempTeam.team + 1) + " \nStone: " + tempBank.stone + "\nWood: " + tempBank.wood;
-
-        //    uiRefreshTimer = 0f;
-        //}
     }
 
     void MoveCamera()
@@ -161,13 +166,13 @@ public class PlayerController : NetworkBehaviour
         }
     }
 
-	void OnDisable()
-	{
-		//death state
-	}
-	
-	void OnStopServer()
-	{
-		Destroy (clientHUD);
-	}
+    void OnDisable()
+    {
+        //death state
+    }
+
+    void OnStopServer()
+    {
+        Destroy(clientHUD);
+    }
 }
