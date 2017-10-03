@@ -43,8 +43,8 @@ public class PlayerController : NetworkBehaviour
     float yRotationV;
     float lookSmoothDamp = 0.1f;
     float speed;
-    float walkingSpeed = 6f;
-    float sprintSpeed = 12f;
+    float walkingSpeed = 12f;
+    float sprintSpeed = 24f;
     float uiRefreshTimer;
     Vector3 flatTransform;
 
@@ -129,6 +129,7 @@ public class PlayerController : NetworkBehaviour
                 if (jumpForce != Vector3.zero)
                 {
                     rb.AddForce(Time.fixedDeltaTime * jumpForce, ForceMode.Acceleration);
+                    //rb.AddForce(jumpForce, ForceMode.Acceleration);
                 }
             }
 

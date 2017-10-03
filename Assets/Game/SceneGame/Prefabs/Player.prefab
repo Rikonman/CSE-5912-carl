@@ -1238,7 +1238,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jumpSensitivity: 1500
   lookSensitivity: 5
-  fpCameraY: 0.45
+  locked: 0
   fpCameraX: 0
   fpCameraZ: 0.2
   tpCameraDistance: 6
