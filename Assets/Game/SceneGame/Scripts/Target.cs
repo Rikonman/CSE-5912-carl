@@ -73,7 +73,7 @@ public class Target : NetworkBehaviour {
         healthbar.sizeDelta = new Vector2(newHealth * 2, healthbar.sizeDelta.y);
     }
 
-    private void Die() {
+    public void Die() {
         isDead = true;
         rend.enabled = false;
         col.enabled = false;

@@ -17,7 +17,8 @@ public class HostConsole : MonoBehaviour
     ResourceBank bank1;
     ResourceBank bank2;
 
-    GunController playergun;
+    GunController playerGun;
+    Target playerTarget;
     GameObject player;
 
     void Start()
@@ -27,8 +28,8 @@ public class HostConsole : MonoBehaviour
         panel.SetActive(open);       
 
         player = GameObject.Find("Player(Clone)");
-
-        playergun = GameObject.Find("Player(Clone)").GetComponent<GunController>();
+        playerTarget = player.GetComponent<Target>();
+        playerGun = player.GetComponent<GunController>();
     }
 
     void Update()
@@ -63,10 +64,11 @@ public class HostConsole : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Return))
             {
                 tokens = input.text.Split(' ');
+                ResourceBank temp;
                 switch (tokens[0])
                 {
                     case "add":
-                        ResourceBank temp = bank1;
+                         temp = bank1;
                         if (tokens[2].Equals("1"))
                         {
                             temp = bank1;
@@ -87,10 +89,44 @@ public class HostConsole : MonoBehaviour
                             toClose = true;
                             return;
                         }
-                        input.text = "Usage : setresource <type> <team> <amount>";
+                        input.text = "Usage : add <type> <team> <amount>";
                         break;
-                    case "ammo":
+                    case "set":
+                        temp = bank1;
+                        if (tokens[2].Equals("1"))
+                        {
+                            temp = bank1;
+                        }
+                        else if (tokens[2].Equals("2"))
+                        {
+                            temp = bank2;
+                        }
+                        if (tokens[1].Equals("stone"))
+                        {
+                            temp.SetStone(Convert.ToInt32(tokens[3]));
+                            toClose = true;
+                            break;
+                        }
+                        else if (tokens[1].Equals("wood"))
+                        {
+                            temp.SetWood(Convert.ToInt32(tokens[3]));
+                            toClose = true;
+                            break;
+                        }
+                        input.text = "Usage : set <type> <team> <amount>";
+                        break;
 
+                    case "setAmmo":
+                        playerGun.currentAmmoInReserve = Convert.ToInt32(tokens[1]);
+                        toClose = true;
+                        break;
+                    case "setHealth":
+                        playerTarget.currentHealth = Convert.ToInt32(tokens[1])%100;
+                        toClose = true;
+                        break;
+                    case "kill":
+                        playerTarget.Die();
+                        toClose = true;
                         break;
                     default:
                         break;
