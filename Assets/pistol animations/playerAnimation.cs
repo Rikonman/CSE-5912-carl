@@ -42,8 +42,6 @@ public class playerAnimation : MonoBehaviour {
         anim.SetFloat("inputH", inputH);
         anim.SetFloat("inputV", inputV);
 
-        Debug.Log(xRotation);
-        spine.LookAt(new Vector3(xRotation, 0, 0));
     }
     
     
