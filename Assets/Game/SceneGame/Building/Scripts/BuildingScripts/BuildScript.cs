@@ -17,8 +17,8 @@ public class BuildScript : NetworkBehaviour
     public Material validMaterial;
     public List<GameObject> objects = new List<GameObject>();
     public Transform baseParent;
+    public Transform camera;
 
-    Transform camera;
     List<MountPoint> mountPoints = new List<MountPoint>();
     GameObject previewObject;
     BuildPoints previewBuildPoints;
@@ -36,7 +36,6 @@ public class BuildScript : NetworkBehaviour
 
     void Start()
     {
-        camera = transform.GetChild(0);
         currentObject = 0;
         if (teamID == 0)
         {
