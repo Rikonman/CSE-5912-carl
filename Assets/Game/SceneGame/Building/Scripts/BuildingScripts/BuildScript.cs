@@ -171,11 +171,11 @@ public class BuildScript : NetworkBehaviour
         currentObject = id;
         previewObject = Instantiate(objects[currentObject], baseParent);
         meshRend = previewObject.GetComponent<MeshRenderer>();
+        SaveMaterials();
         SetMaterial(invalidMaterial);
         previewObject.layer = 2;
         previewBuildPoints = previewObject.GetComponent<BuildPoints>();
         previewObject.transform.localEulerAngles = new Vector3(0, 0, 0);
-        SaveMaterials();
     }
 
     void PlaceObject()
@@ -199,7 +199,6 @@ public class BuildScript : NetworkBehaviour
             ResetMaterials();
             placedObjects.Add(previewObject.transform.position - previewBuildPoints.offset);
             previewObject.layer = 0;
-            Debug.Log("Placing " + objects[currentObject].ToString() + "With Object ID:" + currentObject + " at X:" + previewObject.transform.position.x + "; Y:" + previewObject.transform.position.y + "; Z:" + previewObject.transform.position.z);
             CmdSpawnBuildingPart(objects[currentObject].ToString(), currentObject, previewObject.transform.position, previewObject.transform.rotation);
             previewObject = null;
             meshRend = null;
@@ -208,7 +207,8 @@ public class BuildScript : NetworkBehaviour
 
     void SaveMaterials()
     {
-        if(meshRend != null)
+        materials.Clear();
+        if (meshRend != null)
         materials.Add(meshRend.material);
         for (int i = 0; i < previewObject.transform.childCount; i++)
         {
@@ -238,6 +238,7 @@ public class BuildScript : NetworkBehaviour
                 index++;
             }
         }
+        materials.Clear();
     }
     void SetMaterial(Material mat)
     {
