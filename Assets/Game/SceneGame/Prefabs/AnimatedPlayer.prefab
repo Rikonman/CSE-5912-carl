@@ -2933,7 +2933,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4b5c13480b28994eac19c9f7ce3dce0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpSensitivity: 1500
+  jumpSensitivity: 10000
   lookSensitivity: 5
   locked: 0
   fpCameraX: 0

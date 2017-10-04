@@ -6,7 +6,7 @@ public class PlayerController : NetworkBehaviour
 {
     [Header("Movement Variables")]
     [SerializeField]
-    private float jumpSensitivity = 1500f;
+    private float jumpSensitivity = 15000f;
     [SerializeField]
     private float lookSensitivity = 5f;
     [Header("First Person Camera Position")]
@@ -42,8 +42,8 @@ public class PlayerController : NetworkBehaviour
     float yRotationV;
     float lookSmoothDamp = 0.1f;
     float speed;
-    float walkingSpeed = 12f;
-    float sprintSpeed = 24f;
+    float walkingSpeed = 6f;
+    float sprintSpeed = 12f;
     float uiRefreshTimer;
     Vector3 flatTransform;
     public Transform mainCamera;
@@ -120,19 +120,24 @@ public class PlayerController : NetworkBehaviour
             {
                 walking.Stop();
             }
+            Ray jumpRay = new Ray(transform.position, -Vector3.up);
+            RaycastHit jumpRayhit;
 
             Vector3 jumpForce = Vector3.zero;
-
-            if (Input.GetButton("Jump"))
+            if (Physics.Raycast(jumpRay, out jumpRayhit, 0.2f))
             {
-                jumpForce = Vector3.up * jumpSensitivity;
-                if (jumpForce != Vector3.zero)
+                if (Input.GetButtonDown("Jump"))
                 {
-                    rb.AddForce(Time.fixedDeltaTime * jumpForce, ForceMode.Acceleration);
+                    jumpForce = Vector3.up * jumpSensitivity;
+                    rb.AddForce(jumpForce);
+
                     //rb.AddForce(jumpForce, ForceMode.Acceleration);
                 }
             }
-
+            else
+            {
+                rb.AddForce(-2500f * Vector3.up * Time.fixedDeltaTime, ForceMode.Acceleration);
+            }
             // Update the camera's position/rotation
             MoveCamera();
 
