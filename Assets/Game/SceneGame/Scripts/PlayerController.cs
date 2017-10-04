@@ -28,7 +28,6 @@ public class PlayerController : NetworkBehaviour
     [SerializeField]
     GameObject HUDLayout;
 
-    Transform mainCamera;
     Vector3 tpCameraOffset;
     Vector3 fpCameraOffset;
 
@@ -47,6 +46,7 @@ public class PlayerController : NetworkBehaviour
     float sprintSpeed = 24f;
     float uiRefreshTimer;
     Vector3 flatTransform;
+    public Transform mainCamera;
 
     private Rigidbody rb;
     private GameObject clientHUD;
@@ -75,8 +75,8 @@ public class PlayerController : NetworkBehaviour
 
         tpCameraOffset = new Vector3(0f, tpCameraY, -tpCameraDistance);
         fpCameraOffset = new Vector3(fpCameraX, fpCameraY, fpCameraZ);
-        mainCamera = transform.GetChild(0);
-        MoveCamera();
+        //mainCamera = transform.GetChild(0);
+        //MoveCamera();
         uiRefreshTimer = 0;
     }
 
@@ -151,13 +151,13 @@ public class PlayerController : NetworkBehaviour
 
     void MoveCamera()
     {
-        mainCamera.position = transform.position;
-        mainCamera.rotation = transform.rotation;
+        //mainCamera.position = transform.position;
+        //mainCamera.rotation = transform.rotation;
         if (isFirstPerson)
         {
-            fpCameraOffset = new Vector3(fpCameraX, fpCameraY, fpCameraZ);
-            mainCamera.Translate(fpCameraOffset);
-            //mainCamera.transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
+            //fpCameraOffset = new Vector3(fpCameraX, fpCameraY, fpCameraZ);
+            //mainCamera.Translate(fpCameraOffset);
+            mainCamera.transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
         }
         else
         {

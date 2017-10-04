@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class playerAnimation : MonoBehaviour {
+public class playerAnimation : NetworkBehaviour {
 
     [SerializeField]
     private float lookSensitivity = 5f;
@@ -16,12 +17,15 @@ public class playerAnimation : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        if (!isLocalPlayer)
+            return;
         anim = GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-
+        if (!isLocalPlayer)
+            return;
         xRotation -= Input.GetAxis("Mouse Y") * lookSensitivity;
         if (xRotation > 70)
         {
