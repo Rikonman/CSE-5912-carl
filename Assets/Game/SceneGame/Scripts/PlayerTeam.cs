@@ -2,13 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
+
 public class PlayerTeam : NetworkBehaviour {
 
     [SyncVar]
     public int team;
     [SyncVar]
     public int playerID;
+    ResourceBank bank;
     public GameObject resourceText;
+    Text resources;
     public GameObject baseObject;
     public static int playerCount = 0;
     // Use this for initialization
@@ -22,8 +26,10 @@ public class PlayerTeam : NetworkBehaviour {
             if (isLocalPlayer)
             {
                 resourceText = GameObject.Find("ResourceText");
+                resources = resourceText.GetComponent<Text>();
             }
             baseObject = GameObject.Find("Base" + (team + 1) + "Center");
+            bank = baseObject.GetComponent<ResourceBank>();
         }
         catch
         {
@@ -35,9 +41,11 @@ public class PlayerTeam : NetworkBehaviour {
     {
         if (baseObject == null)
         {
-            
+            baseObject = GameObject.Find("Base" + (team + 1) + "Center");
+            bank = baseObject.GetComponent<ResourceBank>();
         }
-        
+
+        resources.text = "Team " + (team + 1) + "\nStone: " + bank.stone + "\nWood: " + bank.wood;
     }
 
     private void OnTriggerEnter(Collider other)
