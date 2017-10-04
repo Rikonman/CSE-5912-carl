@@ -157,7 +157,7 @@ public class PlayerController : NetworkBehaviour
         {
             fpCameraOffset = new Vector3(fpCameraX, fpCameraY, fpCameraZ);
             mainCamera.Translate(fpCameraOffset);
-            mainCamera.transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
+            //mainCamera.transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
         }
         else
         {
