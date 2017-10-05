@@ -1236,7 +1236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4b5c13480b28994eac19c9f7ce3dce0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpSensitivity: 1500
+  jumpSensitivity: 150000
   lookSensitivity: 5
   locked: 0
   fpCameraX: 0
@@ -1246,6 +1246,7 @@ MonoBehaviour:
   isFirstPerson: 1
   HUDLayout: {fileID: 1116641536544642, guid: e6a03c3d7ec960546aeafa9d0edf15c2, type: 2}
   walking: {fileID: 82859214017980828}
+  mainCamera: {fileID: 0}
 --- !u!114 &114115589061638468
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1443,6 +1444,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ffa247aa675f0241810b7a43c869f33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  materials: []
   teamID: 0
   buildMode: 1
   invalidMaterial: {fileID: 2100000, guid: bc92664203d685042a4e89177dd2cb22, type: 2}
@@ -1453,6 +1455,7 @@ MonoBehaviour:
   - {fileID: 1316662126920882, guid: cc3bb5e2491170e4387560041d2fc264, type: 2}
   - {fileID: 1291626421403662, guid: 55ea4eccecb1c214fa9da07fbbc881a3, type: 2}
   baseParent: {fileID: 0}
+  camera: {fileID: 0}
 --- !u!114 &114703742327301494
 MonoBehaviour:
   m_ObjectHideFlags: 1

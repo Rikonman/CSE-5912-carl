@@ -6,7 +6,7 @@ public class PlayerController : NetworkBehaviour
 {
     [Header("Movement Variables")]
     [SerializeField]
-    private float jumpSensitivity = 15000f;
+    private float jumpSensitivity = 1500f;
     [SerializeField]
     private float lookSensitivity = 5f;
     [Header("First Person Camera Position")]
@@ -136,7 +136,7 @@ public class PlayerController : NetworkBehaviour
             }
             else
             {
-                rb.AddForce(-2500f * Vector3.up * Time.fixedDeltaTime, ForceMode.Acceleration);
+                rb.AddForce(-250f * Vector3.up * Time.fixedDeltaTime, ForceMode.Acceleration);
             }
             // Update the camera's position/rotation
             MoveCamera();
