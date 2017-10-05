@@ -9,27 +9,25 @@ public class HostConsole : MonoBehaviour
 {
     bool open;
     bool toClose;
-    GameObject panel;
-    InputField input;
+    public GameObject panel;
+    public InputField input;
 
     public string[] tokens;
 
-    ResourceBank bank1;
-    ResourceBank bank2;
+    public ResourceBank bank1;
+    public ResourceBank bank2;
 
-    GunController playerGun;
-    Target playerTarget;
-    GameObject player;
+    public GunController playerGun;
+    public Target playerTarget;
+    public GameObject player;
 
     void Start()
     {
         panel = GameObject.Find("Console");
         input = panel.GetComponentInChildren<InputField>();
-        panel.SetActive(open);       
-
-        player = GameObject.Find("Player(Clone)");
-        playerTarget = player.GetComponent<Target>();
-        playerGun = player.GetComponent<GunController>();
+        panel.SetActive(open);
+        
+        
     }
 
     void Update()
@@ -37,10 +35,27 @@ public class HostConsole : MonoBehaviour
         if(bank1 == null)
         {
             bank1 = GameObject.Find("Base1Center").GetComponent<ResourceBank>();
+        }
+        if (bank2 == null)
+        {
             bank2 = GameObject.Find("Base2Center").GetComponent<ResourceBank>();
         }
-        //Open close console
-        if (toClose || Input.GetKeyDown(KeyCode.BackQuote))
+        if (player == null)
+        {
+            GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+            foreach (GameObject tempPlayer in players)
+            {
+                PlayerController tempController = tempPlayer.GetComponent<PlayerController>();
+                if (tempController != null)
+                {
+                    player = tempPlayer;
+                    playerTarget = player.GetComponent<Target>();
+                    playerGun = player.GetComponent<GunController>();
+                }
+            }
+        }
+            //Open close console
+            if (toClose || Input.GetKeyDown(KeyCode.BackQuote))
         {
             toClose = false;
             open = !open;

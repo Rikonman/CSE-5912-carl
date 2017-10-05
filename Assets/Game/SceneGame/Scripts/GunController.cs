@@ -43,7 +43,7 @@ public class GunController : NetworkBehaviour {
             currentAmmoInMag = currentAmmoInReserve;
             currentAmmoInReserve = 0;
         }
-        gun = transform.GetChild(0).GetChild(0).gameObject;
+        //gun = transform.GetChild(0).GetChild(0).gameObject;
     }
 
     // the reset method lets us run slow code (like "Find") in the editor where performance
