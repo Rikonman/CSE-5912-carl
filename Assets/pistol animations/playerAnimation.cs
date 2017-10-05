@@ -13,6 +13,7 @@ public class playerAnimation : NetworkBehaviour {
     float xRotation;
 
     public Animator anim;
+    Target status;
     public Transform spine;
 
     // Use this for initialization
@@ -20,12 +21,14 @@ public class playerAnimation : NetworkBehaviour {
         if (!isLocalPlayer)
             return;
         anim = GetComponent<Animator>();
+        status = GetComponent<Target>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
         if (!isLocalPlayer)
             return;
+
         xRotation -= Input.GetAxis("Mouse Y") * lookSensitivity;
         if (xRotation > 70)
         {
@@ -36,15 +39,12 @@ public class playerAnimation : NetworkBehaviour {
             xRotation = -80;
         }
 
-        if (Input.GetKeyDown("1")) {
-            anim.Play("HM_Aim_Revolver_Walk");
-        }
-
         inputH = Input.GetAxis("Horizontal");
         inputV = Input.GetAxis("Vertical");
 
         anim.SetFloat("inputH", inputH);
         anim.SetFloat("inputV", inputV);
+        anim.SetBool("isDead", status.isDead);
 
     }
     

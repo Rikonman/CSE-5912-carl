@@ -6,7 +6,9 @@ using UnityEngine.UI;
 
 public class Target : NetworkBehaviour {
 
+    [SerializeField]
     public float startingHealth = 100f;
+
     [SyncVar(hook = "OnCurrentHealthChange")]
     public float currentHealth;
 	public bool isVulnerable = true;
@@ -14,31 +16,25 @@ public class Target : NetworkBehaviour {
     public int respawnTime = 5;
     public float timer;
     [SyncVar]
-    private bool isDead;
-    public bool _isDead
+    private bool _isDead;
+    public bool isDead
     {
-        get { return isDead; }
-        protected set { isDead = value; }
+        get { return _isDead; }
+        protected set { _isDead = value; }
     }
-	MeshFilter tempMesh; 
-	MeshFilter mesh; 
-    Renderer rend;
-    CapsuleCollider col;
-    Rigidbody rb;
+    
     public RectTransform healthbar;
 
     void Start()
     {
         currentHealth = startingHealth;
 
-        startingPos = GameObject.Find("SpawnPoint").transform.position;
+        startingPos = transform.position;
 
         isDead = false;
-        rend = transform.GetComponent<Renderer>();
-        col = transform.GetComponent<CapsuleCollider>();
-        rb = transform.GetComponent<Rigidbody>();
-		mesh = transform.GetComponent<MeshFilter>();
-		tempMesh = mesh; 
+
+        //disableOnDeath[0] = rend;
+
         //healthbar.sizeDelta = new Vector2(health * 2, healthbar.sizeDelta.y);
     }
 
@@ -50,12 +46,16 @@ public class Target : NetworkBehaviour {
         }
 
         if(timer>=respawnTime){
-            Respawn();
+            RpcRespawn();
         }
     }
 
     public void TakeDamage(float damage) {
-        if (isVulnerable && !isDead)
+
+        if (isDead)
+            return;
+
+        if (isVulnerable)
         {
             currentHealth -= damage;
 
@@ -77,24 +77,35 @@ public class Target : NetworkBehaviour {
         healthbar.sizeDelta = new Vector2(newHealth * 2, healthbar.sizeDelta.y);
     }
 
-    public void Die() {
-		tempMesh = mesh; 
+    public void Die() { 
         isDead = true;
-        rend.enabled = false;
-        col.enabled = false;
-        rb.useGravity = false;
+
+        //Renderer mesh = GetComponent<Renderer>();
+        //if (mesh != null)
+        //{
+        //    mesh.enabled = false;
+        //}
     }
 
-    private void Respawn()
+    [ClientRpc]
+    private void RpcRespawn()
     {
-		mesh = tempMesh;
-        isDead = false;
-        transform.position = startingPos;
-        rend.enabled = true;
-        col.enabled = true;
-        rb.useGravity = true;
-        currentHealth = startingHealth;
+        //Renderer mesh = GetComponent<Renderer>();
+        //if (mesh != null)
+        //{
+        //    mesh.enabled = true;
+        //}
         isDead = false;
         timer = 0;
+
+        CmdSetHealth(startingHealth);
+        transform.position = startingPos;
     }
+
+    [Command]
+    void CmdSetHealth(float newHealth)
+    {
+        currentHealth = newHealth;
+    }
+
 }

@@ -24,6 +24,7 @@ public class GunController : NetworkBehaviour {
     public int currentAmmoInMag;
     public int currentAmmoInReserve;
 
+    private Target status;
     [SerializeField]
     GameObject projectilePrefab;
     [SerializeField]
@@ -43,6 +44,7 @@ public class GunController : NetworkBehaviour {
             currentAmmoInMag = currentAmmoInReserve;
             currentAmmoInReserve = 0;
         }
+        status = GetComponent<Target>();
         //gun = transform.GetChild(0).GetChild(0).gameObject;
     }
 
@@ -54,13 +56,13 @@ public class GunController : NetworkBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
+    void Update() {
         // Only the local player can fire a weapon
 
         if (!isLocalPlayer)
-            return;     
-
-        if (automatic) {
+            return;
+        if(!status.isDead) {
+            if (automatic) {
             if (Input.GetButton("Fire1") && Time.time >= fireDelay)
             {
                 fireDelay = Time.time + 1f / fireRate;
@@ -85,6 +87,7 @@ public class GunController : NetworkBehaviour {
             currentAmmoInMag += currentAmmoInReserve;
             currentAmmoInReserve = 0;
         }
+    }
     }
 
     void Shoot() {

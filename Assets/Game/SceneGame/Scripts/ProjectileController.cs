@@ -58,7 +58,7 @@ public class ProjectileController : NetworkBehaviour {
         collisionTarget.TakeDamage(25);
 		
 		//explode the dead
-		if(collisionTarget._isDead)
+		if(collisionTarget.isDead && !collisionTarget.tag.Equals("Player"))
 		{
 			collision.gameObject.AddComponent<TriangleExplosion>();
 			StartCoroutine(collision.gameObject.GetComponent<TriangleExplosion>().SplitMesh(true));

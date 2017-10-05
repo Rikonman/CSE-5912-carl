@@ -47,6 +47,7 @@ public class PlayerController : NetworkBehaviour
     float uiRefreshTimer;
     Vector3 flatTransform;
     public Transform mainCamera;
+    Target status;
 
     private Rigidbody rb;
     private GameObject clientHUD;
@@ -72,7 +73,7 @@ public class PlayerController : NetworkBehaviour
         Billboard.CameraToFocusOn = GetComponentInChildren<Camera>();
         //crosshair.enabled = true;
         rb = GetComponent<Rigidbody>();
-
+        status = GetComponent<Target>();
         tpCameraOffset = new Vector3(0f, tpCameraY, -tpCameraDistance);
         fpCameraOffset = new Vector3(fpCameraX, fpCameraY, fpCameraZ);
         //mainCamera = transform.GetChild(0);
@@ -83,7 +84,7 @@ public class PlayerController : NetworkBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-        if (!locked)
+        if (!status.isDead)
         {
             xRotation -= Input.GetAxis("Mouse Y") * lookSensitivity;
             if (xRotation > 70)
