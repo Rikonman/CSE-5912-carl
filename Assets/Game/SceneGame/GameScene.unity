@@ -38,12 +38,12 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1917429948}
-  m_IndirectSpecularColor: {r: 0.14804435, g: 0.46930647, b: 0.75034696, a: 1}
+  m_IndirectSpecularColor: {r: 0.11083142, g: 0.36980858, b: 0.74241686, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 11
-  m_GIWorkflowMode: 1
+  m_GIWorkflowMode: 0
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -1099,7 +1099,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89276c0c45522a942b1e7a84829333e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  panel: {fileID: 0}
+  input: {fileID: 0}
   tokens: []
+  bank1: {fileID: 0}
+  bank2: {fileID: 0}
+  playerGun: {fileID: 0}
+  playerTarget: {fileID: 0}
+  player: {fileID: 0}
 --- !u!1001 &521841217
 Prefab:
   m_ObjectHideFlags: 0
