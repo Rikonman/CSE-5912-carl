@@ -17,14 +17,14 @@ public class ButtonManager : MonoBehaviour
 
     public void btnExitGameQuery_OnClick()
     {
-        GameObject.Find("MenuMain").transform.GetChild(1).gameObject.SetActive(false);
-        GameObject.Find("MenuMain").transform.GetChild(2).gameObject.SetActive(true);
+        GameObject.Find("MenuMain").transform.GetChild(2).gameObject.SetActive(false);
+        GameObject.Find("MenuMain").transform.GetChild(3).gameObject.SetActive(true);
     }
 
     public void CancelQuery_OnClick()
     {
-        GameObject.Find("MenuMain").transform.GetChild(1).gameObject.SetActive(true);
-        GameObject.Find("MenuMain").transform.GetChild(2).gameObject.SetActive(false);
+        GameObject.Find("MenuMain").transform.GetChild(2).gameObject.SetActive(true);
+        GameObject.Find("MenuMain").transform.GetChild(3).gameObject.SetActive(false);
     }
 
     public void btnOpenOptionsMenu() 
