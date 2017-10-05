@@ -225,6 +225,11 @@ namespace Prototype.NetworkLobby
                 
         }
 
+        void Awake()
+        {
+            DontDestroyOnLoad(transform.gameObject);
+        }
+
         public void ToggleJoinButton(bool enabled)
         {
             readyButton.gameObject.SetActive(enabled);
