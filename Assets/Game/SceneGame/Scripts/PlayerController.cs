@@ -141,16 +141,16 @@ public class PlayerController : NetworkBehaviour
             // Update the camera's position/rotation
             MoveCamera();
 
-            //uiRefreshTimer += Time.deltaTime;
-            //if (uiRefreshTimer >= .5f)
-            //{
-            //    PlayerTeam tempTeam = GetComponent<PlayerTeam>();
-            //    ResourceBank tempBank = tempTeam.baseObject.GetComponent<ResourceBank>();
-            //    UnityEngine.UI.Text textBox = tempTeam.resourceText.GetComponent<UnityEngine.UI.Text>();
-            //    textBox.text = "Team " + (tempTeam.team + 1) + " \nStone: " + tempBank.stone + "\nWood: " + tempBank.wood;
+            uiRefreshTimer += Time.deltaTime;
+            if (uiRefreshTimer >= .5f)
+            {
+                PlayerTeam tempTeam = GetComponent<PlayerTeam>();
+                ResourceBank tempBank = tempTeam.baseObject.GetComponent<ResourceBank>();
+                UnityEngine.UI.Text textBox = tempTeam.resourceText.GetComponent<UnityEngine.UI.Text>();
+                textBox.text = "Team " + (tempTeam.team + 1) + " \nStone: " + tempBank.stone + "\nWood: " + tempBank.wood;
 
-            //    uiRefreshTimer = 0f;
-            //}
+                uiRefreshTimer = 0f;
+            }
         }
     }
 

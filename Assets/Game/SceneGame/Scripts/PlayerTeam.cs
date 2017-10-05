@@ -10,42 +10,30 @@ public class PlayerTeam : NetworkBehaviour {
     public int team;
     [SyncVar]
     public int playerID;
-    ResourceBank bank;
     public GameObject resourceText;
     Text resources;
     public GameObject baseObject;
     public static int playerCount = 0;
     // Use this for initialization
-    void Start () {
-        try
+    void Start()
+    {
+        playerID = playerCount;
+        playerCount++;
+        Debug.Log(playerID);
+        team = playerID % 2;
+        if (isLocalPlayer)
         {
-            playerID = playerCount;
-            playerCount++;
-            Debug.Log(playerID);
-            team = playerID % 2;
-            if (isLocalPlayer)
-            {
-                resourceText = GameObject.Find("ResourceText");
-                resources = resourceText.GetComponent<Text>();
-            }
-            baseObject = GameObject.Find("Base" + (team + 1) + "Center");
-            bank = baseObject.GetComponent<ResourceBank>();
-        }
-        catch
-        {
-
+            resourceText = GameObject.Find("ResourceText");
+            resources = resourceText.GetComponent<Text>();
         }
     }
     
-    private void Update()
+    private void FixedUpdate()
     {
         if (baseObject == null)
         {
             baseObject = GameObject.Find("Base" + (team + 1) + "Center");
-            bank = baseObject.GetComponent<ResourceBank>();
         }
-
-        resources.text = "Team " + (team + 1) + "\nStone: " + bank.stone + "\nWood: " + bank.wood;
     }
 
     private void OnTriggerEnter(Collider other)
