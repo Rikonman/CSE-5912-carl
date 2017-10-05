@@ -20,6 +20,8 @@ public class Target : NetworkBehaviour {
         get { return isDead; }
         protected set { isDead = value; }
     }
+	MeshFilter tempMesh; 
+	MeshFilter mesh; 
     Renderer rend;
     CapsuleCollider col;
     Rigidbody rb;
@@ -35,6 +37,8 @@ public class Target : NetworkBehaviour {
         rend = transform.GetComponent<Renderer>();
         col = transform.GetComponent<CapsuleCollider>();
         rb = transform.GetComponent<Rigidbody>();
+		mesh = transform.GetComponent<MeshFilter>();
+		tempMesh = mesh; 
         //healthbar.sizeDelta = new Vector2(health * 2, healthbar.sizeDelta.y);
     }
 
@@ -74,6 +78,7 @@ public class Target : NetworkBehaviour {
     }
 
     public void Die() {
+		tempMesh = mesh; 
         isDead = true;
         rend.enabled = false;
         col.enabled = false;
@@ -82,6 +87,7 @@ public class Target : NetworkBehaviour {
 
     private void Respawn()
     {
+		mesh = tempMesh;
         isDead = false;
         transform.position = startingPos;
         rend.enabled = true;
