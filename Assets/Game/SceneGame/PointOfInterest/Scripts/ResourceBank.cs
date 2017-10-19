@@ -9,6 +9,8 @@ public class ResourceBank : NetworkBehaviour
     public int stone;
     [SyncVar(hook = "SetWood")]
     public int wood;
+    [SyncVar(hook = "SetMetal")]
+    public int metal;
     // Use this for initialization
     void Start()
     {
@@ -30,6 +32,11 @@ public class ResourceBank : NetworkBehaviour
         wood = Wood;
     }
 
+    public void SetMetal(int Metal)
+    {
+        metal = Metal;
+    }
+
     public void AddStone(int Amount)
     {
         stone += Amount;
@@ -40,11 +47,20 @@ public class ResourceBank : NetworkBehaviour
         wood += Amount;
     }
 
+    public void AddMetal(int Amount)
+    {
+        metal += Amount;
+    }
+
     public void Add(string Type, int Amount)
     {
         if (Type == "Stone")
         {
             AddStone(Amount);
+        }
+        else if (Type == "Metal")
+        {
+            AddMetal(Amount);
         }
         else
         {

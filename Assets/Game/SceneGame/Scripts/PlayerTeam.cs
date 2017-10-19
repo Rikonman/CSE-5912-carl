@@ -43,7 +43,6 @@ public class PlayerTeam : NetworkBehaviour {
             if (other.gameObject.CompareTag("Pick Up (Stone)"))
             {
                 PickUpController TempController = other.gameObject.GetComponent<PickUpController>();
-                //baseObject.GetComponent<ResourceBank>().Add("Stone", TempController.amount);
                 CmdAddToResources("Stone", TempController.amount, team);
                 TempController.StartRespawnTimer();
                 other.gameObject.GetComponent<MeshRenderer>().enabled = false;
@@ -52,8 +51,15 @@ public class PlayerTeam : NetworkBehaviour {
             else if (other.gameObject.CompareTag("Pick Up (Wood)"))
             {
                 PickUpController TempController = other.gameObject.GetComponent<PickUpController>();
-                //baseObject.GetComponent<ResourceBank>().Add("Wood", TempController.amount);
                 CmdAddToResources("Wood", TempController.amount, team);
+                TempController.StartRespawnTimer();
+                other.gameObject.GetComponent<MeshRenderer>().enabled = false;
+                other.gameObject.GetComponent<BoxCollider>().enabled = false;
+            }
+            else if (other.gameObject.CompareTag("Pick Up (Metal)"))
+            {
+                PickUpController TempController = other.gameObject.GetComponent<PickUpController>();
+                CmdAddToResources("Metal", TempController.amount, team);
                 TempController.StartRespawnTimer();
                 other.gameObject.GetComponent<MeshRenderer>().enabled = false;
                 other.gameObject.GetComponent<BoxCollider>().enabled = false;

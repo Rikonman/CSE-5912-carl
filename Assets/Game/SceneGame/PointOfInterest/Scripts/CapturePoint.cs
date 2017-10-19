@@ -89,6 +89,7 @@ public class CapturePoint : NetworkBehaviour
                 GameObject baseObject = GameObject.Find("Base" + teamNumber + "Center");
                 baseObject.GetComponent<ResourceBank>().Add("Stone", resourcePerSecond);
                 baseObject.GetComponent<ResourceBank>().Add("Wood", resourcePerSecond);
+                baseObject.GetComponent<ResourceBank>().Add("Metal", resourcePerSecond);
             }
             else
             {
