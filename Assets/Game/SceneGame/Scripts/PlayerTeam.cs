@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Prototype.NetworkLobby;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -8,6 +9,7 @@ public class PlayerTeam : NetworkBehaviour {
 
     [SyncVar]
     public int team;
+    public string teamName;
     [SyncVar]
     public int playerID;
     public GameObject resourceText;
@@ -20,14 +22,49 @@ public class PlayerTeam : NetworkBehaviour {
         playerID = playerCount;
         playerCount++;
         Debug.Log(playerID);
-        team = playerID % 2;
+        PlayerLobbyInfo lobbyInfo = GetComponentInChildren<PlayerLobbyInfo>();
+        if (lobbyInfo.playerColor == Color.blue)
+        {
+            team =  1;
+            teamName = "Blue Team";
+        }
+        else
+        {
+            team = 0;
+            teamName = "Red Team";
+        }
+
+
         if (isLocalPlayer)
         {
             resourceText = GameObject.Find("ResourceText");
             resources = resourceText.GetComponent<Text>();
         }
+        LobbyManager.s_Singleton.CheckIfSpawnsCreated();
+        StartCoroutine(SpawnDelayer());
     }
-    
+
+
+    public IEnumerator SpawnDelayer()
+    {
+        float remainingTime = 1f;
+
+        while (remainingTime > 0)
+        {
+            yield return null;
+
+            remainingTime -= Time.deltaTime;
+
+        }
+        RpcChangeLocation(LobbyManager.s_Singleton.GetSpawnLocation(team));
+    }
+
+    [ClientRpc]
+    public void RpcChangeLocation(Vector3 spawnLocation)
+    {
+        transform.SetPositionAndRotation(spawnLocation, Quaternion.identity);
+    }
+
     private void FixedUpdate()
     {
         if (baseObject == null)

@@ -317,9 +317,9 @@ GameObject:
   - component: {fileID: 114134530497365694}
   - component: {fileID: 114614089203314296}
   - component: {fileID: 114350394702480100}
-  - component: {fileID: 114703742327301494}
   - component: {fileID: 114751113642551176}
   - component: {fileID: 114562722207843320}
+  - component: {fileID: 114703742327301494}
   - component: {fileID: 114877743564436098}
   - component: {fileID: 82088136783784110}
   m_Layer: 0
@@ -1468,6 +1468,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   team: 0
+  teamName: 
   playerID: 0
   resourceText: {fileID: 0}
   baseObject: {fileID: 0}

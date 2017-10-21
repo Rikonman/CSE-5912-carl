@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Prototype.NetworkLobby;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -22,23 +23,23 @@ public class Target : NetworkBehaviour {
     }
 	MeshFilter tempMesh; 
 	MeshFilter mesh; 
-    Renderer rend;
+    //Renderer rend;
     CapsuleCollider col;
     Rigidbody rb;
+    PlayerTeam team;
     public RectTransform healthbar;
 
     void Start()
     {
         currentHealth = startingHealth;
 
-        startingPos = GameObject.Find("SpawnPoint").transform.position;
-
         isDead = false;
-        rend = transform.GetComponent<Renderer>();
+        //rend = transform.GetComponent<Renderer>();
         col = transform.GetComponent<CapsuleCollider>();
         rb = transform.GetComponent<Rigidbody>();
 		mesh = transform.GetComponent<MeshFilter>();
 		tempMesh = mesh; 
+        team = GetComponent<PlayerTeam>();
         //healthbar.sizeDelta = new Vector2(health * 2, healthbar.sizeDelta.y);
     }
 
@@ -80,7 +81,7 @@ public class Target : NetworkBehaviour {
     public void Die() {
 		tempMesh = mesh; 
         isDead = true;
-        rend.enabled = false;
+        //rend.enabled = false;
         col.enabled = false;
         rb.useGravity = false;
     }
@@ -89,8 +90,8 @@ public class Target : NetworkBehaviour {
     {
 		mesh = tempMesh;
         isDead = false;
-        transform.position = startingPos;
-        rend.enabled = true;
+        team.RpcChangeLocation(LobbyManager.s_Singleton.GetSpawnLocation(team.team));
+        //rend.enabled = true;
         col.enabled = true;
         rb.useGravity = true;
         currentHealth = startingHealth;

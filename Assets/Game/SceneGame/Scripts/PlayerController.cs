@@ -147,7 +147,7 @@ public class PlayerController : NetworkBehaviour
                 PlayerTeam tempTeam = GetComponent<PlayerTeam>();
                 ResourceBank tempBank = tempTeam.baseObject.GetComponent<ResourceBank>();
                 UnityEngine.UI.Text textBox = tempTeam.resourceText.GetComponent<UnityEngine.UI.Text>();
-                textBox.text = "Team " + (tempTeam.team + 1) + "\nWood: " + tempBank.wood + " \nStone: " + tempBank.stone + "\nMetal: " + tempBank.metal;
+                textBox.text = tempTeam.teamName + "\nWood: " + tempBank.wood + " \nStone: " + tempBank.stone + "\nMetal: " + tempBank.metal;
 
                 uiRefreshTimer = 0f;
             }

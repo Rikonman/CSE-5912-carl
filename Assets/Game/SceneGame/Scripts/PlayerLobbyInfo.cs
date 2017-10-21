@@ -14,7 +14,8 @@ public class PlayerLobbyInfo : NetworkBehaviour {
     MeshRenderer[] rends;
 
 	// Use this for initialization
-	void Start () {
+	void Start ()
+    {
         rends = GetComponentsInChildren<MeshRenderer>();
         for (int i = 0; i < rends.Length; i++)
         {
