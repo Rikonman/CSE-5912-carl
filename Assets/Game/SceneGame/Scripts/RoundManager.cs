@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class RoundManager : NetworkBehaviour {
     [SerializeField]
     private Text txtRoundManager;
+    [SerializeField]
+    private GameObject goBarriers;
 
     [SerializeField]
     private int buildRoundSeconds = 120;
@@ -19,6 +21,8 @@ public class RoundManager : NetworkBehaviour {
 	void Start () {
         lastTick = DateTime.Now;
         buildRoundSecondsLeft = buildRoundSeconds;
+        txtRoundManager = GameObject.Find("RoundUI").GetComponentInChildren<Text>();
+        goBarriers = GameObject.Find("BuildRoundBarriers");
     }
 	
 	// Update is called once per frame
@@ -47,6 +51,8 @@ public class RoundManager : NetworkBehaviour {
         {
             // The countdown is now at 0. Show the countdown has ended.
             txtRoundManager.text = "Build Round Ended!";
+            // Disable the round barriers
+            Destroy(goBarriers);
         }
         else
         {
