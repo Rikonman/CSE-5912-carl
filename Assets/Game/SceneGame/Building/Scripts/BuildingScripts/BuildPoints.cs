@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BuildPoints : MonoBehaviour
 {
-    public enum MountType { Floor1, Wall, Ceiling1, Door1};
+    public enum MountType { Floor1, Wall, Ceiling1, Door1, Stair1};
     public MountType type;
     string[] fileStrings;
     public MountPoint mounting;

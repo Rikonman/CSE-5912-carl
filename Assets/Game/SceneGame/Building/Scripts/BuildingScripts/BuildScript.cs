@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class BuildScript : NetworkBehaviour
 {
@@ -33,6 +34,8 @@ public class BuildScript : NetworkBehaviour
     int finalObjectIndex = -1;
     int finalVertexIndex = -1;
 
+    GameObject BuildMenu;
+    GunController gun;
 
     void Start()
     {
@@ -41,12 +44,29 @@ public class BuildScript : NetworkBehaviour
         {
             baseParent = GameObject.Find("Base1Center").transform;
         }
+        BuildMenu = GameObject.Find("BuildMenu");
+        gun = GetComponent<GunController>();
     }
 
     void Update()
     {
+        if(BuildMenu == null)
+        {
+            BuildMenu = GameObject.Find("BuildMenu");
+        }
+        if(gun == null)
+        {
+            gun = GetComponent<GunController>();
+        }
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            buildMode = !buildMode;
+        }
+
         if (isLocalPlayer && buildMode)
         {
+            gun.enabled = !buildMode;
+            BuildMenu.SetActive(buildMode);
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
                 SetpreviewObjectObject(0);
@@ -63,14 +83,29 @@ public class BuildScript : NetworkBehaviour
             {
                 SetpreviewObjectObject(3);
             }
+            if (Input.GetKeyDown(KeyCode.Alpha5))
+            {
+                SetpreviewObjectObject(4);
+            }
             if (previewObject != null)
             {
                 PositionPreview();
 
-                if (Input.GetKeyDown(KeyCode.B))
+                if (Input.GetMouseButtonDown(0))
                 {
                     PlaceObject();
                 }
+            }
+        }else
+        {
+            if (BuildMenu != null)
+            {
+                BuildMenu.SetActive(buildMode);
+                gun.enabled = !buildMode;
+            }
+            if(previewObject != null)
+            {
+                Destroy(previewObject);
             }
         }
     }
@@ -147,6 +182,9 @@ public class BuildScript : NetworkBehaviour
                                    && mp.parent.GetComponent<BuildPoints>().type == BuildPoints.MountType.Wall)
                                 {
                                     previewObject.transform.localEulerAngles = mp.parent.transform.localEulerAngles;
+                                }
+                                if(previewBuildPoints.type == BuildPoints.MountType.Stair1) {
+                                    previewObject.transform.localEulerAngles = mp.parent.transform.localEulerAngles + new Vector3(38, 0,0);
                                 }
                                 SetMaterial(validMaterial);
                                 previewBuildPoints.valid = true;
