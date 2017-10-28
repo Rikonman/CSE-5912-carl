@@ -23,12 +23,12 @@ public class playerAnimation : NetworkBehaviour {
             return;
         anim = GetComponent<Animator>();
         aimOffset = 0.04f;
-        mainCamera = Camera.main;
-        mainCamera.transform.position = head.position;
+        //mainCamera = Camera.main;
+        //mainCamera.transform.position = head.position;
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update () {
         if (!isLocalPlayer)
             return;
         xRotation -= Input.GetAxis("Mouse Y") * lookSensitivity;
@@ -50,11 +50,12 @@ public class playerAnimation : NetworkBehaviour {
         inputH = Input.GetAxis("Horizontal");
         inputV = Input.GetAxis("Vertical");
 
-        mainCamera.transform.rotation = Quaternion.Euler(xRotation, 0, 0);
-        mainCamera.transform.position = head.position;
+        //mainCamera.transform.rotation = Quaternion.Euler(xRotation, 0, 0);
+        //mainCamera.transform.position = head.position;
 
         anim.SetFloat("inputH", inputH);
         anim.SetFloat("inputV", inputV);
+        anim.SetFloat("xRotation", -xRotation);
 
     }
     

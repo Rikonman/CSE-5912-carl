@@ -2594,7 +2594,7 @@ Animator:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1816720719246532}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 048804db95257c44287924956ce6e288, type: 3}
+  m_Avatar: {fileID: 9000000, guid: 57b407552bca05a4285d9c35f38d247e, type: 3}
   m_Controller: {fileID: 9100000, guid: 77e843f582e3cb94fb847adfe3f6bd29, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
@@ -2651,7 +2651,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Animator: {fileID: 95570725536066544}
-  m_ParameterSendBits: 3
+  m_ParameterSendBits: 7
   param0: 
   param1: 
   param2: 
@@ -2830,8 +2830,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lookSensitivity: 5
+  head: {fileID: 0}
   anim: {fileID: 0}
-  spine: {fileID: 4061445693122970}
 --- !u!114 &114412209532657992
 MonoBehaviour:
   m_ObjectHideFlags: 1

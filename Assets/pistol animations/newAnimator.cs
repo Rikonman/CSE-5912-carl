@@ -53,11 +53,12 @@ public class newAnimator : MonoBehaviour
         inputH = Input.GetAxis("Horizontal");
         inputV = Input.GetAxis("Vertical");
 
-        mainCamera.transform.rotation = Quaternion.Euler(xRotation, 0, 0);
-        mainCamera.transform.position = head.position;
+        //mainCamera.transform.rotation = Quaternion.Euler(xRotation, 0, 0);
+        //mainCamera.transform.position = head.position;
 
         anim.SetFloat("inputH", inputH);
         anim.SetFloat("inputV", inputV);
+        anim.SetFloat("xRotation", -xRotation);
 
     }
 
