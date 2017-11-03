@@ -13,7 +13,7 @@ public class RoundManager : NetworkBehaviour {
     private int buildRoundSeconds = 120;
 
     [SyncVar(hook = "buildRoundSecondsLeftChanged")]
-    private int buildRoundSecondsLeft;
+    public int buildRoundSecondsLeft;
 
     private DateTime lastTick;
 

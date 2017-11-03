@@ -28,6 +28,7 @@ public class Target : NetworkBehaviour {
     Rigidbody rb;
     PlayerTeam team;
     public RectTransform healthbar;
+    public EmperorController emperorScript;
 
     void Start()
     {
@@ -40,7 +41,23 @@ public class Target : NetworkBehaviour {
 		mesh = transform.GetComponent<MeshFilter>();
 		tempMesh = mesh; 
         team = GetComponent<PlayerTeam>();
+
+        StartCoroutine(EmperorDelayer());
         //healthbar.sizeDelta = new Vector2(health * 2, healthbar.sizeDelta.y);
+    }
+
+    public IEnumerator EmperorDelayer()
+    {
+        float remainingTime = 1f;
+
+        while (remainingTime > 0)
+        {
+            yield return null;
+
+            remainingTime -= Time.deltaTime;
+
+        }
+        emperorScript = GameObject.Find("Emperor").GetComponent<EmperorController>();
     }
 
     private void Update()
@@ -58,8 +75,20 @@ public class Target : NetworkBehaviour {
     public void TakeDamage(float damage) {
         if (isVulnerable && !isDead)
         {
+            float priorHealth = currentHealth;
             currentHealth -= damage;
-
+            if (priorHealth > startingHealth * 3 / 4 && currentHealth <= startingHealth * 3 / 4)
+            {
+                emperorScript.RpcAddEntertainment(1);
+            }
+            else if (priorHealth > startingHealth * 2 / 4 && currentHealth <= startingHealth * 2 / 4)
+            {
+                emperorScript.RpcAddEntertainment(1);
+            }
+            else if (priorHealth > startingHealth / 4 && currentHealth <= startingHealth / 4)
+            {
+                emperorScript.RpcAddEntertainment(1);
+            }
             if (currentHealth <= 0)
             {
                 Die();
@@ -78,7 +107,17 @@ public class Target : NetworkBehaviour {
         healthbar.sizeDelta = new Vector2(newHealth * 2, healthbar.sizeDelta.y);
     }
 
-    public void Die() {
+    public void Die()
+    {
+        emperorScript.RpcAddEntertainment(5);
+        if (team.team == 0)
+        {
+            emperorScript.RpcAddBlueFavor(5);
+        }
+        else
+        {
+            emperorScript.RpcAddRedFavor(5);
+        }
 		tempMesh = mesh; 
         isDead = true;
         //rend.enabled = false;
