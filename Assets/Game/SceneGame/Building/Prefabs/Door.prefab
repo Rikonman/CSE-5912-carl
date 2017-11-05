@@ -58,9 +58,10 @@ GameObject:
   - component: {fileID: 114528993235499156}
   - component: {fileID: 114661464963478086}
   - component: {fileID: 114030732624668462}
+  - component: {fileID: 114351462938558914}
   m_Layer: 0
   m_Name: Door
-  m_TagString: Untagged
+  m_TagString: Building
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -312,6 +313,19 @@ MonoBehaviour:
   m_SnapThreshold: 5
   m_InterpolateRotation: 1
   m_InterpolateMovement: 1
+--- !u!114 &114351462938558914
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1291626421403662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 324c45d60abaaae49a9bf6082f223d4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  team: 0
+  id: 4
 --- !u!114 &114528993235499156
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -325,7 +339,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 3
   mounting:
-    parent: {fileID: 0}
+    team: 0
+    objectID: 0
+    parentMountType: 0
     points: []
     pointType: 
   offset: {x: 0, y: 1.5, z: 0}

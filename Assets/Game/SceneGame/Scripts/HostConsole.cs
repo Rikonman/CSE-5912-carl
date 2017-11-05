@@ -34,11 +34,11 @@ public class HostConsole : MonoBehaviour
     {
         if(bank1 == null)
         {
-            bank1 = GameObject.Find("Base1Center").GetComponent<ResourceBank>();
+            //bank1 = GameObject.Find("Base1Center").GetComponent<ResourceBank>();
         }
         if (bank2 == null)
         {
-            bank2 = GameObject.Find("Base2Center").GetComponent<ResourceBank>();
+            //bank2 = GameObject.Find("Base2Center").GetComponent<ResourceBank>();
         }
         if (player == null)
         {

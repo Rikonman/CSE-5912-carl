@@ -11,53 +11,54 @@ public class BuildScript : NetworkBehaviour
     //Clean up code (Getcomponents) and overall structure
     //Snapped and move away and click causes mount point to be removed
     public List<Material> materials = new List<Material>();
-
-    public int teamID;
+    
     public bool buildMode;
     public Material invalidMaterial;
     public Material validMaterial;
     public List<GameObject> objects = new List<GameObject>();
     public Transform baseParent;
+    public BaseBuildings baseBuildings;
     public Transform camera;
 
-    List<MountPoint> mountPoints = new List<MountPoint>();
     GameObject previewObject;
     BuildPoints previewBuildPoints;
     MeshRenderer meshRend;
     int currentObject;
     Material originalMaterial;
-    List<List<bool>> pointUsed = new List<List<bool>>();
-    List<Vector3> placedObjects = new List<Vector3>();
-
-    int objectIndex = -1;
-    int vertexIndex = -1;
+    
     int finalObjectIndex = -1;
     int finalVertexIndex = -1;
 
     GameObject BuildMenu;
     GunController gun;
+    PlayerTeam team;
 
     void Start()
     {
         currentObject = 0;
-        if (teamID == 0)
+        StartCoroutine(LoadDelayer());
+    }
+
+    public IEnumerator LoadDelayer()
+    {
+        float remainingTime = 1f;
+
+        while (remainingTime > 0)
         {
-            baseParent = GameObject.Find("Base1Center").transform;
+            yield return null;
+
+            remainingTime -= Time.deltaTime;
+
         }
+        team = GetComponent<PlayerTeam>();
         BuildMenu = GameObject.Find("BuildMenu");
         gun = GetComponent<GunController>();
+        baseParent = team.baseObject.transform;
+        baseBuildings = team.baseObject.GetComponent<BaseBuildings>();
     }
 
     void Update()
     {
-        if(BuildMenu == null)
-        {
-            BuildMenu = GameObject.Find("BuildMenu");
-        }
-        if(gun == null)
-        {
-            gun = GetComponent<GunController>();
-        }
         if (Input.GetKeyDown(KeyCode.B))
         {
             buildMode = !buildMode;
@@ -141,23 +142,36 @@ public class BuildScript : NetworkBehaviour
     }
     void SnapPreview()
     {
-        foreach (MountPoint mp in mountPoints)
+        int mpCounter = 0;
+        foreach (MountPoint mp in baseBuildings.mountPoints)
         {
-            for (int j = 0; j < mp.pointType.Count; j++)
+            GameObject[] tempObjs = GameObject.FindGameObjectsWithTag("Building");
+            GameObject tempObj = null;
+            foreach (GameObject currentObj in tempObjs)
             {
+                BuildIdentifier tempBuild = currentObj.GetComponent<BuildIdentifier>();
+                if (tempBuild.id == mp.objectID && tempBuild.team == mp.team)
+                {
+                    tempObj = currentObj;
+                    break;
+                }
+            }
+            for (int j = 0; j < mp.pointType.Length; j++)
+            {
+
                 if (mp.pointType[j] == previewBuildPoints.type)
                 {
-                    objectIndex = mountPoints.IndexOf(mp);
-                    vertexIndex = j;
-                    Vector3 v3 = mp.points[vertexIndex];
-                    if (!pointUsed[objectIndex][vertexIndex])
+                    Vector3 v3 = mp.points[j];
+                    if (!((bool)baseBuildings.pointUsed[mpCounter].boolList[j]))
                     {
-                        Vector3 newVec3 = mp.parent.TransformPoint(new Vector3(v3.x / (mp.parent.transform.localScale.x), v3.y / (mp.parent.transform.localScale.y), v3.z / (mp.parent.transform.localScale.z)));
+                        Vector3 newVec3 = tempObj.transform.TransformPoint(new Vector3(v3.x / (tempObj.transform.localScale.x), v3.y / (tempObj.transform.localScale.y), v3.z / (tempObj.transform.localScale.z)));
+                        //Matrix4x4 m = Matrix4x4.TRS(mp.parentPosition, mp.parentRotation, mp.parentScale);
+                        //Vector3 newVec3 = m.MultiplyPoint3x4(new Vector3(v3.x / mp.parentScale.x, v3.y / mp.parentScale.y, v3.z / mp.parentScale.z));
                         Debug.DrawRay(newVec3, Vector3.up, Color.red);
                         if (Vector3.Distance(previewObject.transform.position, newVec3) < 2)
                         {
                             bool near = false;
-                            foreach (Vector3 nearV3 in placedObjects)
+                            foreach (Vector3 nearV3 in baseBuildings.placedObjects)
                             {
                                 if (Vector3.Distance(nearV3, newVec3) < 0.1f)
                                 {
@@ -167,40 +181,42 @@ public class BuildScript : NetworkBehaviour
                             if (!near)
                             {
                                 previewObject.transform.position = newVec3 + previewBuildPoints.offset;
-                                previewObject.transform.LookAt(mp.parent);
+                                previewObject.transform.LookAt(tempObj.transform);
                                 previewObject.transform.localEulerAngles = new Vector3(0, previewObject.transform.localEulerAngles.y - 90, 0);
-                                if (previewBuildPoints.type == mp.parent.GetComponent<BuildPoints>().type)
+                                if (previewBuildPoints.type == mp.parentMountType)
                                 {
-                                    previewObject.transform.localEulerAngles = mp.parent.transform.localEulerAngles;
+                                    previewObject.transform.localEulerAngles = tempObj.transform.localEulerAngles;
                                 }
                                 if (previewBuildPoints.type == BuildPoints.MountType.Wall
-                                    && mp.parent.GetComponent<BuildPoints>().type == BuildPoints.MountType.Door1)
+                                    && mp.parentMountType == BuildPoints.MountType.Door1)
                                 {
-                                    previewObject.transform.localEulerAngles = mp.parent.transform.localEulerAngles;
+                                    previewObject.transform.localEulerAngles = tempObj.transform.localEulerAngles;
                                 }
                                 if (previewBuildPoints.type == BuildPoints.MountType.Door1
-                                   && mp.parent.GetComponent<BuildPoints>().type == BuildPoints.MountType.Wall)
+                                   && mp.parentMountType == BuildPoints.MountType.Wall)
                                 {
-                                    previewObject.transform.localEulerAngles = mp.parent.transform.localEulerAngles;
+                                    previewObject.transform.localEulerAngles = tempObj.transform.localEulerAngles;
                                 }
                                 if(previewBuildPoints.type == BuildPoints.MountType.Stair1) {
-                                    previewObject.transform.localEulerAngles = mp.parent.transform.localEulerAngles + new Vector3(38, 0,0);
+                                    previewObject.transform.localEulerAngles = tempObj.transform.localEulerAngles + new Vector3(38, 0, 0);
                                 }
                                 SetMaterial(validMaterial);
                                 previewBuildPoints.valid = true;
 
-                                finalObjectIndex = mountPoints.IndexOf(mp);
-                                finalVertexIndex = mp.points.IndexOf(v3);
+                                finalObjectIndex = mpCounter;
+                                finalVertexIndex = j;
                             }
                         }
                     }
                 }
             }
+            mpCounter++;
         }
     }
 
     void SetpreviewObjectObject(int id)
     {
+
         if (previewObject != null)
         {
             Destroy(previewObject);
@@ -214,29 +230,34 @@ public class BuildScript : NetworkBehaviour
         previewBuildPoints = previewObject.GetComponent<BuildPoints>();
         previewObject.transform.localEulerAngles = new Vector3(0, 0, 0);
     }
-
+    
     void PlaceObject()
     {
         if (finalVertexIndex != -1 && finalObjectIndex != -1)
         {
-            pointUsed[finalObjectIndex][finalVertexIndex] = true;
+            baseBuildings.pointUsed[finalObjectIndex].boolList[finalVertexIndex] = true;
         }
         if (previewBuildPoints.valid)
         {
             previewObject.name = (previewBuildPoints.type.ToString() + " Placed");
             BuildPoints bp = previewBuildPoints;
-            mountPoints.Add(bp.mounting);
-            List<bool> newBools = new List<bool>();
+            int mountIndex = baseBuildings.mountPoints.Count;
+            bp.mounting.SetTeam(team.team);
+            bp.mounting.SetObjectID(mountIndex);
+            CmdAddMountPoint(bp.mounting, team.team);
+            SyncStructBool tempBools;
+            tempBools.boolList = new bool[0];
             foreach (Vector3 v3 in bp.mounting.points)
             {
                 bool used = false;
-                newBools.Add(used);
+                tempBools.Add(used);
             }
-            pointUsed.Add(newBools);
+            CmdAddPointUsed(tempBools, team.team);
             ResetMaterials();
-            placedObjects.Add(previewObject.transform.position - previewBuildPoints.offset);
+            CmdAddPlacedObject(previewObject.transform.position - previewBuildPoints.offset, team.team);
             previewObject.layer = 0;
-            CmdSpawnBuildingPart(objects[currentObject].ToString(), currentObject, previewObject.transform.position, previewObject.transform.rotation);
+            CmdSpawnBuildingPart(objects[currentObject].ToString(), currentObject, previewObject.transform.position, previewObject.transform.rotation, mountIndex, team.team);
+
             previewObject = null;
             meshRend = null;
         }
@@ -290,10 +311,61 @@ public class BuildScript : NetworkBehaviour
     }
 
     [Command]
-    void CmdSpawnBuildingPart(string objectString, int objectID, Vector3 position, Quaternion rotation)
+    void CmdAddPointUsed(SyncStructBool point, int team)
+    {
+        GameObject baseObj;
+        if (team == 0)
+        {
+            baseObj = GameObject.Find("Base1Center");
+        }
+        else
+        {
+            baseObj = GameObject.Find("Base2Center");
+        }
+        baseObj.GetComponent<BaseBuildings>().AddPointUsed(point);
+    }
+
+    [Command]
+    void CmdAddMountPoint(MountPoint mp, int team)
+    {
+        GameObject baseObj;
+        if (team == 0)
+        {
+            baseObj = GameObject.Find("Base1Center");
+        }
+        else
+        {
+            baseObj = GameObject.Find("Base2Center");
+        }
+        baseObj.GetComponent<BaseBuildings>().AddMountPoint(mp);
+    }
+
+    [Command]
+    void CmdAddPlacedObject(Vector3 vec, int team)
+    {
+        GameObject baseObj;
+        if (team == 0)
+        {
+            baseObj = GameObject.Find("Base1Center");
+        }
+        else
+        {
+            baseObj = GameObject.Find("Base2Center");
+        }
+        baseObj.GetComponent<BaseBuildings>().AddPlacedObject(vec);
+    }
+
+    [Command]
+    void CmdSpawnBuildingPart(string objectString, int objectID, Vector3 position, Quaternion rotation, int objectIndex, int inTeam)
     {
         Debug.Log("Placing " + objectString + "With Object ID:" + currentObject + " at X:" + position.x + "; Y:" + position.y + "; Z:" + position.z);
-        GameObject instance = Instantiate(objects[objectID], position, rotation);
+        GameObject tempObj = objects[objectID];
+        BuildIdentifier tempID = tempObj.GetComponent<BuildIdentifier>();
+        tempID.team = inTeam;
+        tempID.id = objectIndex;
+        GameObject instance = Instantiate(tempObj, position, rotation);
         NetworkServer.Spawn(instance);
     }
+    
+    
 }
