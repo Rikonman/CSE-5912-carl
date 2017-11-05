@@ -3167,7 +3167,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -1518298448
+  randomSeed: -1926882224
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -8626,12 +8626,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a78880f14ad64842b71709a480f5414, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fullscreenToggle: {fileID: 767202618}
-  resolutionDropdown: {fileID: 871750307}
-  qualityDropdown: {fileID: 1304577220}
-  antiAliasingDropdown: {fileID: 2142899770}
-  musicVolumeSlider: {fileID: 2104056702}
-  sfxVolumeSlider: {fileID: 70314383}
+  fullscreenToggle: {fileID: 0}
+  resolutionDropdown: {fileID: 0}
+  qualityDropdown: {fileID: 0}
+  antiAliasingDropdown: {fileID: 0}
+  musicVolumeSlider: {fileID: 0}
+  sfxVolumeSlider: {fileID: 0}
 --- !u!1 &1729098764
 GameObject:
   m_ObjectHideFlags: 0
@@ -10384,7 +10384,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 0c96af32a0f2f4547ac0285adedf34fb, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
