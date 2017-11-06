@@ -1327,6 +1327,7 @@ MonoBehaviour:
   respawnTime: 5
   timer: 0
   healthbar: {fileID: 224578174315765238}
+  emperorScript: {fileID: 0}
 --- !u!114 &114350394702480100
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1445,7 +1446,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   materials: []
-  teamID: 0
   buildMode: 1
   invalidMaterial: {fileID: 2100000, guid: bc92664203d685042a4e89177dd2cb22, type: 2}
   validMaterial: {fileID: 2100000, guid: 1b5dd748e80b619469eb80a5131750ae, type: 2}
@@ -1455,7 +1455,10 @@ MonoBehaviour:
   - {fileID: 1316662126920882, guid: cc3bb5e2491170e4387560041d2fc264, type: 2}
   - {fileID: 1291626421403662, guid: 55ea4eccecb1c214fa9da07fbbc881a3, type: 2}
   baseParent: {fileID: 0}
+  baseBuildings: {fileID: 0}
   camera: {fileID: 0}
+  floorPrefab: {fileID: 1816443313050996, guid: d746710a6e5e6724a8a0f8e2adba98a2,
+    type: 2}
 --- !u!114 &114703742327301494
 MonoBehaviour:
   m_ObjectHideFlags: 1

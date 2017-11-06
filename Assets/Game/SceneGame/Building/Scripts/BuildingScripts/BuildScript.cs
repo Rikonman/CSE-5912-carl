@@ -19,6 +19,7 @@ public class BuildScript : NetworkBehaviour
     public Transform baseParent;
     public BaseBuildings baseBuildings;
     public Transform camera;
+    public GameObject floorPrefab;
 
     GameObject previewObject;
     BuildPoints previewBuildPoints;
@@ -26,8 +27,6 @@ public class BuildScript : NetworkBehaviour
     int currentObject;
     Material originalMaterial;
     
-    int finalObjectIndex = -1;
-    int finalVertexIndex = -1;
 
     GameObject BuildMenu;
     GunController gun;
@@ -120,15 +119,48 @@ public class BuildScript : NetworkBehaviour
         previewBuildPoints.valid = false;
         if (Physics.Raycast(previewRay, out previewHit, 5f))
         {
+
             previewObject.transform.position = previewHit.point;
-
-            if (currentObject == 0 && previewHit.collider.gameObject.tag == "Ground")
+            bool colliding = false;
+            if (currentObject == 0)
             {
-                SetMaterial(validMaterial);
-                previewBuildPoints.valid = true;
-            }
+                Matrix4x4 tempMatrix = Matrix4x4.identity;
+                tempMatrix[0, 0] = Mathf.Cos(-transform.localEulerAngles.y * Mathf.Deg2Rad);
+                tempMatrix[0, 2] = -Mathf.Sin(-transform.localEulerAngles.y * Mathf.Deg2Rad);
+                tempMatrix[2, 0] = Mathf.Sin(-transform.localEulerAngles.y * Mathf.Deg2Rad);
+                tempMatrix[2, 2] = Mathf.Cos(-transform.localEulerAngles.y * Mathf.Deg2Rad);
+                Vector3 localCorner1 = new Vector3(floorPrefab.transform.localScale.x / 2, 0, floorPrefab.transform.localScale.z / 2);
+                Vector3 localCorner2 = new Vector3(floorPrefab.transform.localScale.x / 2, 0, -floorPrefab.transform.localScale.z / 2);
+                Vector3 localCorner3 = new Vector3(-floorPrefab.transform.localScale.x / 2, 0, -floorPrefab.transform.localScale.z / 2);
+                Vector3 localCorner4 = new Vector3(-floorPrefab.transform.localScale.x / 2, 0, floorPrefab.transform.localScale.z / 2);
+                localCorner1 = tempMatrix * localCorner1;
+                localCorner2 = tempMatrix * localCorner2;
+                localCorner3 = tempMatrix * localCorner3;
+                localCorner4 = tempMatrix * localCorner4;
+                Vector3 corner1 = new Vector3(previewHit.point.x + localCorner1.x, 2, previewHit.point.z + localCorner1.z);
+                Vector3 corner2 = new Vector3(previewHit.point.x + localCorner2.x, 2, previewHit.point.z + localCorner2.z);
+                Vector3 corner3 = new Vector3(previewHit.point.x + localCorner3.x, 2, previewHit.point.z + localCorner3.z);
+                Vector3 corner4 = new Vector3(previewHit.point.x + localCorner4.x, 2, previewHit.point.z + localCorner4.z);
+                Debug.DrawRay(corner1, Vector3.up, Color.green);
+                Debug.DrawRay(corner2, Vector3.up, Color.green);
+                Debug.DrawRay(corner3, Vector3.up, Color.green);
+                Debug.DrawRay(corner4, Vector3.up, Color.green);
+                colliding = DetermineCollision(corner1, corner2) ||
+                    DetermineCollision(corner2, corner3) ||
+                    DetermineCollision(corner3, corner4) ||
+                    DetermineCollision(corner4, corner1);
 
+            }
+            if (!colliding)
+            {
+                if (currentObject == 0 && previewHit.collider.gameObject.tag == "Ground")
+                {
+                    SetMaterial(validMaterial);
+                    previewBuildPoints.valid = true;
+                }
+            }
             SnapPreview();
+        
         }
         else
         {
@@ -140,6 +172,81 @@ public class BuildScript : NetworkBehaviour
 
 
     }
+
+    bool DetermineCollision(Vector3 originPoint, Vector3 targetPoint)
+    {
+        GameObject[] tempObjs = GameObject.FindGameObjectsWithTag("Building");
+        List<GameObject> collidableObjects = new List<GameObject>();
+        foreach (GameObject tempObj in tempObjs)
+        {
+            if (tempObj.name == "Floor(Clone)" && tempObj.transform.parent == null)
+            {
+                collidableObjects.Add(tempObj);
+            }
+        }
+        Vector2 origin2D = new Vector2(originPoint.x, originPoint.z);
+        Vector2 target2D = new Vector2(targetPoint.x, targetPoint.z);
+
+        foreach (GameObject tempObj in collidableObjects)
+        {
+            Matrix4x4 tempMatrix = Matrix4x4.identity;
+            tempMatrix[0, 0] = Mathf.Cos(-tempObj.transform.localEulerAngles.y * Mathf.Deg2Rad);
+            tempMatrix[0, 2] = -Mathf.Sin(-tempObj.transform.localEulerAngles.y * Mathf.Deg2Rad);
+            tempMatrix[2, 0] = Mathf.Sin(-tempObj.transform.localEulerAngles.y * Mathf.Deg2Rad);
+            tempMatrix[2, 2] = Mathf.Cos(-tempObj.transform.localEulerAngles.y * Mathf.Deg2Rad);
+            Vector3 localCorner1 = new Vector3(tempObj.transform.localScale.x / 2, 0, tempObj.transform.localScale.z / 2);
+            Vector3 localCorner2 = new Vector3(tempObj.transform.localScale.x / 2, 0, -tempObj.transform.localScale.z / 2);
+            Vector3 localCorner3 = new Vector3(-tempObj.transform.localScale.x / 2, 0, -tempObj.transform.localScale.z / 2);
+            Vector3 localCorner4 = new Vector3(-tempObj.transform.localScale.x / 2, 0, tempObj.transform.localScale.z / 2);
+            localCorner1 = tempMatrix * localCorner1;
+            localCorner2 = tempMatrix * localCorner2;
+            localCorner3 = tempMatrix * localCorner3;
+            localCorner4 = tempMatrix * localCorner4;
+            Vector3 corner1 = new Vector3(tempObj.transform.position.x + localCorner1.x, 2, tempObj.transform.position.z + localCorner1.z);
+            Vector3 corner2 = new Vector3(tempObj.transform.position.x + localCorner2.x, 2, tempObj.transform.position.z + localCorner2.z);
+            Vector3 corner3 = new Vector3(tempObj.transform.position.x + localCorner3.x, 2, tempObj.transform.position.z + localCorner3.z);
+            Vector3 corner4 = new Vector3(tempObj.transform.position.x + localCorner4.x, 2, tempObj.transform.position.z + localCorner4.z);
+            Debug.DrawRay(corner1, Vector3.up, Color.yellow);
+            Debug.DrawRay(corner2, Vector3.up, Color.yellow);
+            Debug.DrawRay(corner3, Vector3.up, Color.yellow);
+            Debug.DrawRay(corner4, Vector3.up, Color.yellow);
+            Vector2 corner2D1 = new Vector2(corner1.x, corner1.z);
+            Vector2 corner2D2 = new Vector2(corner2.x, corner2.z);
+            Vector2 corner2D3 = new Vector2(corner3.x, corner3.z);
+            Vector2 corner2D4 = new Vector2(corner4.x, corner4.z);
+            if (ChecksCollide(origin2D, target2D, corner2D1, corner2D2) ||
+                ChecksCollide(origin2D, target2D, corner2D2, corner2D3) ||
+                ChecksCollide(origin2D, target2D, corner2D3, corner2D4) ||
+                ChecksCollide(origin2D, target2D, corner2D4, corner2D1))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool ChecksCollide(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4)
+    {
+        if (((p4.x - p3.x) * (p1.y - p2.y) - (p1.x - p2.x) * (p4.y - p3.y)) == 0)
+        {
+            return false;
+        }
+        float ta = ((p3.y - p4.y) * (p1.x - p3.x) + (p4.x - p3.x) * (p1.y - p3.y)) /
+            ((p4.x - p3.x) * (p1.y - p2.y) - (p1.x - p2.x) * (p4.y - p3.y));
+        float tb = ((p1.y - p2.y) * (p1.x - p3.x) + (p2.x - p1.x) * (p1.y - p3.y)) /
+            ((p4.x - p3.x) * (p1.y - p2.y) - (p1.x - p2.x) * (p4.y - p3.y));
+        
+        if (ta >= 0 && ta <= 1f && tb >= 0 && tb <= 1f)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+
     void SnapPreview()
     {
         int mpCounter = 0;
@@ -162,49 +269,75 @@ public class BuildScript : NetworkBehaviour
                 if (mp.pointType[j] == previewBuildPoints.type)
                 {
                     Vector3 v3 = mp.points[j];
-                    if (!((bool)baseBuildings.pointUsed[mpCounter].boolList[j]))
+                    if (!(baseBuildings.pointUsed[mpCounter].boolList[j]))
                     {
                         Vector3 newVec3 = tempObj.transform.TransformPoint(new Vector3(v3.x / (tempObj.transform.localScale.x), v3.y / (tempObj.transform.localScale.y), v3.z / (tempObj.transform.localScale.z)));
                         //Matrix4x4 m = Matrix4x4.TRS(mp.parentPosition, mp.parentRotation, mp.parentScale);
                         //Vector3 newVec3 = m.MultiplyPoint3x4(new Vector3(v3.x / mp.parentScale.x, v3.y / mp.parentScale.y, v3.z / mp.parentScale.z));
                         Debug.DrawRay(newVec3, Vector3.up, Color.red);
-                        if (Vector3.Distance(previewObject.transform.position, newVec3) < 2)
-                        {
-                            bool near = false;
-                            foreach (Vector3 nearV3 in baseBuildings.placedObjects)
-                            {
-                                if (Vector3.Distance(nearV3, newVec3) < 0.1f)
-                                {
-                                    near = true;
-                                }
-                            }
-                            if (!near)
-                            {
-                                previewObject.transform.position = newVec3 + previewBuildPoints.offset;
-                                previewObject.transform.LookAt(tempObj.transform);
-                                previewObject.transform.localEulerAngles = new Vector3(0, previewObject.transform.localEulerAngles.y - 90, 0);
-                                if (previewBuildPoints.type == mp.parentMountType)
-                                {
-                                    previewObject.transform.localEulerAngles = tempObj.transform.localEulerAngles;
-                                }
-                                if (previewBuildPoints.type == BuildPoints.MountType.Wall
-                                    && mp.parentMountType == BuildPoints.MountType.Door1)
-                                {
-                                    previewObject.transform.localEulerAngles = tempObj.transform.localEulerAngles;
-                                }
-                                if (previewBuildPoints.type == BuildPoints.MountType.Door1
-                                   && mp.parentMountType == BuildPoints.MountType.Wall)
-                                {
-                                    previewObject.transform.localEulerAngles = tempObj.transform.localEulerAngles;
-                                }
-                                if(previewBuildPoints.type == BuildPoints.MountType.Stair1) {
-                                    previewObject.transform.localEulerAngles = tempObj.transform.localEulerAngles + new Vector3(38, 0, 0);
-                                }
-                                SetMaterial(validMaterial);
-                                previewBuildPoints.valid = true;
 
-                                finalObjectIndex = mpCounter;
-                                finalVertexIndex = j;
+                        bool colliding = false;
+                        if (previewBuildPoints.type == BuildPoints.MountType.Floor1)
+                        {
+                            Vector3 radius = newVec3 - tempObj.transform.position;
+                            radius.x = radius.x / 2f;
+                            radius.z = radius.z / 2f;
+                            Vector3 perp1 = new Vector3(radius.z * .95f, 2, -radius.x * .95f);
+                            Vector3 perp2 = -perp1;
+                            Vector3 corner1 = new Vector3(tempObj.transform.position.x + radius.x * 1.05f + perp1.x, 2, 
+                                tempObj.transform.position.z + radius.z * 1.05f + perp1.z);
+                            Vector3 corner2 = new Vector3(tempObj.transform.position.x + radius.x * 1.05f + perp2.x, 2, 
+                                tempObj.transform.position.z + radius.z * 1.05f + perp2.z);
+                            Vector3 corner3 = new Vector3(corner2.x + radius.x * 2 * .95f, 2, corner2.z + radius.z * 2 * .95f);
+                            Vector3 corner4 = new Vector3(corner1.x + radius.x * 2 * .95f, 2, corner1.z + radius.z * 2 * .95f);
+                            Debug.DrawRay(corner1, Vector3.up, Color.black);
+                            Debug.DrawRay(corner2, Vector3.up, Color.gray);
+                            Debug.DrawRay(corner3, Vector3.up, Color.cyan);
+                            Debug.DrawRay(corner4, Vector3.up, Color.white);
+                            colliding = DetermineCollision(corner1, corner2) ||
+                                DetermineCollision(corner2, corner3) ||
+                                DetermineCollision(corner3, corner4) ||
+                                DetermineCollision(corner4, corner1);
+                        }
+                        if (!colliding)
+                        {
+                            if (Vector3.Distance(previewObject.transform.position, newVec3) < 2)
+                            {
+                                bool near = false;
+                                foreach (Vector3 nearV3 in baseBuildings.placedObjects)
+                                {
+                                    if (Vector3.Distance(nearV3, newVec3) < 0.1f)
+                                    {
+                                        near = true;
+                                    }
+                                }
+                                if (!near)
+                                {
+                                    previewObject.transform.position = newVec3 + previewBuildPoints.offset;
+                                    previewObject.transform.LookAt(tempObj.transform);
+                                    previewObject.transform.localEulerAngles = new Vector3(0, previewObject.transform.localEulerAngles.y - 90, 0);
+                                    if (previewBuildPoints.type == mp.parentMountType)
+                                    {
+                                        previewObject.transform.localEulerAngles = tempObj.transform.localEulerAngles;
+                                    }
+                                    if (previewBuildPoints.type == BuildPoints.MountType.Wall
+                                        && mp.parentMountType == BuildPoints.MountType.Door1)
+                                    {
+                                        previewObject.transform.localEulerAngles = tempObj.transform.localEulerAngles;
+                                    }
+                                    if (previewBuildPoints.type == BuildPoints.MountType.Door1
+                                       && mp.parentMountType == BuildPoints.MountType.Wall)
+                                    {
+                                        previewObject.transform.localEulerAngles = tempObj.transform.localEulerAngles;
+                                    }
+                                    if (previewBuildPoints.type == BuildPoints.MountType.Stair1)
+                                    {
+                                        previewObject.transform.localEulerAngles = tempObj.transform.localEulerAngles + new Vector3(38, 0, 0);
+                                    }
+                                    SetMaterial(validMaterial);
+                                    previewBuildPoints.valid = true;
+                                    
+                                }
                             }
                         }
                     }
@@ -233,13 +366,9 @@ public class BuildScript : NetworkBehaviour
     
     void PlaceObject()
     {
-        if (finalVertexIndex != -1 && finalObjectIndex != -1)
-        {
-            baseBuildings.pointUsed[finalObjectIndex].boolList[finalVertexIndex] = true;
-        }
         if (previewBuildPoints.valid)
         {
-            previewObject.name = (previewBuildPoints.type.ToString() + " Placed");
+            //previewObject.name = (previewBuildPoints.type.ToString() + " Placed");
             BuildPoints bp = previewBuildPoints;
             int mountIndex = baseBuildings.mountPoints.Count;
             bp.mounting.SetTeam(team.team);
