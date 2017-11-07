@@ -12,6 +12,8 @@ public class ProjectileController : NetworkBehaviour {
     bool isLive = true;
     float age;
     MeshRenderer projectileRenderer;
+    public int firingTeam;
+    public int firingPlayer;
 
 	// Use this for initialization
 	void Start () {
@@ -37,6 +39,13 @@ public class ProjectileController : NetworkBehaviour {
         if (!isLive)
             return;
 
+        // if the projectile was fired by your team, leave
+        PlayerTeam collisionTeam = collision.gameObject.GetComponent<PlayerTeam>();
+        if (collisionTeam != null && collisionTeam.team == firingTeam)
+        {
+            return;
+        }
+
         // the projectile is going to explode and is no longer live
         isLive = false;
 
@@ -50,8 +59,8 @@ public class ProjectileController : NetworkBehaviour {
             return;
 
         // if the projectile isn't lethal or it hit something that isn't a target, leave
-        Target collisionTarget;
-        if (!canKill || (collisionTarget = collision.gameObject.GetComponent<Target>()) == null)
+        Target collisionTarget = collision.gameObject.GetComponent<Target>();
+        if (!canKill || collisionTarget == null)
             return;
 
         // have the target take damage

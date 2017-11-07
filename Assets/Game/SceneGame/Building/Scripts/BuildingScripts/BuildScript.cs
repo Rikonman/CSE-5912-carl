@@ -290,10 +290,10 @@ public class BuildScript : NetworkBehaviour
                                 tempObj.transform.position.z + radius.z * 1.05f + perp2.z);
                             Vector3 corner3 = new Vector3(corner2.x + radius.x * 2 * .95f, 2, corner2.z + radius.z * 2 * .95f);
                             Vector3 corner4 = new Vector3(corner1.x + radius.x * 2 * .95f, 2, corner1.z + radius.z * 2 * .95f);
-                            Debug.DrawRay(corner1, Vector3.up, Color.black);
-                            Debug.DrawRay(corner2, Vector3.up, Color.gray);
+                            Debug.DrawRay(corner1, Vector3.up, Color.cyan);
+                            Debug.DrawRay(corner2, Vector3.up, Color.cyan);
                             Debug.DrawRay(corner3, Vector3.up, Color.cyan);
-                            Debug.DrawRay(corner4, Vector3.up, Color.white);
+                            Debug.DrawRay(corner4, Vector3.up, Color.cyan);
                             colliding = DetermineCollision(corner1, corner2) ||
                                 DetermineCollision(corner2, corner3) ||
                                 DetermineCollision(corner3, corner4) ||

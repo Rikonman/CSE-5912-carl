@@ -110,14 +110,18 @@ public class Target : NetworkBehaviour {
     public void Die()
     {
         emperorScript.RpcAddEntertainment(5);
-        if (team.team == 0)
+        if (team != null)
         {
-            emperorScript.RpcAddBlueFavor(5);
+            if (team.team == 0)
+            {
+                emperorScript.RpcAddBlueFavor(5);
+            }
+            else
+            {
+                emperorScript.RpcAddRedFavor(5);
+            }
         }
-        else
-        {
-            emperorScript.RpcAddRedFavor(5);
-        }
+        
 		tempMesh = mesh; 
         isDead = true;
         //rend.enabled = false;

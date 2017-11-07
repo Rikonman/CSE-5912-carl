@@ -2889,7 +2889,7 @@ MonoBehaviour:
   flash: {fileID: 198015660040057406}
   hitEffect: {fileID: 1065484811972784, guid: bea493569da8b1d4c9087b08c090ae4b, type: 2}
   gun: {fileID: 0}
-  force: 60
+  force: 200
   fireRate: 0.2
   fireDelay: 0
   automatic: 0
@@ -2901,6 +2901,7 @@ MonoBehaviour:
     type: 2}
   barrellExit: {fileID: 4933223509420998}
   gunshot: {fileID: 82231943513001640}
+  team: {fileID: 0}
 --- !u!114 &114684942858390210
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3038,7 +3039,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.17
+  m_Radius: 0.5
   m_Height: 1.88
   m_Direction: 1
   m_Center: {x: 0, y: 0.86, z: 0}

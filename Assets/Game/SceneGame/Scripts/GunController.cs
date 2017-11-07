@@ -29,6 +29,7 @@ public class GunController : NetworkBehaviour {
     [SerializeField]
     Transform barrellExit;
     public AudioSource gunshot;
+    public PlayerTeam team;
 
     void Start()
     {
@@ -44,6 +45,7 @@ public class GunController : NetworkBehaviour {
             currentAmmoInReserve = 0;
         }
         //gun = transform.GetChild(0).GetChild(0).gameObject;
+        team = GetComponent<PlayerTeam>();
     }
 
     // the reset method lets us run slow code (like "Find") in the editor where performance
@@ -93,7 +95,7 @@ public class GunController : NetworkBehaviour {
             flash.Play();
             gunshot.Play();
             gunshot.loop = false;
-            CmdSpawnProjectile();
+            CmdSpawnProjectile(team.team, team.playerID);
             currentAmmoInMag--;
         }
         else
@@ -124,11 +126,13 @@ public class GunController : NetworkBehaviour {
 
     // This command is called from the localPlayer and run on the server. Note that Commands must begin with 'Cmd'
     [Command]
-    void CmdSpawnProjectile()
+    void CmdSpawnProjectile(int team, int playerID)
     {
         GameObject instance = Instantiate(projectilePrefab, barrellExit.position, barrellExit.rotation);
         instance.GetComponent<Rigidbody>().AddForce(barrellExit.forward * range);
-
+        ProjectileController pc = instance.GetComponent<ProjectileController>();
+        pc.firingTeam = team;
+        pc.firingPlayer = playerID;
         NetworkServer.Spawn(instance);
     }
 }

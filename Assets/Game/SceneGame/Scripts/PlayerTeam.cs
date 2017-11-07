@@ -21,7 +21,6 @@ public class PlayerTeam : NetworkBehaviour {
     {
         playerID = playerCount;
         playerCount++;
-        Debug.Log(playerID);
         PlayerLobbyInfo lobbyInfo = GetComponentInChildren<PlayerLobbyInfo>();
         if (lobbyInfo.playerColor == Color.blue)
         {
