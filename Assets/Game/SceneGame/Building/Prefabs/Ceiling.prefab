@@ -26,6 +26,7 @@ GameObject:
   - component: {fileID: 114688317901816470}
   - component: {fileID: 114181751293687460}
   - component: {fileID: 114360040336765828}
+  - component: {fileID: 114628479760992848}
   m_Layer: 0
   m_Name: Ceiling
   m_TagString: Building
@@ -150,7 +151,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   team: 0
-  id: 0
+  id: 10
+  parentMountPoint: 1
+  parentMountBool: 3
+--- !u!114 &114628479760992848
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1316662126920882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe3106a7a3e87d24393a1d7da8f89879, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startingHealth: 100
+  currentHealth: 0
+  isVulnerable: 1
+  startingPos: {x: 0, y: 0, z: 0}
+  respawnTime: 5
+  timer: 0
+  team: {fileID: 0}
+  bi: {fileID: 0}
+  healthbar: {fileID: 0}
+  emperorScript: {fileID: 0}
 --- !u!114 &114688317901816470
 MonoBehaviour:
   m_ObjectHideFlags: 1

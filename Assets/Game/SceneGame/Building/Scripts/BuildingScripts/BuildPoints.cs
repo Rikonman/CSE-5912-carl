@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 
 public class BuildPoints : NetworkBehaviour
 {
-    public enum MountType { Floor1, Wall, Ceiling1, Door1, Stair1};
+    public enum MountType { Floor1, Wall, Ceiling1, Door1, Stair1, Destroyed};
     public MountType type;
     string[] fileStrings;
     public MountPoint mounting;

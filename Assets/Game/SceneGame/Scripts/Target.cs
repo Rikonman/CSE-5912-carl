@@ -26,7 +26,8 @@ public class Target : NetworkBehaviour {
     //Renderer rend;
     CapsuleCollider col;
     Rigidbody rb;
-    PlayerTeam team;
+    public PlayerTeam team;
+    public BuildIdentifier bi;
     public RectTransform healthbar;
     public EmperorController emperorScript;
 
@@ -39,25 +40,13 @@ public class Target : NetworkBehaviour {
         col = transform.GetComponent<CapsuleCollider>();
         rb = transform.GetComponent<Rigidbody>();
 		mesh = transform.GetComponent<MeshFilter>();
-		tempMesh = mesh; 
+		tempMesh = mesh;
         team = GetComponent<PlayerTeam>();
+        bi = GetComponent<BuildIdentifier>();
 
-        StartCoroutine(EmperorDelayer());
-        //healthbar.sizeDelta = new Vector2(health * 2, healthbar.sizeDelta.y);
-    }
-
-    public IEnumerator EmperorDelayer()
-    {
-        float remainingTime = 1f;
-
-        while (remainingTime > 0)
-        {
-            yield return null;
-
-            remainingTime -= Time.deltaTime;
-
-        }
+        //StartCoroutine(EmperorDelayer());
         emperorScript = GameObject.Find("Emperor").GetComponent<EmperorController>();
+        //healthbar.sizeDelta = new Vector2(health * 2, healthbar.sizeDelta.y);
     }
 
     private void Update()
@@ -104,7 +93,11 @@ public class Target : NetworkBehaviour {
     private void OnCurrentHealthChange(float newHealth)
     {
         currentHealth = newHealth;
-        healthbar.sizeDelta = new Vector2(newHealth * 2, healthbar.sizeDelta.y);
+        if (healthbar != null)
+        {
+            healthbar.sizeDelta = new Vector2(newHealth * 2, healthbar.sizeDelta.y);
+        }
+            
     }
 
     public void Die()
@@ -122,11 +115,30 @@ public class Target : NetworkBehaviour {
             }
         }
         
-		tempMesh = mesh; 
+		tempMesh = mesh;
         isDead = true;
+        if (team != null)
+        {
+            col.enabled = false;
+            rb.useGravity = false;
+
+        }
+        else
+        {
+            Destroy(gameObject);
+            GameObject tempBase;
+            if (bi.team == 0)
+            {
+                tempBase = GameObject.Find("Base1Center");
+            }
+            else
+            {
+                tempBase = GameObject.Find("Base2Center");
+            }
+            BaseBuildings tempBuilding = tempBase.GetComponent<BaseBuildings>();
+            tempBuilding.CmdDestroyMountPoint(bi.parentMountPoint, bi.parentMountBool, bi.id, bi.team);
+        }
         //rend.enabled = false;
-        col.enabled = false;
-        rb.useGravity = false;
     }
 
     private void Respawn()
@@ -141,4 +153,5 @@ public class Target : NetworkBehaviour {
         isDead = false;
         timer = 0;
     }
+    
 }

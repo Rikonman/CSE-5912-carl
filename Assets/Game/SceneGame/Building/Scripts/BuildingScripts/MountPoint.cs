@@ -15,6 +15,11 @@ public struct MountPoint
     public Vector3[] points;
     public BuildPoints.MountType[] pointType;
 
+    
+    public void DecrementObjectID()
+    {
+        objectID--;
+    }
 
     public void SetTeam(int newTeam)
     {

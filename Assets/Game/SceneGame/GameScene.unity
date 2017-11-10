@@ -2690,6 +2690,8 @@ MonoBehaviour:
   startingPos: {x: 0, y: 0, z: 0}
   respawnTime: 5
   timer: 0
+  team: {fileID: 0}
+  bi: {fileID: 0}
   healthbar: {fileID: 0}
   emperorScript: {fileID: 0}
 --- !u!23 &628262659

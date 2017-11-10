@@ -57,9 +57,17 @@ public class ProjectileController : NetworkBehaviour {
 
         if (!isServer)
             return;
-
+        Target collisionTarget;
+        if (collision.gameObject.transform.parent != null)
+        {
+            collisionTarget = collision.gameObject.transform.parent.GetComponent<Target>();
+        }
+        else
+        {
+            collisionTarget = collision.gameObject.GetComponent<Target>();
+        }
         // if the projectile isn't lethal or it hit something that isn't a target, leave
-        Target collisionTarget = collision.gameObject.GetComponent<Target>();
+         
         if (!canKill || collisionTarget == null)
             return;
 
@@ -67,11 +75,11 @@ public class ProjectileController : NetworkBehaviour {
         collisionTarget.TakeDamage(25);
 		
 		//explode the dead
-		if(collisionTarget._isDead)
+		/*if(collisionTarget._isDead)
 		{
 			collision.gameObject.AddComponent<TriangleExplosion>();
 			StartCoroutine(collision.gameObject.GetComponent<TriangleExplosion>().SplitMesh(true));
-		}
+		}*/
 
     }
 }

@@ -8,13 +8,35 @@ public class BuildIdentifier : NetworkBehaviour {
     public int team;
     [SyncVar]
     public int id;
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    [SyncVar]
+    public int parentMountPoint;
+    [SyncVar]
+    public int parentMountBool;
+    // Use this for initialization
+    void Start ()
+    {
+    }
+
+    public void DecrementIDIfHigher(int childMountPoint)
+    {
+
+        if (id > childMountPoint)
+        {
+            id--;
+        }
+    }
+
+    public void DecrementMPIfHigher(int childMountPoint)
+    {
+
+        if (parentMountPoint > childMountPoint)
+        {
+            parentMountPoint--;
+        }
+    }
+
+    // Update is called once per frame
+    void Update () {
 		
 	}
 }

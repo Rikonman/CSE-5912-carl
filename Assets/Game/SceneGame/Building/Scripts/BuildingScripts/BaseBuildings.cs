@@ -7,7 +7,6 @@ public class BaseBuildings : NetworkBehaviour
 {
     public SyncStructList pointUsed = new SyncStructList();
     public MountPointList mountPoints = new MountPointList();
-    //public List<Vector3> placedObjects = new List<Vector3>();
     public SyncStructVector placedObjects = new SyncStructVector();
     // Use this for initialization
     void Start () {
@@ -18,6 +17,47 @@ public class BaseBuildings : NetworkBehaviour
     {
         pointUsed.Add(point);
         //CmdAddPointUsed(point);
+    }
+
+    [Command]
+    public void CmdDestroyMountPoint(int parentMountPoint, int parentMountBool, int childMountPoint, int team)
+    {
+        if (parentMountPoint > -1)
+        {
+            pointUsed[parentMountPoint].boolList[parentMountBool] = false;
+        }
+        pointUsed.RemoveAt(childMountPoint);
+        mountPoints.RemoveAt(childMountPoint);
+        placedObjects.RemoveAt(childMountPoint);
+        for (int counter = childMountPoint; counter < mountPoints.Count; counter++)
+        {
+            MountPoint tempPoint = mountPoints[counter];
+            tempPoint.objectID--;
+            mountPoints[counter] = tempPoint;
+        }
+        BuildIdentifier[] buildIdentifiers = Component.FindObjectsOfType<BuildIdentifier>();
+        foreach (BuildIdentifier tempBuildIdentifiers in buildIdentifiers)
+        {
+            if (tempBuildIdentifiers.team == team)
+            {
+                if (tempBuildIdentifiers.parentMountPoint == childMountPoint)
+                {
+                    tempBuildIdentifiers.parentMountPoint = -1;
+                    tempBuildIdentifiers.parentMountBool = -1;
+                }
+            }
+            
+        }
+        foreach (BuildIdentifier tempBuildIdentifiers in buildIdentifiers)
+        {
+            if (tempBuildIdentifiers.team == team)
+            {
+                Debug.Log("CMP: " + childMountPoint + " TBI id: " + tempBuildIdentifiers.id + " TBI mp: " + tempBuildIdentifiers.parentMountPoint);
+                tempBuildIdentifiers.DecrementMPIfHigher(childMountPoint);
+                tempBuildIdentifiers.DecrementIDIfHigher(childMountPoint);
+                Debug.Log("After CMP: " + childMountPoint + " TBI id: " + tempBuildIdentifiers.id + " TBI mp: " + tempBuildIdentifiers.parentMountPoint);
+            }
+        }
     }
 
     [Command]

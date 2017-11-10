@@ -31,6 +31,8 @@ public class BuildScript : NetworkBehaviour
     GameObject BuildMenu;
     GunController gun;
     PlayerTeam team;
+    int snapMountIndex = -1;
+    int snapBoolIndex = -1;
 
     void Start()
     {
@@ -249,6 +251,7 @@ public class BuildScript : NetworkBehaviour
 
     void SnapPreview()
     {
+        bool snapped = false;
         int mpCounter = 0;
         foreach (MountPoint mp in baseBuildings.mountPoints)
         {
@@ -313,6 +316,9 @@ public class BuildScript : NetworkBehaviour
                                 }
                                 if (!near)
                                 {
+                                    snapMountIndex = mpCounter;
+                                    snapBoolIndex = j;
+                                    snapped = true;
                                     previewObject.transform.position = newVec3 + previewBuildPoints.offset;
                                     previewObject.transform.LookAt(tempObj.transform);
                                     previewObject.transform.localEulerAngles = new Vector3(0, previewObject.transform.localEulerAngles.y - 90, 0);
@@ -344,6 +350,11 @@ public class BuildScript : NetworkBehaviour
                 }
             }
             mpCounter++;
+        }
+        if (!snapped && snapMountIndex > -1)
+        {
+            snapMountIndex = -1;
+            snapBoolIndex = -1;
         }
     }
 
@@ -385,8 +396,11 @@ public class BuildScript : NetworkBehaviour
             ResetMaterials();
             CmdAddPlacedObject(previewObject.transform.position - previewBuildPoints.offset, team.team);
             previewObject.layer = 0;
-            CmdSpawnBuildingPart(objects[currentObject].ToString(), currentObject, previewObject.transform.position, previewObject.transform.rotation, mountIndex, team.team);
-
+            Vector3 poPosition = previewObject.transform.position;
+            Quaternion poRotation = previewObject.transform.rotation;
+            Destroy(previewObject);
+            CmdSpawnBuildingPart(objects[currentObject].ToString(), currentObject, poPosition,
+                poRotation, mountIndex, team.team, snapMountIndex, snapBoolIndex);
             previewObject = null;
             meshRend = null;
         }
@@ -485,13 +499,16 @@ public class BuildScript : NetworkBehaviour
     }
 
     [Command]
-    void CmdSpawnBuildingPart(string objectString, int objectID, Vector3 position, Quaternion rotation, int objectIndex, int inTeam)
+    void CmdSpawnBuildingPart(string objectString, int objectID, Vector3 position, Quaternion rotation, int objectIndex, int inTeam, 
+        int parentMountPoint, int parentMountBool)
     {
         Debug.Log("Placing " + objectString + "With Object ID:" + currentObject + " at X:" + position.x + "; Y:" + position.y + "; Z:" + position.z);
         GameObject tempObj = objects[objectID];
         BuildIdentifier tempID = tempObj.GetComponent<BuildIdentifier>();
         tempID.team = inTeam;
         tempID.id = objectIndex;
+        tempID.parentMountPoint = parentMountPoint;
+        tempID.parentMountBool = parentMountBool;
         GameObject instance = Instantiate(tempObj, position, rotation);
         NetworkServer.Spawn(instance);
     }

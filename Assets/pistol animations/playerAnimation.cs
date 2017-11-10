@@ -46,7 +46,7 @@ public class playerAnimation : NetworkBehaviour {
             anim.Play("HM_Aim_Revolver_Walk");
         }
 
-        Debug.Log(xRotation);
+        //Debug.Log(xRotation);
         inputH = Input.GetAxis("Horizontal");
         inputV = Input.GetAxis("Vertical");
 
