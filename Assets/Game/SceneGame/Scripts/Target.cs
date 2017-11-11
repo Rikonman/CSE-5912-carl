@@ -21,6 +21,7 @@ public class Target : NetworkBehaviour {
         get { return isDead; }
         protected set { isDead = value; }
     }
+    MeshRenderer renderer;
 	MeshFilter tempMesh; 
 	MeshFilter mesh; 
     //Renderer rend;
@@ -43,6 +44,7 @@ public class Target : NetworkBehaviour {
 		tempMesh = mesh;
         team = GetComponent<PlayerTeam>();
         bi = GetComponent<BuildIdentifier>();
+        renderer = GetComponent<MeshRenderer>();
 
         try
         {
@@ -102,6 +104,24 @@ public class Target : NetworkBehaviour {
                     emperorScript.RpcAddEntertainment(1);
                 }
             }
+            else
+            {
+                bool hasChildren = gameObject.transform.childCount > 0;
+                NetworkIdentity nid = gameObject.GetComponent<NetworkIdentity>();
+                
+                if (priorHealth > startingHealth * 3 / 4 && currentHealth <= startingHealth * 3 / 4)
+                {
+                    RpcChangeObjectColor(nid.netId, 1f, .8f, .8f, hasChildren);
+                }
+                else if (priorHealth > startingHealth * 2 / 4 && currentHealth <= startingHealth * 2 / 4)
+                {
+                    RpcChangeObjectColor(nid.netId, 1f, .6f, .6f, hasChildren);
+                }
+                else if (priorHealth > startingHealth / 4 && currentHealth <= startingHealth / 4)
+                {
+                    RpcChangeObjectColor(nid.netId, 1f, .4f, .4f, hasChildren);
+                }
+            }
             if (currentHealth <= 0)
             {
                 Die();
@@ -114,6 +134,25 @@ public class Target : NetworkBehaviour {
             Debug.Log("This object is invulnerable");
         }
         return false;
+    }
+
+    [ClientRpc]
+    public void RpcChangeObjectColor(NetworkInstanceId nid, float r, float g, float b, bool hasChildren)
+    {
+
+        GameObject mainGameObj = ClientScene.FindLocalObject(nid);
+        if (hasChildren)
+        {
+            for (int counter = 0; counter < mainGameObj.transform.childCount; counter++)
+            {
+                Transform childTrans = mainGameObj.transform.GetChild(counter);
+                childTrans.GetComponent<Renderer>().material.color = new Color(r, g, b);
+            }
+        }
+        else
+        {
+            mainGameObj.GetComponent<Renderer>().material.color = new Color(r, g, b);
+        }
     }
 
     private void OnCurrentHealthChange(float newHealth)
