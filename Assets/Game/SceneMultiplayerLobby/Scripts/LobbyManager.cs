@@ -475,7 +475,7 @@ namespace Prototype.NetworkLobby
             {
                 int currentCounter = redSpawnCounter;
                 redSpawnCounter++;
-                if (redSpawnCounter == redSpawns.Count)
+                if (redSpawnCounter >= redSpawns.Count)
                 {
                     redSpawnCounter = 0;
                 }
@@ -485,7 +485,7 @@ namespace Prototype.NetworkLobby
             {
                 int currentCounter = blueSpawnCounter;
                 blueSpawnCounter++;
-                if (blueSpawnCounter == blueSpawns.Count)
+                if (blueSpawnCounter >= blueSpawns.Count)
                 {
                     blueSpawnCounter = 0;
                 }

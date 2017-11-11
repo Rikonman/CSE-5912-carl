@@ -222,7 +222,11 @@ public class Target : NetworkBehaviour {
     {
 		mesh = tempMesh;
         isDead = false;
-        team.RpcChangeLocation(LobbyManager.s_Singleton.GetSpawnLocation(team.team));
+        if (isServer)
+        {
+            team.RpcChangeLocation(LobbyManager.s_Singleton.GetSpawnLocation(team.team));
+        }
+        
         //rend.enabled = true;
         col.enabled = true;
         rb.useGravity = true;
