@@ -12,6 +12,8 @@ public class BuildIdentifier : NetworkBehaviour {
     public int parentMountPoint;
     [SyncVar]
     public int parentMountBool;
+    [SyncVar]
+    public bool isStone;
     // Use this for initialization
     void Start ()
     {

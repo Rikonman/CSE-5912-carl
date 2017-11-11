@@ -44,9 +44,30 @@ public class Target : NetworkBehaviour {
         team = GetComponent<PlayerTeam>();
         bi = GetComponent<BuildIdentifier>();
 
+        try
+        {
+            emperorScript = GameObject.Find("Emperor").GetComponent<EmperorController>();
+        }
+        catch
+        {
+            StartCoroutine(EmperorDelayer());
+        }
         //StartCoroutine(EmperorDelayer());
-        emperorScript = GameObject.Find("Emperor").GetComponent<EmperorController>();
         //healthbar.sizeDelta = new Vector2(health * 2, healthbar.sizeDelta.y);
+    }
+
+    public IEnumerator EmperorDelayer()
+    {
+        float remainingTime = 1f;
+
+        while (remainingTime > 0)
+        {
+            yield return null;
+
+            remainingTime -= Time.deltaTime;
+
+        }
+        emperorScript = GameObject.Find("Emperor").GetComponent<EmperorController>();
     }
 
     private void Update()
@@ -61,26 +82,30 @@ public class Target : NetworkBehaviour {
         }
     }
 
-    public void TakeDamage(float damage) {
+    public bool TakeDamage(float damage) {
         if (isVulnerable && !isDead)
         {
             float priorHealth = currentHealth;
             currentHealth -= damage;
-            if (priorHealth > startingHealth * 3 / 4 && currentHealth <= startingHealth * 3 / 4)
+            if (team != null)
             {
-                emperorScript.RpcAddEntertainment(1);
-            }
-            else if (priorHealth > startingHealth * 2 / 4 && currentHealth <= startingHealth * 2 / 4)
-            {
-                emperorScript.RpcAddEntertainment(1);
-            }
-            else if (priorHealth > startingHealth / 4 && currentHealth <= startingHealth / 4)
-            {
-                emperorScript.RpcAddEntertainment(1);
+                if (priorHealth > startingHealth * 3 / 4 && currentHealth <= startingHealth * 3 / 4)
+                {
+                    emperorScript.RpcAddEntertainment(1);
+                }
+                else if (priorHealth > startingHealth * 2 / 4 && currentHealth <= startingHealth * 2 / 4)
+                {
+                    emperorScript.RpcAddEntertainment(1);
+                }
+                else if (priorHealth > startingHealth / 4 && currentHealth <= startingHealth / 4)
+                {
+                    emperorScript.RpcAddEntertainment(1);
+                }
             }
             if (currentHealth <= 0)
             {
                 Die();
+                return true;
             }
             Debug.Log("Hit: " + currentHealth);
         }
@@ -88,6 +113,7 @@ public class Target : NetworkBehaviour {
         {
             Debug.Log("This object is invulnerable");
         }
+        return false;
     }
 
     private void OnCurrentHealthChange(float newHealth)
@@ -102,9 +128,9 @@ public class Target : NetworkBehaviour {
 
     public void Die()
     {
-        emperorScript.RpcAddEntertainment(5);
         if (team != null)
         {
+            emperorScript.RpcAddEntertainment(5);
             if (team.team == 0)
             {
                 emperorScript.RpcAddBlueFavor(5);
@@ -112,6 +138,18 @@ public class Target : NetworkBehaviour {
             else
             {
                 emperorScript.RpcAddRedFavor(5);
+            }
+        }
+        else
+        {
+            emperorScript.RpcAddEntertainment(3);
+            if (bi.team == 0)
+            {
+                emperorScript.RpcAddBlueFavor(3);
+            }
+            else
+            {
+                emperorScript.RpcAddRedFavor(3);
             }
         }
         

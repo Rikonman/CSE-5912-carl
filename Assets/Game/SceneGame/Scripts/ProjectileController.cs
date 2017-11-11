@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
+using System.Collections.Generic;
 
 public class ProjectileController : NetworkBehaviour {
 
@@ -14,11 +15,13 @@ public class ProjectileController : NetworkBehaviour {
     MeshRenderer projectileRenderer;
     public int firingTeam;
     public int firingPlayer;
+    public GameObject triangleBreak;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         projectileRenderer = GetComponent<MeshRenderer>();
-	}
+        NetworkIdentity tempTB = triangleBreak.GetComponent<NetworkIdentity>();
+    }
 	
 	// Projectiles are updated by the server
     [ServerCallback]
@@ -58,7 +61,8 @@ public class ProjectileController : NetworkBehaviour {
         if (!isServer)
             return;
         Target collisionTarget;
-        if (collision.gameObject.transform.parent != null)
+        bool hasParent = collision.gameObject.transform.parent != null;
+        if (hasParent)
         {
             collisionTarget = collision.gameObject.transform.parent.GetComponent<Target>();
         }
@@ -71,15 +75,105 @@ public class ProjectileController : NetworkBehaviour {
         if (!canKill || collisionTarget == null)
             return;
 
-        // have the target take damage
-        collisionTarget.TakeDamage(25);
-		
-		//explode the dead
-		/*if(collisionTarget._isDead)
-		{
-			collision.gameObject.AddComponent<TriangleExplosion>();
-			StartCoroutine(collision.gameObject.GetComponent<TriangleExplosion>().SplitMesh(true));
-		}*/
+        Vector3 position = collisionTarget.transform.position;
+        Quaternion rotation = collisionTarget.transform.localRotation;
 
+        // have the target take damage
+        bool died = collisionTarget.TakeDamage(25);
+
+        //explode the dead
+        if (died && collisionTeam == null)
+        {
+
+            bool isStone = collisionTarget.bi.isStone;
+            Mesh M = new Mesh();
+            MeshFilter tempFilter;
+            SkinnedMeshRenderer tempSkinnedRenderer;
+            MeshRenderer tempRenderer;
+            if (hasParent)
+            {
+                tempFilter = collisionTarget.GetComponentInChildren<MeshFilter>();
+                tempSkinnedRenderer = collisionTarget.GetComponentInChildren<SkinnedMeshRenderer>();
+                tempRenderer = collisionTarget.GetComponentInChildren<MeshRenderer>();
+            }
+            else
+            {
+                tempFilter = collisionTarget.GetComponent<MeshFilter>();
+                tempSkinnedRenderer = collisionTarget.GetComponent<SkinnedMeshRenderer>();
+                tempRenderer = collisionTarget.GetComponent<MeshRenderer>();
+            }
+
+            if (tempFilter != null)
+            {
+                M = tempFilter.mesh;
+            }
+            else if (tempSkinnedRenderer != null)
+            {
+                M = tempSkinnedRenderer.sharedMesh;
+            }
+
+            Material[] materials = new Material[0];
+            if (tempRenderer != null)
+            {
+                materials = tempRenderer.materials;
+            }
+            else if (tempSkinnedRenderer != null)
+            {
+                materials = tempSkinnedRenderer.materials;
+            }
+
+            TriangleExplosion tempTriangleExplosion = triangleBreak.GetComponent<TriangleExplosion>();
+            tempTriangleExplosion.verts = M.vertices;
+            tempTriangleExplosion.normals = M.normals;
+            tempTriangleExplosion.uvs = M.uv;
+
+            tempTriangleExplosion.indices = M.GetTriangles(0);
+            tempTriangleExplosion.isStone = isStone;
+            
+            //NetworkServer.Lo.SetLocalObject(tempTB.netId, triangleBreak);
+            CmdDoBreak(triangleBreak, position, rotation);
+        }
+
+    }
+
+    /*[ClientRpc]
+    public void RpcDoBreak(GameObject triangleBreak, Vector3 position, Quaternion rotation, GameObject collision, bool hasParent)
+    {
+        GameObject instance = (GameObject)Instantiate(triangleBreak, position, rotation);
+        if (hasParent)
+        {
+            Target collisionTarget = collision.gameObject.transform.parent.GetComponent<Target>();
+            StartCoroutine(instance.GetComponent<TriangleExplosion>().SplitMesh(collisionTarget.GetComponentInChildren<MeshFilter>(),
+                    collisionTarget.GetComponentInChildren<SkinnedMeshRenderer>(), collisionTarget.GetComponentInChildren<MeshRenderer>(), true));
+        }
+        else
+        {
+            Target collisionTarget = collision.gameObject.GetComponent<Target>();
+            StartCoroutine(instance.GetComponent<TriangleExplosion>().SplitMesh(collisionTarget.GetComponent<MeshFilter>(),
+                    collisionTarget.GetComponent<SkinnedMeshRenderer>(), collisionTarget.GetComponent<MeshRenderer>(), true));
+        }
+        //NetworkServer.Spawn(instance);
+    }*/
+
+    [Command]
+    public void CmdDoBreak(GameObject triangleBreak, Vector3 position, Quaternion rotation)
+    {
+
+        //GameObject triangleBreak = NetworkServer.FindLocalObject(triangleBreakID);
+        GameObject instance = (GameObject)Instantiate(triangleBreak, position, rotation);
+        NetworkServer.Spawn(instance);
+        //StartCoroutine(instance.GetComponent<TriangleExplosion>().SplitMesh(true));
+        NetworkIdentity tempNetworkID = instance.GetComponent<NetworkIdentity>();
+        RpcDoBreak(tempNetworkID.netId, position, rotation, instance.GetComponent<TriangleExplosion>().isStone);
+    }
+
+    [ClientRpc]
+    public void RpcDoBreak(NetworkInstanceId triangleBreakID, Vector3 position, Quaternion rotation, bool isStone)
+    {
+
+        GameObject triangleBreak = ClientScene.FindLocalObject(triangleBreakID);
+        GameObject instance = (GameObject)Instantiate(triangleBreak, position, rotation);
+        instance.GetComponent<TriangleExplosion>().isStone = isStone;
+        StartCoroutine(instance.GetComponent<TriangleExplosion>().SplitMesh(true));
     }
 }

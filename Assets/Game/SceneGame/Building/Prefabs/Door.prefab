@@ -347,9 +347,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   team: 0
-  id: 8
+  id: 1
   parentMountPoint: 0
-  parentMountBool: 7
+  parentMountBool: 4
+  isStone: 1
 --- !u!114 &114528993235499156
 MonoBehaviour:
   m_ObjectHideFlags: 1
