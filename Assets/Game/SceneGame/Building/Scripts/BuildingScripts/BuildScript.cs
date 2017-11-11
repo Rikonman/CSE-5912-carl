@@ -181,7 +181,7 @@ public class BuildScript : NetworkBehaviour
         List<GameObject> collidableObjects = new List<GameObject>();
         foreach (GameObject tempObj in tempObjs)
         {
-            if (tempObj.name == "Floor(Clone)" && tempObj.transform.parent == null)
+            if ((tempObj.name == "Floor(Clone)" || tempObj.name == "Ceiling(Clone)") && tempObj.transform.parent == null)
             {
                 collidableObjects.Add(tempObj);
             }
@@ -280,7 +280,7 @@ public class BuildScript : NetworkBehaviour
                         Debug.DrawRay(newVec3, Vector3.up, Color.red);
 
                         bool colliding = false;
-                        if (previewBuildPoints.type == BuildPoints.MountType.Floor1)
+                        if (previewBuildPoints.type == BuildPoints.MountType.Floor1 || previewBuildPoints.type == BuildPoints.MountType.Ceiling1)
                         {
                             Vector3 radius = newVec3 - tempObj.transform.position;
                             radius.x = radius.x / 2f;
