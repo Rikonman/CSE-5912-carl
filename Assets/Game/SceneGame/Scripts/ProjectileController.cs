@@ -85,7 +85,7 @@ public class ProjectileController : NetworkBehaviour {
         if (died && collisionTeam == null)
         {
 
-            bool isStone = collisionTarget.bi.isStone;
+            bool isStone = collisionTarget.bid.isStone;
             Mesh M = new Mesh();
             MeshFilter tempFilter;
             SkinnedMeshRenderer tempSkinnedRenderer;

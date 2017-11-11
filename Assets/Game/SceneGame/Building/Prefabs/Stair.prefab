@@ -189,7 +189,7 @@ MonoBehaviour:
   respawnTime: 5
   timer: 0
   team: {fileID: 0}
-  bi: {fileID: 0}
+  bid: {fileID: 0}
   healthbar: {fileID: 0}
   emperorScript: {fileID: 0}
 --- !u!114 &114782649635141454
@@ -207,3 +207,4 @@ MonoBehaviour:
   id: 8
   parentMountPoint: 7
   parentMountBool: 12
+  isStone: 0

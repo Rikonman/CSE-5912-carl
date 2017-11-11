@@ -164,7 +164,7 @@ MonoBehaviour:
   team: 0
   id: 1
   parentMountPoint: 0
-  parentMountBool: 0
+  parentMountBool: 2
   isStone: 1
 --- !u!114 &114350331176231390
 MonoBehaviour:
@@ -205,6 +205,6 @@ MonoBehaviour:
   respawnTime: 5
   timer: 0
   team: {fileID: 0}
-  bi: {fileID: 0}
+  bid: {fileID: 0}
   healthbar: {fileID: 0}
   emperorScript: {fileID: 0}

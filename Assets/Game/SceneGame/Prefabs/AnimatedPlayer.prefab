@@ -1015,6 +1015,7 @@ GameObject:
   - component: {fileID: 114984375599140250}
   - component: {fileID: 82508694522997402}
   - component: {fileID: 136934247517689880}
+  - component: {fileID: 114509877319205008}
   m_Layer: 0
   m_Name: AnimatedPlayer
   m_TagString: Player
@@ -2874,6 +2875,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   profile: {fileID: 11400000, guid: 195ccc2a7a04b08488384833b8a8a308, type: 2}
+--- !u!114 &114509877319205008
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1816720719246532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30ed52a4483505b4fac90d07daa8a4ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  repairTime: 1
+  hpPerRepair: 25
+  cameraTrans: {fileID: 4839705401594148}
+  team: {fileID: 0}
 --- !u!114 &114667632685925420
 MonoBehaviour:
   m_ObjectHideFlags: 1

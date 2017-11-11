@@ -332,7 +332,7 @@ MonoBehaviour:
   respawnTime: 5
   timer: 0
   team: {fileID: 0}
-  bi: {fileID: 0}
+  bid: {fileID: 0}
   healthbar: {fileID: 0}
   emperorScript: {fileID: 0}
 --- !u!114 &114351462938558914

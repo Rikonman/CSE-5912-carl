@@ -28,7 +28,7 @@ public class Target : NetworkBehaviour {
     CapsuleCollider col;
     Rigidbody rb;
     public PlayerTeam team;
-    public BuildIdentifier bi;
+    public BuildIdentifier bid;
     public RectTransform healthbar;
     public EmperorController emperorScript;
 
@@ -43,7 +43,7 @@ public class Target : NetworkBehaviour {
 		mesh = transform.GetComponent<MeshFilter>();
 		tempMesh = mesh;
         team = GetComponent<PlayerTeam>();
-        bi = GetComponent<BuildIdentifier>();
+        bid = GetComponent<BuildIdentifier>();
         renderer = GetComponent<MeshRenderer>();
 
         try
@@ -84,6 +84,42 @@ public class Target : NetworkBehaviour {
         }
     }
 
+    public void RepairBuilding(float amount)
+    {
+        if (bid != null)
+        {
+            currentHealth += amount;
+            if (currentHealth > startingHealth)
+            {
+                currentHealth = startingHealth;
+            }
+            UpdateLifeColor();
+        }
+    }
+
+    public void UpdateLifeColor()
+    {
+        bool hasChildren = gameObject.transform.childCount > 0;
+        NetworkIdentity nid = gameObject.GetComponent<NetworkIdentity>();
+
+        if (currentHealth > startingHealth * 3 / 4)
+        {
+            CmdChangeObjectColor(nid.netId, 1f, 1f, 1f, hasChildren);
+        }
+        else if (currentHealth > startingHealth * 2 / 4)
+        {
+            CmdChangeObjectColor(nid.netId, 1f, .8f, .8f, hasChildren);
+        }
+        else if (currentHealth > startingHealth / 4)
+        {
+            CmdChangeObjectColor(nid.netId, 1f, .6f, .6f, hasChildren);
+        }
+        else if (currentHealth > 0)
+        {
+            CmdChangeObjectColor(nid.netId, 1f, .4f, .4f, hasChildren);
+        }
+    }
+
     public bool TakeDamage(float damage) {
         if (isVulnerable && !isDead)
         {
@@ -106,21 +142,7 @@ public class Target : NetworkBehaviour {
             }
             else
             {
-                bool hasChildren = gameObject.transform.childCount > 0;
-                NetworkIdentity nid = gameObject.GetComponent<NetworkIdentity>();
-                
-                if (priorHealth > startingHealth * 3 / 4 && currentHealth <= startingHealth * 3 / 4)
-                {
-                    RpcChangeObjectColor(nid.netId, 1f, .8f, .8f, hasChildren);
-                }
-                else if (priorHealth > startingHealth * 2 / 4 && currentHealth <= startingHealth * 2 / 4)
-                {
-                    RpcChangeObjectColor(nid.netId, 1f, .6f, .6f, hasChildren);
-                }
-                else if (priorHealth > startingHealth / 4 && currentHealth <= startingHealth / 4)
-                {
-                    RpcChangeObjectColor(nid.netId, 1f, .4f, .4f, hasChildren);
-                }
+                UpdateLifeColor();
             }
             if (currentHealth <= 0)
             {
@@ -134,6 +156,12 @@ public class Target : NetworkBehaviour {
             Debug.Log("This object is invulnerable");
         }
         return false;
+    }
+
+    [Command]
+    public void CmdChangeObjectColor(NetworkInstanceId nid, float r, float g, float b, bool hasChildren)
+    {
+        RpcChangeObjectColor(nid, r, g, b, hasChildren);
     }
 
     [ClientRpc]
@@ -182,7 +210,7 @@ public class Target : NetworkBehaviour {
         else
         {
             emperorScript.RpcAddEntertainment(3);
-            if (bi.team == 0)
+            if (bid.team == 0)
             {
                 emperorScript.RpcAddBlueFavor(3);
             }
@@ -204,7 +232,7 @@ public class Target : NetworkBehaviour {
         {
             Destroy(gameObject);
             GameObject tempBase;
-            if (bi.team == 0)
+            if (bid.team == 0)
             {
                 tempBase = GameObject.Find("Base1Center");
             }
@@ -213,7 +241,7 @@ public class Target : NetworkBehaviour {
                 tempBase = GameObject.Find("Base2Center");
             }
             BaseBuildings tempBuilding = tempBase.GetComponent<BaseBuildings>();
-            tempBuilding.CmdDestroyMountPoint(bi.parentMountPoint, bi.parentMountBool, bi.id, bi.team);
+            tempBuilding.CmdDestroyMountPoint(bid.parentMountPoint, bid.parentMountBool, bid.id, bid.team);
         }
         //rend.enabled = false;
     }

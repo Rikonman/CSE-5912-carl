@@ -456,10 +456,9 @@ namespace Prototype.NetworkLobby
             //CheckIfSpawnsCreated();
             Debug.Log("Player Adding");
             playerCounter++;
-            var player = GameObject.Instantiate(gamePlayerPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
-            
-            
-                
+            GameObject player = GameObject.Instantiate(gamePlayerPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
+
+
             player.SetActive(true);
             //ClientScene.AddPlayer(conn, playerControllerId);
             //NetworkServer.AddPlayerForConnection(conn, player, playerControllerId);
