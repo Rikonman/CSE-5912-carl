@@ -61,6 +61,8 @@ public class RoundManager : NetworkBehaviour {
             GameObject[] tempPlayers = GameObject.FindGameObjectsWithTag("Player");
             bool redLives = false;
             bool blueLives = false;
+            int redCounter = 0;
+            int blueCounter = 0;
             foreach (GameObject tempPlayer in tempPlayers)
             {
                 if (!redLives && tempPlayer.GetComponent<PlayerTeam>().team == 0 && tempPlayer.GetComponent<BuildScript>().locked == false)
@@ -71,16 +73,24 @@ public class RoundManager : NetworkBehaviour {
                 {
                     blueLives = true;
                 }
+                if (tempPlayer.GetComponent<PlayerTeam>().team == 0)
+                {
+                    redCounter++;
+                }
+                if (tempPlayer.GetComponent<PlayerTeam>().team == 1)
+                {
+                    blueCounter++;
+                }
             }
-            if (!redLives)
+            if (!redLives && redCounter > 0)
             {
                 CmdRoundManagerActive("Blue Wins!!!");
-                RestartRound();
+                CmdRestartRound();
             }
-            if (!blueLives)
+            if (!blueLives && blueCounter > 0)
             {
                 CmdRoundManagerActive("Red Wins!!!");
-                RestartRound();
+                CmdRestartRound();
             }
             
         }
@@ -100,7 +110,8 @@ public class RoundManager : NetworkBehaviour {
         endedOnce = true;
     }
 
-    public void RestartRound()
+    [Command]
+    public void CmdRestartRound()
     {
         GameObject currentRedCore = GameObject.FindGameObjectWithTag("RedSpawnCore");
         if (currentRedCore != null)
@@ -148,6 +159,12 @@ public class RoundManager : NetworkBehaviour {
         base2.GetComponent<ResourceBank>().ResetBank();
         base2.GetComponent<BaseBuildings>().CmdResetBuildings();
         emperor.ResetEmperor();
+        RpcRefreshRoundStuff();
+    }
+
+    [ClientRpc]
+    public void RpcRefreshRoundStuff()
+    {
         buildRoundSecondsLeft = buildRoundSeconds;
         goBarriers.SetActive(true);
     }
