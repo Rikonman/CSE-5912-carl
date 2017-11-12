@@ -30,23 +30,31 @@ public class PlayerTeam : NetworkBehaviour {
         trStoneResources = GameObject.Find("TRStonePanel").GetComponentInChildren<Text>();
         trMetalResources = GameObject.Find("TRMetalPanel").GetComponentInChildren<Text>();
         Text trTeamText = GameObject.Find("TRTeamText").GetComponentInChildren<Text>();
-        Image img = GameObject.Find("UITeamResources").GetComponent<Image>();
-
-
+        Image img1 = GameObject.Find("TRTeamPanel").GetComponent<Image>();
+        Image img2 = GameObject.Find("TRWoodPanel").GetComponent<Image>();
+        Image img3 = GameObject.Find("TRStonePanel").GetComponent<Image>();
+        Image img4 = GameObject.Find("TRMetalPanel").GetComponent<Image>();
+        
         PlayerLobbyInfo lobbyInfo = GetComponentInChildren<PlayerLobbyInfo>();
         if (lobbyInfo.playerColor == Color.blue)
         {
             team =  1;
             teamName = "Blue Team";
-            trTeamText.text = "Team Blue";
-            img.color = new Color(0, 0, 1f, 0.3f);
+            trTeamText.text = teamName;
+            img1.color = new Color(0, 0, 1f, 0.3f);
+            img2.color = new Color(0, 0, 1f, 0.3f);
+            img3.color = new Color(0, 0, 1f, 0.3f);
+            img4.color = new Color(0, 0, 1f, 0.3f);
         }
         else
         {
             team = 0;
             teamName = "Red Team";
-            trTeamText.text = "Team Red";
-            img.color = new Color(1f, 0, 0, 0.3f);
+            trTeamText.text = teamName;
+            img1.color = new Color(1f, 0, 0, 0.3f);
+            img2.color = new Color(1f, 0, 0, 0.3f);
+            img3.color = new Color(1f, 0, 0, 0.3f);
+            img4.color = new Color(1f, 0, 0, 0.3f);
         }
 
         uiRefreshTimer = 0;
