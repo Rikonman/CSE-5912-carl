@@ -11,6 +11,9 @@ public class ResourceBank : NetworkBehaviour
     public int wood;
     [SyncVar(hook = "SetMetal")]
     public int metal;
+
+    // Utilize a resource cap even though the resources will probably never get this high...
+    private int maxResources = 9999;
     // Use this for initialization
     void Start()
     {
@@ -32,31 +35,43 @@ public class ResourceBank : NetworkBehaviour
     public void SetStone(int Stone)
     {
         stone = Stone;
+        if (stone > maxResources)
+            stone = maxResources;
     }
 
     public void SetWood(int Wood)
     {
         wood = Wood;
+        if (wood > maxResources)
+            wood = maxResources;
     }
 
     public void SetMetal(int Metal)
     {
         metal = Metal;
+        if (metal > maxResources)
+            metal = maxResources;
     }
 
     public void AddStone(int Amount)
     {
         stone += Amount;
+        if (stone > maxResources)
+            stone = maxResources;
     }
 
     public void AddWood(int Amount)
     {
         wood += Amount;
+        if (wood > maxResources)
+            wood = maxResources;
     }
 
     public void AddMetal(int Amount)
     {
         metal += Amount;
+        if (metal > maxResources)
+            metal = maxResources;
     }
 
     public void Add(string Type, int Amount)
@@ -74,6 +89,4 @@ public class ResourceBank : NetworkBehaviour
             AddWood(Amount);
         }
     }
-
-
 }
