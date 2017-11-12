@@ -103,7 +103,7 @@ public class EmperorController : NetworkBehaviour
         }
         else if (entertainment >= -moodChangeCost)
         {
-            mood = "Losing Interest";
+            mood = "Unimpressed";
         }
         else if (entertainment >= -moodChangeCost * 2)
         {

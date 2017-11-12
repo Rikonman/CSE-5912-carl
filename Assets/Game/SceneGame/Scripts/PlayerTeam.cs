@@ -52,6 +52,8 @@ public class PlayerTeam : NetworkBehaviour {
             remainingTime -= Time.deltaTime;
 
         }
+
+        baseObject = GameObject.Find("Base" + (team + 1) + "Center");
         RpcChangeLocation(LobbyManager.s_Singleton.GetSpawnLocation(team));
 
         RpcUpdateResourceText();
@@ -77,12 +79,8 @@ public class PlayerTeam : NetworkBehaviour {
 
     private void FixedUpdate()
     {
-        if (baseObject == null)
-        {
-            baseObject = GameObject.Find("Base" + (team + 1) + "Center");
-        }
 
-        if (isLocalPlayer && resourceText != null)
+        if (isLocalPlayer && resourceText != null && baseObject != null)
         {
             uiRefreshTimer += Time.deltaTime;
             if (uiRefreshTimer >= .5f)

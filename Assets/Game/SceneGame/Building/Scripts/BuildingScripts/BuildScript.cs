@@ -44,7 +44,7 @@ public class BuildScript : NetworkBehaviour
 
     public IEnumerator LoadDelayer()
     {
-        float remainingTime = 1f;
+        float remainingTime = 1.5f;
 
         while (remainingTime > 0)
         {

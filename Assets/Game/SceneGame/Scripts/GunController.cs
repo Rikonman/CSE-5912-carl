@@ -35,6 +35,19 @@ public class GunController : NetworkBehaviour {
     void Start()
     {
         locked = false;
+        ResetAmmo();
+        //gun = transform.GetChild(0).GetChild(0).gameObject;
+        team = GetComponent<PlayerTeam>();
+    }
+
+    [ClientRpc]
+    public void RpcResetAmmo()
+    {
+        ResetAmmo();
+    }
+
+    public void ResetAmmo()
+    {
         currentAmmoInReserve = startingReserveAmmo;
         if (currentAmmoInReserve >= maxAmmoInMag)
         {
@@ -46,8 +59,7 @@ public class GunController : NetworkBehaviour {
             currentAmmoInMag = currentAmmoInReserve;
             currentAmmoInReserve = 0;
         }
-        //gun = transform.GetChild(0).GetChild(0).gameObject;
-        team = GetComponent<PlayerTeam>();
+
     }
 
     // the reset method lets us run slow code (like "Find") in the editor where performance

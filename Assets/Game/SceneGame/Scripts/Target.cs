@@ -31,6 +31,7 @@ public class Target : NetworkBehaviour {
     public BuildIdentifier bid;
     public RectTransform healthbar;
     public EmperorController emperorScript;
+    public GunController gunScript;
     public GameObject SpawnObject;
 
     void Start()
@@ -45,6 +46,7 @@ public class Target : NetworkBehaviour {
 		tempMesh = mesh;
         team = GetComponent<PlayerTeam>();
         bid = GetComponent<BuildIdentifier>();
+        gunScript = GetComponent<GunController>();
         renderer = GetComponent<MeshRenderer>();
         
         StartCoroutine(Delayer());
@@ -307,8 +309,8 @@ public class Target : NetworkBehaviour {
         if (isServer)
         {
             team.RpcChangeLocation(LobbyManager.s_Singleton.GetSpawnLocation(team.team));
+            gunScript.RpcResetAmmo();
         }
-        
         //rend.enabled = true;
         col.enabled = true;
         rb.useGravity = true;
