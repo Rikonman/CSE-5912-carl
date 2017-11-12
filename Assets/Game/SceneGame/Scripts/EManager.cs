@@ -13,8 +13,10 @@ public class EManager : NetworkBehaviour {
     public PlayerTeam team;
     public GameObject lookTextBox;
     public Text lookText;
+    public bool locked;
     // Use this for initialization
     void Start () {
+        locked = false;
         eTime = 0;
         eTarget = -1;
         team = gameObject.GetComponent<PlayerTeam>();
@@ -43,7 +45,7 @@ public class EManager : NetworkBehaviour {
     }
 
     void FixedUpdate () {
-        if (isLocalPlayer)
+        if (isLocalPlayer && !locked)
         {
             Ray previewRay = new Ray(cameraTrans.position, cameraTrans.forward);
             RaycastHit previewHit;

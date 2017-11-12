@@ -33,9 +33,11 @@ public class BuildScript : NetworkBehaviour
     PlayerTeam team;
     int snapMountIndex = -1;
     int snapBoolIndex = -1;
+    public bool locked;
 
     void Start()
     {
+        locked = false;
         currentObject = 0;
         StartCoroutine(LoadDelayer());
     }
@@ -60,58 +62,63 @@ public class BuildScript : NetworkBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.B))
+        if (!locked)
         {
-            buildMode = !buildMode;
-        }
 
-        if (isLocalPlayer && buildMode)
-        {
-            gun.enabled = !buildMode;
-            BuildMenu.SetActive(buildMode);
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                SetpreviewObjectObject(0);
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                SetpreviewObjectObject(1);
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha3))
-            {
-                SetpreviewObjectObject(2);
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha4))
-            {
-                SetpreviewObjectObject(3);
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha5))
-            {
-                SetpreviewObjectObject(4);
-            }
-            if (previewObject != null)
-            {
-                PositionPreview();
 
-                if (Input.GetMouseButtonDown(0))
+            if (Input.GetKeyDown(KeyCode.B))
+            {
+                buildMode = !buildMode;
+            }
+
+            if (isLocalPlayer && buildMode)
+            {
+                gun.enabled = !buildMode;
+                BuildMenu.SetActive(buildMode);
+                if (Input.GetKeyDown(KeyCode.Alpha1))
                 {
-                    PlaceObject();
+                    SetpreviewObjectObject(0);
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha2))
+                {
+                    SetpreviewObjectObject(1);
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha3))
+                {
+                    SetpreviewObjectObject(2);
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha4))
+                {
+                    SetpreviewObjectObject(3);
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha5))
+                {
+                    SetpreviewObjectObject(4);
+                }
+                if (previewObject != null)
+                {
+                    PositionPreview();
+
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        PlaceObject();
+                    }
                 }
             }
-        }else
-        {
-            if (BuildMenu != null)
+            else
             {
-                BuildMenu.SetActive(buildMode);
-                gun.enabled = !buildMode;
-            }
-            if(previewObject != null)
-            {
-                Destroy(previewObject);
+                if (BuildMenu != null)
+                {
+                    BuildMenu.SetActive(buildMode);
+                    gun.enabled = !buildMode;
+                }
+                if (previewObject != null)
+                {
+                    Destroy(previewObject);
+                }
             }
         }
     }
-
     void PositionPreview()
     {
         Ray previewRay = new Ray(camera.position, camera.forward);

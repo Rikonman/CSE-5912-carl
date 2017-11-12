@@ -11,7 +11,7 @@ public class PlayerController : NetworkBehaviour
     private float lookSensitivity = 5f;
     [Header("First Person Camera Position")]
     [SerializeField]
-    bool locked;
+    public bool locked;
     float fpCameraY = 0.45f;                 // The height off of the ground that the camera should be
     [SerializeField]
     float fpCameraX = 0f;                    // The height off of the ground that the camera should be
@@ -54,6 +54,7 @@ public class PlayerController : NetworkBehaviour
     // Use this for initialization
     void Start()
     {
+        locked = false;
         // if this player is not the local player...
         if (!isLocalPlayer)
         {

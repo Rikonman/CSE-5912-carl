@@ -11,9 +11,11 @@ using UnityEngine.Networking;
     public Vector2[] uvs;
     public int[] indices;
     public bool isStone;
+    public bool isCore;
 
     public Material stoneMaterial;
     public Material woodMaterial;
+    public Material coreMaterial;
 
     public IEnumerator SplitMesh(bool destroy)
     {
@@ -47,7 +49,7 @@ using UnityEngine.Networking;
             //GO.layer = LayerMask.NameToLayer("Particles"); for later
             GO.transform.position = transform.position;
             GO.transform.rotation = transform.rotation;
-            GO.AddComponent<MeshRenderer>().material = isStone ? stoneMaterial : woodMaterial;
+            GO.AddComponent<MeshRenderer>().material = isStone ? stoneMaterial : (isCore ? coreMaterial : woodMaterial);
             GO.AddComponent<MeshFilter>().mesh = mesh;
             GO.AddComponent<BoxCollider>();
             Vector3 explosionPos = new Vector3(transform.position.x + Random.Range(-0.5f, 0.5f), transform.position.y + Random.Range(0f, 0.5f), transform.position.z + Random.Range(-0.5f, 0.5f));

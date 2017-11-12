@@ -84,8 +84,16 @@ public class ProjectileController : NetworkBehaviour {
         //explode the dead
         if (died && collisionTeam == null)
         {
-
-            bool isStone = collisionTarget.bid.isStone;
+            bool isStone = false;
+            bool isCore = false;
+            if (collisionTarget.bid != null)
+            {
+                isStone = collisionTarget.bid.isStone;
+            }
+            else
+            {
+                isCore = true;
+            } 
             Mesh M = new Mesh();
             MeshFilter tempFilter;
             SkinnedMeshRenderer tempSkinnedRenderer;
@@ -111,16 +119,7 @@ public class ProjectileController : NetworkBehaviour {
             {
                 M = tempSkinnedRenderer.sharedMesh;
             }
-
-            Material[] materials = new Material[0];
-            if (tempRenderer != null)
-            {
-                materials = tempRenderer.materials;
-            }
-            else if (tempSkinnedRenderer != null)
-            {
-                materials = tempSkinnedRenderer.materials;
-            }
+            
 
             TriangleExplosion tempTriangleExplosion = triangleBreak.GetComponent<TriangleExplosion>();
             tempTriangleExplosion.verts = M.vertices;
@@ -132,28 +131,11 @@ public class ProjectileController : NetworkBehaviour {
             
             //NetworkServer.Lo.SetLocalObject(tempTB.netId, triangleBreak);
             CmdDoBreak(triangleBreak, position, rotation);
+
         }
 
     }
-
-    /*[ClientRpc]
-    public void RpcDoBreak(GameObject triangleBreak, Vector3 position, Quaternion rotation, GameObject collision, bool hasParent)
-    {
-        GameObject instance = (GameObject)Instantiate(triangleBreak, position, rotation);
-        if (hasParent)
-        {
-            Target collisionTarget = collision.gameObject.transform.parent.GetComponent<Target>();
-            StartCoroutine(instance.GetComponent<TriangleExplosion>().SplitMesh(collisionTarget.GetComponentInChildren<MeshFilter>(),
-                    collisionTarget.GetComponentInChildren<SkinnedMeshRenderer>(), collisionTarget.GetComponentInChildren<MeshRenderer>(), true));
-        }
-        else
-        {
-            Target collisionTarget = collision.gameObject.GetComponent<Target>();
-            StartCoroutine(instance.GetComponent<TriangleExplosion>().SplitMesh(collisionTarget.GetComponent<MeshFilter>(),
-                    collisionTarget.GetComponent<SkinnedMeshRenderer>(), collisionTarget.GetComponent<MeshRenderer>(), true));
-        }
-        //NetworkServer.Spawn(instance);
-    }*/
+    
 
     [Command]
     public void CmdDoBreak(GameObject triangleBreak, Vector3 position, Quaternion rotation)

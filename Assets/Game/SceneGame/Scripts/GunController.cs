@@ -30,9 +30,11 @@ public class GunController : NetworkBehaviour {
     Transform barrellExit;
     public AudioSource gunshot;
     public PlayerTeam team;
+    public bool locked;
 
     void Start()
     {
+        locked = false;
         currentAmmoInReserve = startingReserveAmmo;
         if (currentAmmoInReserve >= maxAmmoInMag)
         {
@@ -56,36 +58,43 @@ public class GunController : NetworkBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
+    void Update()
+    {
         // Only the local player can fire a weapon
 
         if (!isLocalPlayer)
-            return;     
+            return;
 
-        if (automatic) {
-            if (Input.GetButton("Fire1") && Time.time >= fireDelay)
-            {
-                fireDelay = Time.time + 1f / fireRate;
-                Shoot();
-            }
-        } else {
-            if (Input.GetButtonDown("Fire1") && Time.time >= fireDelay)
-            {
-                fireDelay = Time.time + fireRate;
-                Shoot();
-            }
-        }
-
-        if (currentAmmoInReserve >= maxAmmoInMag - currentAmmoInMag && Input.GetKeyDown(KeyCode.R))
+        if (!locked)
         {
-            currentAmmoInReserve -= (maxAmmoInMag - currentAmmoInMag);
-            currentAmmoInMag = maxAmmoInMag;
+            if (automatic)
+            {
+                if (Input.GetButton("Fire1") && Time.time >= fireDelay)
+                {
+                    fireDelay = Time.time + 1f / fireRate;
+                    Shoot();
+                }
+            }
+            else
+            {
+                if (Input.GetButtonDown("Fire1") && Time.time >= fireDelay)
+                {
+                    fireDelay = Time.time + fireRate;
+                    Shoot();
+                }
+            }
 
-        }
-        else if (currentAmmoInReserve < maxAmmoInMag - currentAmmoInMag && Input.GetKeyDown(KeyCode.R))
-        {
-            currentAmmoInMag += currentAmmoInReserve;
-            currentAmmoInReserve = 0;
+            if (currentAmmoInReserve >= maxAmmoInMag - currentAmmoInMag && Input.GetKeyDown(KeyCode.R))
+            {
+                currentAmmoInReserve -= (maxAmmoInMag - currentAmmoInMag);
+                currentAmmoInMag = maxAmmoInMag;
+
+            }
+            else if (currentAmmoInReserve < maxAmmoInMag - currentAmmoInMag && Input.GetKeyDown(KeyCode.R))
+            {
+                currentAmmoInMag += currentAmmoInReserve;
+                currentAmmoInReserve = 0;
+            }
         }
     }
 

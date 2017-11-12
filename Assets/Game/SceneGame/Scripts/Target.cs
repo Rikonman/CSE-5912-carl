@@ -31,6 +31,7 @@ public class Target : NetworkBehaviour {
     public BuildIdentifier bid;
     public RectTransform healthbar;
     public EmperorController emperorScript;
+    public GameObject SpawnObject;
 
     void Start()
     {
@@ -45,20 +46,13 @@ public class Target : NetworkBehaviour {
         team = GetComponent<PlayerTeam>();
         bid = GetComponent<BuildIdentifier>();
         renderer = GetComponent<MeshRenderer>();
-
-        try
-        {
-            emperorScript = GameObject.Find("Emperor").GetComponent<EmperorController>();
-        }
-        catch
-        {
-            StartCoroutine(EmperorDelayer());
-        }
+        
+        StartCoroutine(Delayer());
         //StartCoroutine(EmperorDelayer());
         //healthbar.sizeDelta = new Vector2(health * 2, healthbar.sizeDelta.y);
-    }
+        }
 
-    public IEnumerator EmperorDelayer()
+    public IEnumerator Delayer()
     {
         float remainingTime = 1f;
 
@@ -70,6 +64,17 @@ public class Target : NetworkBehaviour {
 
         }
         emperorScript = GameObject.Find("Emperor").GetComponent<EmperorController>();
+        if (team != null)
+        {
+            if (team.team == 0)
+            {
+                SpawnObject = GameObject.FindGameObjectWithTag("RedSpawnCore");
+            }
+            else
+            {
+                SpawnObject = GameObject.FindGameObjectWithTag("BlueSpawnCore");
+            }
+        }
     }
 
     private void Update()
@@ -78,9 +83,50 @@ public class Target : NetworkBehaviour {
         {
             timer += Time.deltaTime;
         }
+        if (timer >= respawnTime)
+        {
+            if (team != null && SpawnObject != null)
+            {
+                Respawn();
+            }
+            else if (team != null)
+            {
+                CmdLockPlayer(gameObject.GetComponent<NetworkIdentity>().netId, true);
+                
+            }
+            timer = 0;
+        }
+    }
 
-        if(timer>=respawnTime){
-            Respawn();
+    [Command]
+    public void CmdLockPlayer(NetworkInstanceId nid, bool locked)
+    {
+        RpcLockPlayer(nid, locked);
+    }
+
+    [ClientRpc]
+    public void RpcLockPlayer(NetworkInstanceId nid, bool locked)
+    {
+        GameObject playerObj = ClientScene.FindLocalObject(nid);
+        PlayerController pc = playerObj.GetComponent<PlayerController>();
+        if (pc != null)
+        {
+            pc.locked = locked;
+        }
+        GunController gc = playerObj.GetComponent<GunController>();
+        if (gc != null)
+        {
+            gc.locked = locked;
+        }
+        EManager em = playerObj.GetComponent<EManager>();
+        if (em != null)
+        {
+            em.locked = locked;
+        }
+        BuildScript bs = playerObj.GetComponent<BuildScript>();
+        if (bs != null)
+        {
+            bs.locked = locked;
         }
     }
 
@@ -99,7 +145,7 @@ public class Target : NetworkBehaviour {
 
     public void UpdateLifeColor()
     {
-        bool hasChildren = gameObject.transform.childCount > 0;
+        bool hasChildren = gameObject.transform.childCount > 0 && gameObject.GetComponentInChildren<ParticleSystem>() == null;
         NetworkIdentity nid = gameObject.GetComponent<NetworkIdentity>();
 
         if (currentHealth > startingHealth * 3 / 4)
@@ -207,7 +253,7 @@ public class Target : NetworkBehaviour {
                 emperorScript.RpcAddRedFavor(5);
             }
         }
-        else
+        else if (bid != null)
         {
             emperorScript.RpcAddEntertainment(3);
             if (bid.team == 0)
@@ -219,6 +265,10 @@ public class Target : NetworkBehaviour {
                 emperorScript.RpcAddRedFavor(3);
             }
         }
+        else
+        {
+            emperorScript.RpcAddEntertainment(30);
+        }
         
 		tempMesh = mesh;
         isDead = true;
@@ -228,7 +278,7 @@ public class Target : NetworkBehaviour {
             rb.useGravity = false;
 
         }
-        else
+        else if (bid != null)
         {
             Destroy(gameObject);
             GameObject tempBase;
@@ -242,6 +292,11 @@ public class Target : NetworkBehaviour {
             }
             BaseBuildings tempBuilding = tempBase.GetComponent<BaseBuildings>();
             tempBuilding.CmdDestroyMountPoint(bid.parentMountPoint, bid.parentMountBool, bid.id, bid.team);
+        }
+        else
+        {
+            //GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+            Destroy(gameObject);
         }
         //rend.enabled = false;
     }
@@ -260,7 +315,6 @@ public class Target : NetworkBehaviour {
         rb.useGravity = true;
         currentHealth = startingHealth;
         isDead = false;
-        timer = 0;
     }
     
 }

@@ -16,6 +16,8 @@ TagManager:
   - Pick Up (Metal)
   - Undefined
   - Building
+  - RedSpawnCore
+  - BlueSpawnCore
   layers:
   - Default
   - TransparentFX
