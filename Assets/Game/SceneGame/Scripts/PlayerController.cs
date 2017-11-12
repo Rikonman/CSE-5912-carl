@@ -44,7 +44,6 @@ public class PlayerController : NetworkBehaviour
     float speed;
     float walkingSpeed = 6f;
     float sprintSpeed = 12f;
-    float uiRefreshTimer;
     Vector3 flatTransform;
     public Transform mainCamera;
 
@@ -78,7 +77,6 @@ public class PlayerController : NetworkBehaviour
         fpCameraOffset = new Vector3(fpCameraX, fpCameraY, fpCameraZ);
         //mainCamera = transform.GetChild(0);
         //MoveCamera();
-        uiRefreshTimer = 0;
     }
 
     // Update is called once per frame
@@ -142,16 +140,6 @@ public class PlayerController : NetworkBehaviour
             // Update the camera's position/rotation
             MoveCamera();
 
-            uiRefreshTimer += Time.deltaTime;
-            if (uiRefreshTimer >= .5f)
-            {
-                PlayerTeam tempTeam = GetComponent<PlayerTeam>();
-                ResourceBank tempBank = tempTeam.baseObject.GetComponent<ResourceBank>();
-                UnityEngine.UI.Text textBox = tempTeam.resourceText.GetComponent<UnityEngine.UI.Text>();
-                textBox.text = tempTeam.teamName + "\nWood: " + tempBank.wood + " \nStone: " + tempBank.stone + "\nMetal: " + tempBank.metal;
-
-                uiRefreshTimer = 0f;
-            }
         }
     }
 

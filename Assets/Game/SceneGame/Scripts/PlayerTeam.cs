@@ -16,6 +16,7 @@ public class PlayerTeam : NetworkBehaviour {
     Text resources;
     public GameObject baseObject;
     public static int playerCount = 0;
+    float uiRefreshTimer;
     // Use this for initialization
     void Start()
     {
@@ -33,12 +34,8 @@ public class PlayerTeam : NetworkBehaviour {
             teamName = "Red Team";
         }
 
+        uiRefreshTimer = 0;
 
-        if (isLocalPlayer)
-        {
-            resourceText = GameObject.Find("ResourceText");
-            resources = resourceText.GetComponent<Text>();
-        }
         LobbyManager.s_Singleton.CheckIfSpawnsCreated();
         StartCoroutine(SpawnDelayer());
     }
@@ -56,6 +53,20 @@ public class PlayerTeam : NetworkBehaviour {
 
         }
         RpcChangeLocation(LobbyManager.s_Singleton.GetSpawnLocation(team));
+
+        RpcUpdateResourceText();
+
+    }
+
+    [ClientRpc]
+    public void RpcUpdateResourceText()
+    {
+        if (isLocalPlayer)
+        {
+            resourceText = GameObject.Find("ResourceText");
+            resources = resourceText.GetComponent<Text>();
+        }
+        
     }
 
     [ClientRpc]
@@ -70,6 +81,20 @@ public class PlayerTeam : NetworkBehaviour {
         {
             baseObject = GameObject.Find("Base" + (team + 1) + "Center");
         }
+
+        if (isLocalPlayer && resourceText != null)
+        {
+            uiRefreshTimer += Time.deltaTime;
+            if (uiRefreshTimer >= .5f)
+            {
+                ResourceBank tempBank = baseObject.GetComponent<ResourceBank>();
+                UnityEngine.UI.Text textBox = resourceText.GetComponent<UnityEngine.UI.Text>();
+                textBox.text = teamName + "\nWood: " + tempBank.wood + " \nStone: " + tempBank.stone + "\nMetal: " + tempBank.metal;
+
+                uiRefreshTimer = 0f;
+            }
+        }
+        
     }
 
     private void OnTriggerEnter(Collider other)
