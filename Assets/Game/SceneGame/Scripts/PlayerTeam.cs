@@ -13,25 +13,40 @@ public class PlayerTeam : NetworkBehaviour {
     [SyncVar]
     public int playerID;
     public GameObject resourceText;
-    Text resources;
     public GameObject baseObject;
     public static int playerCount = 0;
     float uiRefreshTimer;
+    
+    Text trWoodResources;
+    Text trStoneResources;
+    Text trMetalResources;
     // Use this for initialization
     void Start()
     {
         playerID = playerCount;
         playerCount++;
+
+        trWoodResources = GameObject.Find("TRWoodPanel").GetComponentInChildren<Text>();
+        trStoneResources = GameObject.Find("TRStonePanel").GetComponentInChildren<Text>();
+        trMetalResources = GameObject.Find("TRMetalPanel").GetComponentInChildren<Text>();
+        Text trTeamText = GameObject.Find("TRTeamText").GetComponentInChildren<Text>();
+        Image img = GameObject.Find("UITeamResources").GetComponent<Image>();
+
+
         PlayerLobbyInfo lobbyInfo = GetComponentInChildren<PlayerLobbyInfo>();
         if (lobbyInfo.playerColor == Color.blue)
         {
             team =  1;
             teamName = "Blue Team";
+            trTeamText.text = "Team Blue";
+            img.color = new Color(0, 0, 1f, 0.3f);
         }
         else
         {
             team = 0;
             teamName = "Red Team";
+            trTeamText.text = "Team Red";
+            img.color = new Color(1f, 0, 0, 0.3f);
         }
 
         uiRefreshTimer = 0;
@@ -54,19 +69,6 @@ public class PlayerTeam : NetworkBehaviour {
         }
         RpcChangeLocation(LobbyManager.s_Singleton.GetSpawnLocation(team));
 
-        RpcUpdateResourceText();
-
-    }
-
-    [ClientRpc]
-    public void RpcUpdateResourceText()
-    {
-        if (isLocalPlayer)
-        {
-            resourceText = GameObject.Find("ResourceText");
-            resources = resourceText.GetComponent<Text>();
-        }
-        
     }
 
     [ClientRpc]
@@ -82,14 +84,15 @@ public class PlayerTeam : NetworkBehaviour {
             baseObject = GameObject.Find("Base" + (team + 1) + "Center");
         }
 
-        if (isLocalPlayer && resourceText != null)
+        if (isLocalPlayer)
         {
             uiRefreshTimer += Time.deltaTime;
             if (uiRefreshTimer >= .5f)
             {
                 ResourceBank tempBank = baseObject.GetComponent<ResourceBank>();
-                UnityEngine.UI.Text textBox = resourceText.GetComponent<UnityEngine.UI.Text>();
-                textBox.text = teamName + "\nWood: " + tempBank.wood + " \nStone: " + tempBank.stone + "\nMetal: " + tempBank.metal;
+                trWoodResources.text = tempBank.wood.ToString();
+                trStoneResources.text = tempBank.stone.ToString();
+                trMetalResources.text = tempBank.metal.ToString();
 
                 uiRefreshTimer = 0f;
             }
