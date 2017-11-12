@@ -13,6 +13,14 @@ public class BaseBuildings : NetworkBehaviour
 
     }
 
+    [Command]
+    public void CmdResetBuildings()
+    {
+        pointUsed.Clear();
+        mountPoints.Clear();
+        placedObjects.Clear();
+    }
+
     public void AddPointUsed(SyncStructBool point)
     {
         pointUsed.Add(point);

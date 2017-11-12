@@ -54,7 +54,7 @@ public class Target : NetworkBehaviour {
 
     public IEnumerator Delayer()
     {
-        float remainingTime = 1f;
+        float remainingTime = 2f;
 
         while (remainingTime > 0)
         {
@@ -92,7 +92,6 @@ public class Target : NetworkBehaviour {
             else if (team != null)
             {
                 CmdLockPlayer(gameObject.GetComponent<NetworkIdentity>().netId, true);
-                
             }
             timer = 0;
         }
@@ -301,7 +300,7 @@ public class Target : NetworkBehaviour {
         //rend.enabled = false;
     }
 
-    private void Respawn()
+    public void Respawn()
     {
 		mesh = tempMesh;
         isDead = false;

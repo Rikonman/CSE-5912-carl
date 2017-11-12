@@ -16,6 +16,13 @@ public class ResourceBank : NetworkBehaviour
     {
     }
 
+    public void ResetBank()
+    {
+        stone = 500;
+        wood = 500;
+        metal = 200;
+    }
+
     // Update is called once per frame
     void Update()
     {

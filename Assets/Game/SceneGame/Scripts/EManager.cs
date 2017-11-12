@@ -56,7 +56,7 @@ public class EManager : NetworkBehaviour {
                 Target hitTarget = hitGameObject.GetComponent<Target>();
                 if (hitTarget != null)
                 {
-                    if (hitTarget.currentHealth < hitTarget.startingHealth)
+                    if (hitTarget.currentHealth < hitTarget.startingHealth && hitTarget.bid != null)
                     {
                         lookText.text = "Hold 'E' to repair (" + string.Format("{0:P0}", hitTarget.currentHealth / hitTarget.startingHealth) + ")";
                         lookText.enabled = true;

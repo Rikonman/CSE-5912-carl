@@ -18,6 +18,7 @@ TagManager:
   - Building
   - RedSpawnCore
   - BlueSpawnCore
+  - CapturePoint
   layers:
   - Default
   - TransparentFX

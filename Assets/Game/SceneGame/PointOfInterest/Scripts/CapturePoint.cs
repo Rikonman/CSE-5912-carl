@@ -15,6 +15,7 @@ public class CapturePoint : NetworkBehaviour
     public float resourceTimer;
     [SyncVar]
     public string currentOwner;
+    
 
     public float Ownership
     {
@@ -53,10 +54,14 @@ public class CapturePoint : NetworkBehaviour
     // Use this for initialization
     void Start()
     {
+        ResetPoint();
+    }
+
+    public void ResetPoint()
+    {
         resourceTimer = 0;
         Ownership = 0f;
     }
-
     // Update is called once per frame
     void FixedUpdate()
     {

@@ -26,13 +26,18 @@ public class EmperorController : NetworkBehaviour
     public int moodChangeCost;
 	// Use this for initialization
 	void Start () {
+        ResetEmperor();
+        RoundManager = GameObject.Find("Round Manager");
+        RoundScript = RoundManager.GetComponent<RoundManager>();
+        StartCoroutine(TextDelayer());
+    }
+
+    public void ResetEmperor()
+    {
         redFavor = 0;
         blueFavor = 0;
         entertainment = 20;
         boredomTimer = 0f;
-        RoundManager = GameObject.Find("Round Manager");
-        RoundScript = RoundManager.GetComponent<RoundManager>();
-        StartCoroutine(TextDelayer());
     }
 
     public IEnumerator TextDelayer()
