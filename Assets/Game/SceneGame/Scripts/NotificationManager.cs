@@ -31,4 +31,19 @@ public class NotificationManager : MonoBehaviour {
                 Debug.LogError("Can't create notification: static notificationItem GameObject is NULL");
         }
     }
+
+    public static string GetRedString(string msg)
+    {
+        return "<color=#FF0000>" + msg + "</color>";
+    }
+
+    public static string GetBlueString(string msg)
+    {
+        return "<color=#0099FF>" + msg + "</color>";
+    }
+
+    public static string GetColoredString(Color clr, string msg)
+    {
+        return "<color=#" + ColorUtility.ToHtmlStringRGB(clr)  + ">" + msg + "</color>";
+    }
 }
