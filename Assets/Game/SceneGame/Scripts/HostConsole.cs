@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Networking;
 using System;
 
 public class HostConsole : MonoBehaviour
@@ -10,6 +7,7 @@ public class HostConsole : MonoBehaviour
     bool open;
     bool toClose;
     public GameObject panel;
+    private Image UIPanelImg;
     public InputField input;
 
     public string[] tokens;
@@ -23,11 +21,11 @@ public class HostConsole : MonoBehaviour
 
     void Start()
     {
-        panel = GameObject.Find("Console");
+        UIPanelImg = GameObject.Find("UINotificationCenter").GetComponent<Image>();
+        panel = GameObject.Find("UINotificationConsole");
         input = panel.GetComponentInChildren<InputField>();
         panel.SetActive(open);
-        
-        
+        SetNotificationCenterBackVisible(open);
     }
 
     void Update()
@@ -54,12 +52,13 @@ public class HostConsole : MonoBehaviour
                 }
             }
         }
-            //Open close console
-            if (toClose || Input.GetKeyDown(KeyCode.BackQuote))
+        //Open close console
+        if (toClose || Input.GetKeyDown(KeyCode.BackQuote))
         {
             toClose = false;
             open = !open;
             panel.SetActive(open);
+            SetNotificationCenterBackVisible(open);
             if (open)
             {
                 player.GetComponent<PlayerController>().enabled = false;
@@ -148,8 +147,17 @@ public class HostConsole : MonoBehaviour
                 }
             }
         }
+    }
 
-
-
+    private void SetNotificationCenterBackVisible(Boolean visible)
+    {
+        if (visible)
+        {
+            UIPanelImg.color = new Color(1f, 1f, 1f, 0.32f);
+        }
+        else
+        {
+            UIPanelImg.color = new Color(1f, 1f, 1f, 0);
+        }
     }
 }

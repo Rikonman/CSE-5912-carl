@@ -65,6 +65,7 @@ public class ResourceBank : NetworkBehaviour
         wood += Amount;
         if (wood > maxResources)
             wood = maxResources;
+        NotificationManager.NewNotification("Wood is now at <color=#00FF00>" + wood.ToString() + "</color>");
     }
 
     public void AddMetal(int Amount)
