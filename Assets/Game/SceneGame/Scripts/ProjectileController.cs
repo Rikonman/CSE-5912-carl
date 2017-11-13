@@ -44,10 +44,13 @@ public class ProjectileController : NetworkBehaviour {
 
         // if the projectile was fired by your team, leave
         PlayerTeam collisionTeam = collision.gameObject.GetComponent<PlayerTeam>();
-        if (collisionTeam != null && collisionTeam.team == firingTeam)
+        if (collisionTeam != null && collisionTeam.team == firingTeam ||
+            collision.gameObject.tag == "RedSpawnCore" && firingTeam == 0 ||
+            collision.gameObject.tag == "BlueSpawnCore" && firingTeam == 1)
         {
             return;
         }
+        
 
         // the projectile is going to explode and is no longer live
         isLive = false;
@@ -90,7 +93,7 @@ public class ProjectileController : NetworkBehaviour {
             {
                 isStone = collisionTarget.bid.isStone;
             }
-            else
+            else if (collision.gameObject.tag == "RedSpawnCore" || collision.gameObject.tag == "BlueSpawnCore")
             {
                 isCore = true;
             } 
@@ -128,7 +131,8 @@ public class ProjectileController : NetworkBehaviour {
 
             tempTriangleExplosion.indices = M.GetTriangles(0);
             tempTriangleExplosion.isStone = isStone;
-            
+            tempTriangleExplosion.isCore = isCore;
+
             //NetworkServer.Lo.SetLocalObject(tempTB.netId, triangleBreak);
             CmdDoBreak(triangleBreak, position, rotation);
 
@@ -146,16 +150,18 @@ public class ProjectileController : NetworkBehaviour {
         NetworkServer.Spawn(instance);
         //StartCoroutine(instance.GetComponent<TriangleExplosion>().SplitMesh(true));
         NetworkIdentity tempNetworkID = instance.GetComponent<NetworkIdentity>();
-        RpcDoBreak(tempNetworkID.netId, position, rotation, instance.GetComponent<TriangleExplosion>().isStone);
+        TriangleExplosion te = instance.GetComponent<TriangleExplosion>();
+        RpcDoBreak(tempNetworkID.netId, position, rotation, te.isStone, te.isCore);
     }
 
     [ClientRpc]
-    public void RpcDoBreak(NetworkInstanceId triangleBreakID, Vector3 position, Quaternion rotation, bool isStone)
+    public void RpcDoBreak(NetworkInstanceId triangleBreakID, Vector3 position, Quaternion rotation, bool isStone, bool isCore)
     {
 
         GameObject triangleBreak = ClientScene.FindLocalObject(triangleBreakID);
         GameObject instance = (GameObject)Instantiate(triangleBreak, position, rotation);
         instance.GetComponent<TriangleExplosion>().isStone = isStone;
+        instance.GetComponent<TriangleExplosion>().isCore = isCore;
         StartCoroutine(instance.GetComponent<TriangleExplosion>().SplitMesh(true));
     }
 }
