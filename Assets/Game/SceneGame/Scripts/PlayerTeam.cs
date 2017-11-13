@@ -87,6 +87,7 @@ public class PlayerTeam : NetworkBehaviour {
         transform.SetPositionAndRotation(spawnLocation, Quaternion.identity);
     }
 
+    
     private void FixedUpdate()
     {
         if (baseObject == null)
@@ -94,11 +95,8 @@ public class PlayerTeam : NetworkBehaviour {
             baseObject = GameObject.Find("Base" + (team + 1) + "Center");
         }
 
-        if (isLocalPlayer)
-    private void FixedUpdate()
-    {
-
         if (isLocalPlayer && resourceText != null && baseObject != null)
+        if (isLocalPlayer && baseObject != null)
         {
             uiRefreshTimer += Time.deltaTime;
             if (uiRefreshTimer >= .5f)
