@@ -40,21 +40,27 @@ public class PlayerTeam : NetworkBehaviour {
         {
             team =  1;
             teamName = "Blue Team";
-            trTeamText.text = teamName;
-            img1.color = new Color(0, 0, 1f, 0.3f);
-            img2.color = new Color(0, 0, 1f, 0.3f);
-            img3.color = new Color(0, 0, 1f, 0.3f);
-            img4.color = new Color(0, 0, 1f, 0.3f);
+            if (isLocalPlayer)
+            {
+                trTeamText.text = teamName;
+                img1.color = new Color(0, 0, 1f, 0.3f);
+                img2.color = new Color(0, 0, 1f, 0.3f);
+                img3.color = new Color(0, 0, 1f, 0.3f);
+                img4.color = new Color(0, 0, 1f, 0.3f);
+            }
         }
         else
         {
             team = 0;
             teamName = "Red Team";
-            trTeamText.text = teamName;
-            img1.color = new Color(1f, 0, 0, 0.3f);
-            img2.color = new Color(1f, 0, 0, 0.3f);
-            img3.color = new Color(1f, 0, 0, 0.3f);
-            img4.color = new Color(1f, 0, 0, 0.3f);
+            if (isLocalPlayer)
+            {
+                trTeamText.text = teamName;
+                img1.color = new Color(1f, 0, 0, 0.3f);
+                img2.color = new Color(1f, 0, 0, 0.3f);
+                img3.color = new Color(1f, 0, 0, 0.3f);
+                img4.color = new Color(1f, 0, 0, 0.3f);
+            }
         }
 
         uiRefreshTimer = 0;
