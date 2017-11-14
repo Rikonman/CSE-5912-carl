@@ -79,13 +79,12 @@ public class GunController : NetworkBehaviour {
         if (!isLocalPlayer)
             return;
 
-        if (Input.GetKeyDown(KeyCode.F))
-            SwitchGuns();
-
         if (!locked)
         {
 
-            
+            if (Input.GetKeyDown(KeyCode.F))
+                Switch();
+
             if (automatic)
             {
                 if (Input.GetButton("Fire1") && Time.time >= fireDelay)
@@ -166,7 +165,24 @@ public class GunController : NetworkBehaviour {
         NetworkServer.Spawn(instance);
     }
 
-    void SwitchGuns()
+    [Command]
+    public void CmdSwitch()
+    {
+
+        Switch();
+        RpcSwitch();
+
+    }
+
+    [ClientRpc]
+    void RpcSwitch()
+    {
+
+        Switch();
+
+    }
+
+    void Switch()
     {
         gun.transform.GetChild(currentGun).gameObject.SetActive(false);
         automatic = !automatic;
