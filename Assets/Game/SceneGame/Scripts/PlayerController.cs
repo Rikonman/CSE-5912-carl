@@ -9,6 +9,7 @@ public class PlayerController : NetworkBehaviour
     private float jumpSensitivity = 1500f;
     [SerializeField]
     private float lookSensitivity = 5f;
+
     [Header("First Person Camera Position")]
     [SerializeField]
     public bool locked;
@@ -17,6 +18,7 @@ public class PlayerController : NetworkBehaviour
     float fpCameraX = 0f;                    // The height off of the ground that the camera should be
     [SerializeField]
     float fpCameraZ = 0.2f;                  // The height off of the ground that the camera should be
+
     [Header("Third Person Camera Position")]
     [SerializeField]
     float tpCameraDistance = 6f;            // Distance from the player that the camera should be
@@ -24,9 +26,10 @@ public class PlayerController : NetworkBehaviour
     float tpCameraY = 7f;                   // The height off of the ground that the camera should be
     [SerializeField]
     bool isFirstPerson = true;
+
     [Header("UI")]
-    [SerializeField]
-    GameObject HUDLayout;
+    //[SerializeField]
+    //GameObject HUDLayout;
 
     Vector3 tpCameraOffset;
     Vector3 fpCameraOffset;
@@ -48,7 +51,7 @@ public class PlayerController : NetworkBehaviour
     public Transform mainCamera;
 
     private Rigidbody rb;
-    private GameObject clientHUD;
+    //private GameObject clientHUD;
 
     // Use this for initialization
     void Start()
@@ -61,13 +64,13 @@ public class PlayerController : NetworkBehaviour
             Destroy(this);
             return;
         }
-        clientHUD = Instantiate(HUDLayout);
-        clientHUD.name = HUDLayout.name;
-        clientHUD.transform.SetParent(GameObject.Find("_UI").transform);
-        clientHUD.transform.localScale = Vector3.one;
-        clientHUD.transform.localPosition = new Vector3(0, 0, 0);
-        clientHUD.GetComponent<RectTransform>().offsetMin = new Vector2(0, 0);
-        clientHUD.GetComponent<RectTransform>().offsetMax = new Vector2(0, 0);
+        //clientHUD = Instantiate(HUDLayout);
+        //clientHUD.name = HUDLayout.name;
+        //clientHUD.transform.SetParent(GameObject.Find("_UI").transform);
+        //clientHUD.transform.localScale = Vector3.one;
+        //clientHUD.transform.localPosition = new Vector3(0, 0, 0);
+        //clientHUD.GetComponent<RectTransform>().offsetMin = new Vector2(0, 0);
+        //clientHUD.GetComponent<RectTransform>().offsetMax = new Vector2(0, 0);
 
         Billboard.CameraToFocusOn = GetComponentInChildren<Camera>();
         //crosshair.enabled = true;
@@ -168,6 +171,6 @@ public class PlayerController : NetworkBehaviour
 
     void OnStopServer()
     {
-        Destroy(clientHUD);
+        //Destroy(clientHUD);
     }
 }

@@ -4,8 +4,8 @@ using UnityEngine.UI;
 
 public class UIManager : NetworkBehaviour {
 
-    private Text txtAmmoInMag;
-    private Text txtAmmoInReserve;
+    private Text txtLoadedAmmo;
+    private Text txtReserveAmmo;
     private Text txtPlayerHealth;
 
     private GunController gunController;
@@ -22,8 +22,8 @@ public class UIManager : NetworkBehaviour {
             return;
         }
         gunController = GetComponent<GunController>();
-        txtAmmoInMag = GameObject.Find("AmmoInMag").GetComponent<Text>();
-        txtAmmoInReserve = GameObject.Find("AmmoInReserve").GetComponent<Text>();
+        txtLoadedAmmo = GameObject.Find("UIWILoadedAmmo").GetComponent<Text>();
+        txtReserveAmmo = GameObject.Find("UIWIReserveAmmo").GetComponent<Text>();
         playerTarget = GetComponent<Target>();
         playerTarget.onHealthChanged += HealthChanged;
         txtPlayerHealth = GameObject.Find("UIPHBText").GetComponent<Text>();
@@ -45,14 +45,14 @@ public class UIManager : NetworkBehaviour {
     // Update is called once per frame
     void Update () {
         // Only update the text if there is a reason to update it.
-        if (gunController.currentAmmoInMag.ToString() != txtAmmoInMag.text.Substring(txtAmmoInMag.text.IndexOf(":") + 2))
+        if (gunController.currentAmmoInMag.ToString() != txtLoadedAmmo.text)
         {
-            txtAmmoInMag.text = txtAmmoInMag.text.Substring(0, txtAmmoInMag.text.IndexOf(":")) + ": " + gunController.currentAmmoInMag.ToString();
+            txtLoadedAmmo.text = gunController.currentAmmoInMag.ToString();
         }
         // Only update the text if there is a reason to update it.
-        if (gunController.currentAmmoInReserve.ToString() != txtAmmoInReserve.text.Substring(txtAmmoInReserve.text.IndexOf(":") + 2))
+        if (gunController.currentAmmoInReserve.ToString() != txtReserveAmmo.text)
         {
-            txtAmmoInReserve.text = txtAmmoInReserve.text.Substring(0, txtAmmoInReserve.text.IndexOf(":")) + ": " + gunController.currentAmmoInReserve.ToString();
+            txtReserveAmmo.text = gunController.currentAmmoInReserve.ToString();
         }
         // Only update the text if there is a reason to update it.
         //if (playerTarget.currentHealth.ToString() != txtPlayerHealth.text.Substring(txtPlayerHealth.text.IndexOf(":") + 2, txtPlayerHealth.text.IndexOf("/") - (txtPlayerHealth.text.IndexOf(":") + 2)))

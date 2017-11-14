@@ -2668,7 +2668,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerColor: {r: 0, g: 0, b: 0, a: 0}
   playerName: 
-  playerNameIndicator: {fileID: 0}
 --- !u!114 &114139100712587180
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2738,7 +2737,6 @@ MonoBehaviour:
   tpCameraDistance: 6
   tpCameraY: 7
   isFirstPerson: 1
-  HUDLayout: {fileID: 1116641536544642, guid: e6a03c3d7ec960546aeafa9d0edf15c2, type: 2}
   walking: {fileID: 82036120141289440}
   mainCamera: {fileID: 4600633042492056}
 --- !u!114 &114445902071416672
@@ -2950,7 +2948,6 @@ MonoBehaviour:
   timer: 0
   team: {fileID: 0}
   bid: {fileID: 0}
-  healthbar: {fileID: 0}
   emperorScript: {fileID: 0}
   gunScript: {fileID: 0}
   SpawnObject: {fileID: 0}
