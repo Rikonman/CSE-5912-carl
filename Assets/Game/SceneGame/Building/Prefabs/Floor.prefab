@@ -25,9 +25,10 @@ GameObject:
   - component: {fileID: 114331029394278356}
   - component: {fileID: 114761374088008900}
   - component: {fileID: 114035102796336706}
+  - component: {fileID: 114811642784411384}
   m_Layer: 0
   m_Name: Floor
-  m_TagString: Untagged
+  m_TagString: Building
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -130,7 +131,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   mounting:
-    parent: {fileID: 0}
+    team: 0
+    objectID: 0
+    parentMountType: 0
     points: []
     pointType: 
   offset: {x: 0, y: -0.3, z: 0}
@@ -167,3 +170,19 @@ MonoBehaviour:
     i15: 162
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
+--- !u!114 &114811642784411384
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1816443313050996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 324c45d60abaaae49a9bf6082f223d4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  team: 0
+  id: 0
+  parentMountPoint: -1
+  parentMountBool: -1
+  isStone: 0

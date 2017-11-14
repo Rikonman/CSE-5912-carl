@@ -9,18 +9,19 @@ public class PlayerLobbyInfo : NetworkBehaviour {
     [SyncVar]
     public string playerName;
 
-    public Text playerNameIndicator;
+    //public Text playerNameIndicator;
 
     MeshRenderer[] rends;
 
 	// Use this for initialization
-	void Start () {
+	void Start ()
+    {
         rends = GetComponentsInChildren<MeshRenderer>();
         for (int i = 0; i < rends.Length; i++)
         {
             rends[i].material.color = playerColor;
         }
-        playerNameIndicator.text = playerName;
+        //playerNameIndicator.text = playerName;
         Debug.Log("Player Color: " + playerColor.ToString());
         Debug.Log("Player Name: " + playerName);
 	}

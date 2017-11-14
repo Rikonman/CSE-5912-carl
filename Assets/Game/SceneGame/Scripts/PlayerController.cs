@@ -9,13 +9,16 @@ public class PlayerController : NetworkBehaviour
     private float jumpSensitivity = 1500f;
     [SerializeField]
     private float lookSensitivity = 5f;
+
     [Header("First Person Camera Position")]
     [SerializeField]
+    public bool locked;
     float fpCameraY = 0.45f;                 // The height off of the ground that the camera should be
     [SerializeField]
     float fpCameraX = 0f;                    // The height off of the ground that the camera should be
     [SerializeField]
     float fpCameraZ = 0.2f;                  // The height off of the ground that the camera should be
+
     [Header("Third Person Camera Position")]
     [SerializeField]
     float tpCameraDistance = 6f;            // Distance from the player that the camera should be
@@ -23,11 +26,11 @@ public class PlayerController : NetworkBehaviour
     float tpCameraY = 7f;                   // The height off of the ground that the camera should be
     [SerializeField]
     bool isFirstPerson = true;
-    [Header("UI")]
-    [SerializeField]
-    GameObject HUDLayout;
 
-    Transform mainCamera;
+    [Header("UI")]
+    //[SerializeField]
+    //GameObject HUDLayout;
+
     Vector3 tpCameraOffset;
     Vector3 fpCameraOffset;
 
@@ -44,28 +47,30 @@ public class PlayerController : NetworkBehaviour
     float speed;
     float walkingSpeed = 6f;
     float sprintSpeed = 12f;
-    float uiRefreshTimer;
     Vector3 flatTransform;
+    public Transform mainCamera;
 
     private Rigidbody rb;
-    private GameObject clientHUD;
+    //private GameObject clientHUD;
 
     // Use this for initialization
     void Start()
     {
+        locked = false;
         // if this player is not the local player...
-        if (!isLocalPlayer) {
+        if (!isLocalPlayer)
+        {
             // then remove this script. By removing this script all the rest of the code will not run.
             Destroy(this);
             return;
         }
-        clientHUD = Instantiate(HUDLayout);
-        clientHUD.name = HUDLayout.name;
-        clientHUD.transform.SetParent(GameObject.Find("_UI").transform);
-        clientHUD.transform.localScale = Vector3.one;
-        clientHUD.transform.localPosition = new Vector3(0, 0, 0);
-        clientHUD.GetComponent<RectTransform>().offsetMin = new Vector2(0, 0);
-        clientHUD.GetComponent<RectTransform>().offsetMax = new Vector2(0, 0);
+        //clientHUD = Instantiate(HUDLayout);
+        //clientHUD.name = HUDLayout.name;
+        //clientHUD.transform.SetParent(GameObject.Find("_UI").transform);
+        //clientHUD.transform.localScale = Vector3.one;
+        //clientHUD.transform.localPosition = new Vector3(0, 0, 0);
+        //clientHUD.GetComponent<RectTransform>().offsetMin = new Vector2(0, 0);
+        //clientHUD.GetComponent<RectTransform>().offsetMax = new Vector2(0, 0);
 
         Billboard.CameraToFocusOn = GetComponentInChildren<Camera>();
         //crosshair.enabled = true;
@@ -73,84 +78,82 @@ public class PlayerController : NetworkBehaviour
 
         tpCameraOffset = new Vector3(0f, tpCameraY, -tpCameraDistance);
         fpCameraOffset = new Vector3(fpCameraX, fpCameraY, fpCameraZ);
-        mainCamera = transform.GetChild(0);
-        MoveCamera();
-        uiRefreshTimer = 0;
+        //mainCamera = transform.GetChild(0);
+        //MoveCamera();
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void LateUpdate()
     {
-        xRotation -= Input.GetAxis("Mouse Y") * lookSensitivity;
-        if (xRotation > 70)
+        if (!locked)
         {
-            xRotation = 70;
-        }
-        else if (xRotation < -80)
-        {
-            xRotation = -80;
-        }
-
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            speed = sprintSpeed;
-        }
-        else
-        {
-            speed = walkingSpeed;
-        }
-
-        yRotation += Input.GetAxis("Mouse X") * lookSensitivity;
-        transform.rotation = Quaternion.Euler(0, yRotation, 0);
-
-        Vector3 direction = new Vector3(Input.GetAxis("Horizontal") * Time.deltaTime * speed, 0, Input.GetAxis("Vertical") * Time.deltaTime * speed);
-        transform.Translate(direction);
-        if (direction.magnitude > 0)
-        {
-            if (!walking.isPlaying)
+            xRotation -= Input.GetAxis("Mouse Y") * lookSensitivity;
+            if (xRotation > 70)
             {
-                walking.Play();
+                xRotation = 70;
             }
-        }
-        else
-        {
-            walking.Stop();
-        }
-
-        Vector3 jumpForce = Vector3.zero;
-
-        if (Input.GetButton("Jump"))
-        {
-            jumpForce = Vector3.up * jumpSensitivity;
-            if (jumpForce != Vector3.zero)
+            else if (xRotation < -80)
             {
-                rb.AddForce(Time.fixedDeltaTime * jumpForce, ForceMode.Acceleration);
+                xRotation = -80;
             }
+
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                speed = sprintSpeed;
+            }
+            else
+            {
+                speed = walkingSpeed;
+            }
+
+            yRotation += Input.GetAxis("Mouse X") * lookSensitivity;
+            transform.rotation = Quaternion.Euler(0, yRotation, 0);
+
+            Vector3 direction = new Vector3(Input.GetAxis("Horizontal") * Time.deltaTime * speed, 0, Input.GetAxis("Vertical") * Time.deltaTime * speed);
+            transform.Translate(direction);
+            if (direction.magnitude > 0)
+            {
+                if (!walking.isPlaying)
+                {
+                    walking.Play();
+                }
+            }
+            else
+            {
+                walking.Stop();
+            }
+            Ray jumpRay = new Ray(transform.position, -Vector3.up);
+            RaycastHit jumpRayhit;
+
+            Vector3 jumpForce = Vector3.zero;
+            if (Physics.Raycast(jumpRay, out jumpRayhit, 0.2f))
+            {
+                if (Input.GetButtonDown("Jump"))
+                {
+                    jumpForce = Vector3.up * jumpSensitivity;
+                    rb.AddForce(jumpForce);
+
+                    //rb.AddForce(jumpForce, ForceMode.Acceleration);
+                }
+            }
+            else
+            {
+                rb.AddForce(Physics.gravity, ForceMode.Acceleration);
+            }
+            // Update the camera's position/rotation
+            MoveCamera();
+
         }
-
-        // Update the camera's position/rotation
-        MoveCamera();
-
-        //uiRefreshTimer += Time.deltaTime;
-        //if (uiRefreshTimer >= .5f)
-        //{
-        //    PlayerTeam tempTeam = GetComponent<PlayerTeam>();
-        //    ResourceBank tempBank = tempTeam.baseObject.GetComponent<ResourceBank>();
-        //    UnityEngine.UI.Text textBox = tempTeam.resourceText.GetComponent<UnityEngine.UI.Text>();
-        //    textBox.text = "Team " + (tempTeam.team + 1) + " \nStone: " + tempBank.stone + "\nWood: " + tempBank.wood;
-
-        //    uiRefreshTimer = 0f;
-        //}
     }
 
     void MoveCamera()
     {
-        mainCamera.position = transform.position;
-        mainCamera.rotation = transform.rotation;
+        //mainCamera.position = transform.position;
+        //mainCamera.rotation = transform.rotation;
         if (isFirstPerson)
         {
-            fpCameraOffset = new Vector3(fpCameraX, fpCameraY, fpCameraZ);
-            mainCamera.Translate(fpCameraOffset);
+            //fpCameraOffset = new Vector3(fpCameraX, fpCameraY, fpCameraZ);
+            //mainCamera.Translate(fpCameraOffset);
             mainCamera.transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
         }
         else
@@ -161,13 +164,13 @@ public class PlayerController : NetworkBehaviour
         }
     }
 
-	void OnDisable()
-	{
-		//death state
-	}
-	
-	void OnStopServer()
-	{
-		Destroy (clientHUD);
-	}
+    void OnDisable()
+    {
+        //death state
+    }
+
+    void OnStopServer()
+    {
+        //Destroy(clientHUD);
+    }
 }

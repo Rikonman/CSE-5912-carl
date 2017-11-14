@@ -317,9 +317,9 @@ GameObject:
   - component: {fileID: 114134530497365694}
   - component: {fileID: 114614089203314296}
   - component: {fileID: 114350394702480100}
-  - component: {fileID: 114703742327301494}
   - component: {fileID: 114751113642551176}
   - component: {fileID: 114562722207843320}
+  - component: {fileID: 114703742327301494}
   - component: {fileID: 114877743564436098}
   - component: {fileID: 82088136783784110}
   m_Layer: 0
@@ -572,9 +572,9 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.1
   far clip plane: 1000
-  field of view: 60
+  field of view: 70
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -993,7 +993,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -1236,9 +1236,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4b5c13480b28994eac19c9f7ce3dce0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpSensitivity: 1500
+  jumpSensitivity: 150000
   lookSensitivity: 5
-  fpCameraY: 0.45
+  locked: 0
   fpCameraX: 0
   fpCameraZ: 0.2
   tpCameraDistance: 6
@@ -1246,6 +1246,7 @@ MonoBehaviour:
   isFirstPerson: 1
   HUDLayout: {fileID: 1116641536544642, guid: e6a03c3d7ec960546aeafa9d0edf15c2, type: 2}
   walking: {fileID: 82859214017980828}
+  mainCamera: {fileID: 0}
 --- !u!114 &114115589061638468
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1326,6 +1327,7 @@ MonoBehaviour:
   respawnTime: 5
   timer: 0
   healthbar: {fileID: 224578174315765238}
+  emperorScript: {fileID: 0}
 --- !u!114 &114350394702480100
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1417,7 +1419,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff26db721962cdf4a8edcdfa9a767d2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  profile: {fileID: 11400000, guid: 0daf5335ca552824089a491dcb75cfdc, type: 2}
+  profile: {fileID: 11400000, guid: 195ccc2a7a04b08488384833b8a8a308, type: 2}
 --- !u!114 &114562722207843320
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1443,7 +1445,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ffa247aa675f0241810b7a43c869f33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  teamID: 0
+  materials: []
   buildMode: 1
   invalidMaterial: {fileID: 2100000, guid: bc92664203d685042a4e89177dd2cb22, type: 2}
   validMaterial: {fileID: 2100000, guid: 1b5dd748e80b619469eb80a5131750ae, type: 2}
@@ -1453,6 +1455,10 @@ MonoBehaviour:
   - {fileID: 1316662126920882, guid: cc3bb5e2491170e4387560041d2fc264, type: 2}
   - {fileID: 1291626421403662, guid: 55ea4eccecb1c214fa9da07fbbc881a3, type: 2}
   baseParent: {fileID: 0}
+  baseBuildings: {fileID: 0}
+  camera: {fileID: 0}
+  floorPrefab: {fileID: 1816443313050996, guid: d746710a6e5e6724a8a0f8e2adba98a2,
+    type: 2}
 --- !u!114 &114703742327301494
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1465,6 +1471,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   team: 0
+  teamName: 
   playerID: 0
   resourceText: {fileID: 0}
   baseObject: {fileID: 0}

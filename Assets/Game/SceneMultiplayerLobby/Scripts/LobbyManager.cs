@@ -6,6 +6,7 @@ using UnityEngine.Networking.Types;
 using UnityEngine.Networking.Match;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 
 namespace Prototype.NetworkLobby
@@ -38,6 +39,16 @@ namespace Prototype.NetworkLobby
 
         public Text statusInfo;
         public Text hostInfo;
+        
+        public int redPlayers = 0;
+        public int bluePlayers = 0;
+
+        List<Vector3> redSpawns;
+        int redSpawnCounter = 0;
+        List<Vector3> blueSpawns;
+        int blueSpawnCounter = 0;
+        short playerCounter = 0;
+        bool SpawnLoading = false;
 
         //Client numPlayers from NetworkManager is always 0, so we count (throught connect/destroy in LobbyPlayer) the number
         //of players, so that even client know how many player there is.
@@ -72,8 +83,12 @@ namespace Prototype.NetworkLobby
 
             DontDestroyOnLoad(gameObject);
 
+            redSpawns = new List<Vector3>();
+            blueSpawns = new List<Vector3>();
+            
             //SetServerInfo("Offline", "None");
         }
+        
 
         public override void OnLobbyClientSceneChanged(NetworkConnection conn)
         {
@@ -409,10 +424,14 @@ namespace Prototype.NetworkLobby
             }
 
             ServerChangeScene(playScene);
+
+
             // Lock the cursor to the window
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
+        
+        
 
         // ----------------- Client callbacks ------------------
 
@@ -432,6 +451,67 @@ namespace Prototype.NetworkLobby
             }
         }
 
+        public override GameObject OnLobbyServerCreateGamePlayer(NetworkConnection conn, short playerControllerId)
+        {
+            //CheckIfSpawnsCreated();
+            Debug.Log("Player Adding");
+            playerCounter++;
+            GameObject player = GameObject.Instantiate(gamePlayerPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
+
+
+            player.SetActive(true);
+            //ClientScene.AddPlayer(conn, playerControllerId);
+            //NetworkServer.AddPlayerForConnection(conn, player, playerControllerId);
+            return player;
+        }
+
+        
+
+        public Vector3 GetSpawnLocation(int team)
+        {
+            CheckIfSpawnsCreated();
+            if (team == 0)
+            {
+                int currentCounter = redSpawnCounter;
+                redSpawnCounter++;
+                if (redSpawnCounter >= redSpawns.Count)
+                {
+                    redSpawnCounter = 0;
+                }
+                return redSpawns[redSpawnCounter];
+            }
+            else
+            {
+                int currentCounter = blueSpawnCounter;
+                blueSpawnCounter++;
+                if (blueSpawnCounter >= blueSpawns.Count)
+                {
+                    blueSpawnCounter = 0;
+                }
+                return blueSpawns[blueSpawnCounter];
+            }
+        }
+
+        public void CheckIfSpawnsCreated()
+        {
+            if (!SpawnLoading)
+            {
+                SpawnLoading = true;
+                GameObject[] tempRedSpawns = GameObject.FindGameObjectsWithTag("RedSpawn");
+                foreach (GameObject tempSpawn in tempRedSpawns)
+                {
+                    redSpawns.Add(tempSpawn.transform.position);
+
+                }
+                GameObject[] tempBlueSpawns = GameObject.FindGameObjectsWithTag("BlueSpawn");
+                foreach (GameObject tempSpawn in tempBlueSpawns)
+                {
+                    blueSpawns.Add(tempSpawn.transform.position);
+
+                }
+
+            }
+        }
 
         public override void OnClientDisconnect(NetworkConnection conn)
         {

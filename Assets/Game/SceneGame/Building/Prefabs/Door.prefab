@@ -58,9 +58,11 @@ GameObject:
   - component: {fileID: 114528993235499156}
   - component: {fileID: 114661464963478086}
   - component: {fileID: 114030732624668462}
+  - component: {fileID: 114351462938558914}
+  - component: {fileID: 114300030820695720}
   m_Layer: 0
   m_Name: Door
-  m_TagString: Untagged
+  m_TagString: Building
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -151,7 +153,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 5f73475cf0cad364b9800b85c2a229fc, type: 2}
+  - {fileID: 2100000, guid: e0a9c9b6c670e7741bb6c4b660135d5a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -183,7 +185,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 5f73475cf0cad364b9800b85c2a229fc, type: 2}
+  - {fileID: 2100000, guid: cb59d9153594585479402fbd6698a5a9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -215,7 +217,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 5f73475cf0cad364b9800b85c2a229fc, type: 2}
+  - {fileID: 2100000, guid: e0a9c9b6c670e7741bb6c4b660135d5a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -312,6 +314,43 @@ MonoBehaviour:
   m_SnapThreshold: 5
   m_InterpolateRotation: 1
   m_InterpolateMovement: 1
+--- !u!114 &114300030820695720
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1291626421403662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe3106a7a3e87d24393a1d7da8f89879, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startingHealth: 100
+  currentHealth: 0
+  isVulnerable: 1
+  startingPos: {x: 0, y: 0, z: 0}
+  respawnTime: 5
+  timer: 0
+  team: {fileID: 0}
+  bid: {fileID: 0}
+  healthbar: {fileID: 0}
+  emperorScript: {fileID: 0}
+--- !u!114 &114351462938558914
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1291626421403662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 324c45d60abaaae49a9bf6082f223d4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  team: 0
+  id: 1
+  parentMountPoint: 0
+  parentMountBool: 4
+  isStone: 1
 --- !u!114 &114528993235499156
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -325,7 +364,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 3
   mounting:
-    parent: {fileID: 0}
+    team: 0
+    objectID: 0
+    parentMountType: 0
     points: []
     pointType: 
   offset: {x: 0, y: 1.5, z: 0}

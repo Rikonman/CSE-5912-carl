@@ -23,14 +23,32 @@ public class GunController : NetworkBehaviour {
     public int startingReserveAmmo = 50;
     public int currentAmmoInMag;
     public int currentAmmoInReserve;
+    public int currentGun=0;
+    public int numberOfGuns = 2;
 
     [SerializeField]
     GameObject projectilePrefab;
     [SerializeField]
     Transform barrellExit;
     public AudioSource gunshot;
+    public PlayerTeam team;
+    public bool locked;
 
     void Start()
+    {
+        locked = false;
+        ResetAmmo();
+        //gun = transform.GetChild(0).GetChild(0).gameObject;
+        team = GetComponent<PlayerTeam>();
+    }
+
+    [ClientRpc]
+    public void RpcResetAmmo()
+    {
+        ResetAmmo();
+    }
+
+    public void ResetAmmo()
     {
         currentAmmoInReserve = startingReserveAmmo;
         if (currentAmmoInReserve >= maxAmmoInMag)
@@ -43,7 +61,7 @@ public class GunController : NetworkBehaviour {
             currentAmmoInMag = currentAmmoInReserve;
             currentAmmoInReserve = 0;
         }
-        gun = transform.GetChild(0).GetChild(0).gameObject;
+
     }
 
     // the reset method lets us run slow code (like "Find") in the editor where performance
@@ -54,36 +72,49 @@ public class GunController : NetworkBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
+    void Update()
+    {
         // Only the local player can fire a weapon
 
         if (!isLocalPlayer)
-            return;     
+            return;
 
-        if (automatic) {
-            if (Input.GetButton("Fire1") && Time.time >= fireDelay)
-            {
-                fireDelay = Time.time + 1f / fireRate;
-                Shoot();
-            }
-        } else {
-            if (Input.GetButtonDown("Fire1") && Time.time >= fireDelay)
-            {
-                fireDelay = Time.time + fireRate;
-                Shoot();
-            }
-        }
-
-        if (currentAmmoInReserve >= maxAmmoInMag - currentAmmoInMag && Input.GetKeyDown(KeyCode.R))
+        if (!locked)
         {
-            currentAmmoInReserve -= (maxAmmoInMag - currentAmmoInMag);
-            currentAmmoInMag = maxAmmoInMag;
 
-        }
-        else if (currentAmmoInReserve < maxAmmoInMag - currentAmmoInMag && Input.GetKeyDown(KeyCode.R))
-        {
-            currentAmmoInMag += currentAmmoInReserve;
-            currentAmmoInReserve = 0;
+            if (Input.GetKeyDown(KeyCode.F))
+                Switch();
+
+            if (automatic)
+            {
+                if (Input.GetButton("Fire1") && Time.time >= fireDelay)
+                {
+                    fireDelay = Time.time + (fireRate/2f);
+                    Debug.Log(fireDelay - Time.time);
+                    Shoot();
+                }
+            }
+            else
+            {
+                if (Input.GetButtonDown("Fire1") && Time.time >= fireDelay)
+                {
+                    fireDelay = Time.time + fireRate;
+                    Debug.Log(fireDelay - Time.time);
+                    Shoot();
+                }
+            }
+
+            if (currentAmmoInReserve >= maxAmmoInMag - currentAmmoInMag && Input.GetKeyDown(KeyCode.R))
+            {
+                currentAmmoInReserve -= (maxAmmoInMag - currentAmmoInMag);
+                currentAmmoInMag = maxAmmoInMag;
+
+            }
+            else if (currentAmmoInReserve < maxAmmoInMag - currentAmmoInMag && Input.GetKeyDown(KeyCode.R))
+            {
+                currentAmmoInMag += currentAmmoInReserve;
+                currentAmmoInReserve = 0;
+            }
         }
     }
 
@@ -93,7 +124,7 @@ public class GunController : NetworkBehaviour {
             flash.Play();
             gunshot.Play();
             gunshot.loop = false;
-            CmdSpawnProjectile();
+            CmdSpawnProjectile(team.team, team.playerID, barrellExit.position, barrellExit.rotation, barrellExit.forward);
             currentAmmoInMag--;
         }
         else
@@ -124,11 +155,59 @@ public class GunController : NetworkBehaviour {
 
     // This command is called from the localPlayer and run on the server. Note that Commands must begin with 'Cmd'
     [Command]
-    void CmdSpawnProjectile()
+    void CmdSpawnProjectile(int team, int playerID, Vector3 position, Quaternion rotation, Vector3 forward)
     {
-        GameObject instance = Instantiate(projectilePrefab, barrellExit.position, barrellExit.rotation);
-        instance.GetComponent<Rigidbody>().AddForce(barrellExit.forward * range);
-
+        GameObject instance = Instantiate(projectilePrefab, position, rotation);
+        instance.GetComponent<Rigidbody>().AddForce(forward * range);
+        ProjectileController pc = instance.GetComponent<ProjectileController>();
+        pc.firingTeam = team;
+        pc.firingPlayer = playerID;
         NetworkServer.Spawn(instance);
+    }
+
+    [Command]
+    public void CmdSwitch()
+    {
+
+        Switch();
+        RpcSwitch();
+
+    }
+
+    [ClientRpc]
+    void RpcSwitch()
+    {
+
+        Switch();
+
+    }
+
+    void Switch()
+    {
+        gun.transform.GetChild(currentGun).gameObject.SetActive(false);
+        automatic = !automatic;
+        if (currentGun < numberOfGuns - 1)
+            currentGun++;
+        else
+            currentGun = 0;
+        gun.transform.GetChild(currentGun).gameObject.SetActive(true);
+        barrellExit = gun.transform.GetChild(currentGun).GetChild(0);
+
+        if (!automatic)
+        {
+            damage = 2;
+            maxAmmoInMag = 20;
+            startingReserveAmmo = 50;
+            currentAmmoInMag = maxAmmoInMag;
+            currentAmmoInReserve = startingReserveAmmo;
+        }
+        else
+        {
+            damage = 10;
+            maxAmmoInMag = 50;
+            startingReserveAmmo = 150;
+            currentAmmoInMag = maxAmmoInMag;
+            currentAmmoInReserve = startingReserveAmmo;
+        }
     }
 }

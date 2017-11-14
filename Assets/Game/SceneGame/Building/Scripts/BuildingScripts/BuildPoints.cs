@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class BuildPoints : MonoBehaviour
+public class BuildPoints : NetworkBehaviour
 {
-    public enum MountType { Floor1, Wall, Ceiling1, Door1};
+    public enum MountType { Floor1, Wall, Ceiling1, Door1, Stair1, Destroyed};
     public MountType type;
     string[] fileStrings;
     public MountPoint mounting;
@@ -15,7 +16,10 @@ public class BuildPoints : MonoBehaviour
     {
         TextAsset textFile = (TextAsset)Resources.Load("MountingPoints");
         fileStrings = textFile.text.Split('[');
-        AddPoints(type.ToString());
+        mounting = new MountPoint();
+        mounting.points = new Vector3[0];
+        mounting.pointType = new BuildPoints.MountType[0];
+        AddPoints(type, transform);
     }
 
     void Update()
@@ -23,7 +27,7 @@ public class BuildPoints : MonoBehaviour
 
     }
 
-    void AddPoints(string typeString)
+    void AddPoints(MountType inType, Transform trans)
     {
         string typeData = "";
         foreach (string str in fileStrings)
@@ -31,7 +35,7 @@ public class BuildPoints : MonoBehaviour
             if (str.Length > 0)
             {
                 string str2 = str.Substring(0, str.IndexOf(']'));
-                if (str.Substring(0, str.IndexOf(']')) == type.ToString())
+                if (str.Substring(0, str.IndexOf(']')) == inType.ToString())
                 {
                     typeData = str;
                 }
@@ -49,9 +53,9 @@ public class BuildPoints : MonoBehaviour
             float.TryParse(xyz[2], out z);
             int type;
             int.TryParse(xyz[3], out type);
-            mounting.parent = transform;
-            mounting.points.Add(new Vector3(x, y, z));
-            mounting.pointType.Add((MountType)type);
+            mounting.parentMountType = inType;
+            mounting.AddPoint(new Vector3(x, y, z));
+            mounting.AddMountType((MountType)type);
         }
     }
 }

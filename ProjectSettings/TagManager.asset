@@ -10,6 +10,15 @@ TagManager:
   - Pick Up (Wood)
   - Ground
   - hiddenUI
+  - Fire
+  - RedSpawn
+  - BlueSpawn
+  - Pick Up (Metal)
+  - Undefined
+  - Building
+  - RedSpawnCore
+  - BlueSpawnCore
+  - CapturePoint
   layers:
   - Default
   - TransparentFX
