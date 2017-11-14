@@ -13,6 +13,7 @@ public class playerAnimation : NetworkBehaviour {
     float xRotation;
     float aimOffset;
     float aim;
+    bool isDead;
     public Transform head;
     public Animator anim;
     Camera mainCamera;
@@ -25,6 +26,7 @@ public class playerAnimation : NetworkBehaviour {
         aimOffset = 0.04f;
         //mainCamera = Camera.main;
         //mainCamera.transform.position = head.position;
+        isDead = false;
     }
 
     // Update is called once per frame
@@ -49,6 +51,7 @@ public class playerAnimation : NetworkBehaviour {
         //Debug.Log(xRotation);
         inputH = Input.GetAxis("Horizontal");
         inputV = Input.GetAxis("Vertical");
+        isDead = gameObject.GetComponent<Target>()._isDead;
 
         //mainCamera.transform.rotation = Quaternion.Euler(xRotation, 0, 0);
         //mainCamera.transform.position = head.position;
@@ -56,6 +59,7 @@ public class playerAnimation : NetworkBehaviour {
         anim.SetFloat("inputH", inputH);
         anim.SetFloat("inputV", inputV);
         anim.SetFloat("xRotation", -xRotation);
+        anim.SetBool("isDead", isDead);
 
     }
     
