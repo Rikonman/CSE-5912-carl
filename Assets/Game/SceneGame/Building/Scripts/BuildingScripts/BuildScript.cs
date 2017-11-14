@@ -39,6 +39,8 @@ public class BuildScript : NetworkBehaviour
     {
         locked = false;
         currentObject = 0;
+        BuildMenu = GameObject.Find("BuildMenu");
+        BuildMenu.SetActive(false);
         StartCoroutine(LoadDelayer());
     }
 
@@ -54,7 +56,6 @@ public class BuildScript : NetworkBehaviour
 
         }
         team = GetComponent<PlayerTeam>();
-        BuildMenu = GameObject.Find("BuildMenu");
         gun = GetComponent<GunController>();
         baseParent = team.baseObject.transform;
         baseBuildings = team.baseObject.GetComponent<BaseBuildings>();
@@ -110,6 +111,9 @@ public class BuildScript : NetworkBehaviour
                 if (BuildMenu != null)
                 {
                     BuildMenu.SetActive(buildMode);
+                }
+                if (gun != null)
+                {
                     gun.enabled = !buildMode;
                 }
                 if (previewObject != null)
