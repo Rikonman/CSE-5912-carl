@@ -9,7 +9,7 @@ public class PlayerLobbyInfo : NetworkBehaviour {
     [SyncVar]
     public string playerName;
 
-    public Text playerNameIndicator;
+    //public Text playerNameIndicator;
 
     MeshRenderer[] rends;
 
@@ -21,7 +21,7 @@ public class PlayerLobbyInfo : NetworkBehaviour {
         {
             rends[i].material.color = playerColor;
         }
-        playerNameIndicator.text = playerName;
+        //playerNameIndicator.text = playerName;
         Debug.Log("Player Color: " + playerColor.ToString());
         Debug.Log("Player Name: " + playerName);
 	}

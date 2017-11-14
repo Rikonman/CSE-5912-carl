@@ -10,9 +10,10 @@ public class UIManager : NetworkBehaviour {
 
     private GunController gunController;
     private Target playerTarget;
+    private RectTransform healthbar;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         // if this player is not the local player...
         if (!isLocalPlayer)
         {
@@ -23,8 +24,22 @@ public class UIManager : NetworkBehaviour {
         gunController = GetComponent<GunController>();
         txtAmmoInMag = GameObject.Find("AmmoInMag").GetComponent<Text>();
         txtAmmoInReserve = GameObject.Find("AmmoInReserve").GetComponent<Text>();
-        txtPlayerHealth = GameObject.Find("PlayerHealth").GetComponent<Text>();
         playerTarget = GetComponent<Target>();
+        playerTarget.onHealthChanged += HealthChanged;
+        txtPlayerHealth = GameObject.Find("UIPHBText").GetComponent<Text>();
+        healthbar = GameObject.Find("UIPHBValue").GetComponent<RectTransform>();
+        txtPlayerHealth.text = string.Format("{0:N0}", playerTarget.currentHealth) + " | " + string.Format("{0:N0}", playerTarget.startingHealth);
+    }
+
+    private void HealthChanged(float prevVal, float newVal)
+    {
+        Debug.Log("UIManager Health Changed");
+        if (healthbar != null)
+        {
+            Debug.Log("Healthbar UI Changed. Was: " + string.Format("{0:N2}", prevVal) + "; Now: " + string.Format("{0:N2}", prevVal));
+            healthbar.sizeDelta = new Vector2(newVal * 5, healthbar.sizeDelta.y);
+            txtPlayerHealth.text = string.Format("{0:N0}", playerTarget.currentHealth) + " | " + string.Format("{0:N0}", playerTarget.startingHealth);
+        }
     }
 
     // Update is called once per frame
@@ -40,9 +55,9 @@ public class UIManager : NetworkBehaviour {
             txtAmmoInReserve.text = txtAmmoInReserve.text.Substring(0, txtAmmoInReserve.text.IndexOf(":")) + ": " + gunController.currentAmmoInReserve.ToString();
         }
         // Only update the text if there is a reason to update it.
-        if (playerTarget.currentHealth.ToString() != txtPlayerHealth.text.Substring(txtPlayerHealth.text.IndexOf(":") + 2, txtPlayerHealth.text.IndexOf("/") - (txtPlayerHealth.text.IndexOf(":") + 2)))
-        {
-            txtPlayerHealth.text = txtPlayerHealth.text.Substring(0, txtPlayerHealth.text.IndexOf(":")) + ": " + playerTarget.currentHealth.ToString() + "/" + playerTarget.startingHealth.ToString();
-        }
+        //if (playerTarget.currentHealth.ToString() != txtPlayerHealth.text.Substring(txtPlayerHealth.text.IndexOf(":") + 2, txtPlayerHealth.text.IndexOf("/") - (txtPlayerHealth.text.IndexOf(":") + 2)))
+        //{
+        //    txtPlayerHealth.text = txtPlayerHealth.text.Substring(0, txtPlayerHealth.text.IndexOf(":")) + ": " + playerTarget.currentHealth.ToString() + "/" + playerTarget.startingHealth.ToString();
+        //}
     }
 }

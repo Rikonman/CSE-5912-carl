@@ -313,6 +313,23 @@ public class HostConsole : MonoBehaviour
                             input.text = "";
                             input.ActivateInputField();
                         }
+                        else if (tokens[1] == "health")
+                        {
+                            if (!IsInt(tokens[2]) || int.Parse(tokens[2]) > 100 || int.Parse(tokens[2]) < 0)
+                            {
+                                NotificationManager.NewNotification(NotificationManager.GetRedString("Health must be between 0 and 100"));
+                                input.text = "";
+                                input.ActivateInputField();
+                                return;
+                            }
+                            int newHealth = int.Parse(tokens[2]);
+                            if (newHealth > playerTarget.startingHealth)
+                                newHealth = (int)playerTarget.startingHealth;
+                            NotificationManager.NewNotification("Setting health to " + NotificationManager.GetColoredString(Color.green, newHealth.ToString()));
+                            playerTarget.currentHealth = (float)newHealth;
+                            input.text = "";
+                            input.ActivateInputField();
+                        }
                         else
                         {
                             NotificationManager.NewNotification(NotificationManager.GetRedString("Unknown command"));

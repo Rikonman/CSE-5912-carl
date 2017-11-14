@@ -29,15 +29,17 @@ public class Target : NetworkBehaviour {
     Rigidbody rb;
     public PlayerTeam team;
     public BuildIdentifier bid;
-    public RectTransform healthbar;
     public EmperorController emperorScript;
     public GunController gunScript;
     public GameObject SpawnObject;
 
+    public delegate void OnHealthChanged(float prevValue, float newValue);
+    public OnHealthChanged onHealthChanged;
+
     void Start()
     {
         currentHealth = startingHealth;
-
+        
         isDead = false;
         //rend = transform.GetComponent<Renderer>();
         col = transform.GetComponent<CapsuleCollider>();
@@ -233,11 +235,8 @@ public class Target : NetworkBehaviour {
     private void OnCurrentHealthChange(float newHealth)
     {
         currentHealth = newHealth;
-        if (healthbar != null)
-        {
-            healthbar.sizeDelta = new Vector2(newHealth * 2, healthbar.sizeDelta.y);
-        }
-            
+        if (onHealthChanged != null)
+            onHealthChanged(currentHealth, newHealth);
     }
 
     public void Die()
