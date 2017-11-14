@@ -23,6 +23,8 @@ public class GunController : NetworkBehaviour {
     public int startingReserveAmmo = 50;
     public int currentAmmoInMag;
     public int currentAmmoInReserve;
+    public int currentGun=0;
+    public int numberOfGuns = 2;
 
     [SerializeField]
     GameObject projectilePrefab;
@@ -77,13 +79,19 @@ public class GunController : NetworkBehaviour {
         if (!isLocalPlayer)
             return;
 
+        if (Input.GetKeyDown(KeyCode.F))
+            SwitchGuns();
+
         if (!locked)
         {
+
+            
             if (automatic)
             {
                 if (Input.GetButton("Fire1") && Time.time >= fireDelay)
                 {
-                    fireDelay = Time.time + 1f / fireRate;
+                    fireDelay = Time.time + (fireRate/2f);
+                    Debug.Log(fireDelay - Time.time);
                     Shoot();
                 }
             }
@@ -92,6 +100,7 @@ public class GunController : NetworkBehaviour {
                 if (Input.GetButtonDown("Fire1") && Time.time >= fireDelay)
                 {
                     fireDelay = Time.time + fireRate;
+                    Debug.Log(fireDelay - Time.time);
                     Shoot();
                 }
             }
@@ -155,5 +164,34 @@ public class GunController : NetworkBehaviour {
         pc.firingTeam = team;
         pc.firingPlayer = playerID;
         NetworkServer.Spawn(instance);
+    }
+
+    void SwitchGuns()
+    {
+        gun.transform.GetChild(currentGun).gameObject.SetActive(false);
+        automatic = !automatic;
+        if (currentGun < numberOfGuns - 1)
+            currentGun++;
+        else
+            currentGun = 0;
+        gun.transform.GetChild(currentGun).gameObject.SetActive(true);
+        barrellExit = gun.transform.GetChild(currentGun).GetChild(0);
+
+        if (!automatic)
+        {
+            damage = 2;
+            maxAmmoInMag = 20;
+            startingReserveAmmo = 50;
+            currentAmmoInMag = maxAmmoInMag;
+            currentAmmoInReserve = startingReserveAmmo;
+        }
+        else
+        {
+            damage = 10;
+            maxAmmoInMag = 50;
+            startingReserveAmmo = 150;
+            currentAmmoInMag = maxAmmoInMag;
+            currentAmmoInReserve = startingReserveAmmo;
+        }
     }
 }
