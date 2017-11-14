@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1917429948}
-  m_IndirectSpecularColor: {r: 0.11090858, g: 0.36952296, b: 0.7414278, a: 1}
+  m_IndirectSpecularColor: {r: 0.11083142, g: 0.36980858, b: 0.74241686, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -1490,7 +1490,7 @@ GameObject:
   - component: {fileID: 257309001}
   m_Layer: 0
   m_Name: Emperor
-  m_TagString: Untagged
+  m_TagString: Emperor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3231,7 +3231,7 @@ MonoBehaviour:
   timer: 0
   team: {fileID: 0}
   bid: {fileID: 0}
-  emperorScript: {fileID: 0}
+  emperor: {fileID: 0}
   gunScript: {fileID: 0}
   SpawnObject: {fileID: 0}
 --- !u!23 &628262659

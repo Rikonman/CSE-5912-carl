@@ -21,6 +21,7 @@ public class ProjectileController : NetworkBehaviour {
     void Start () {
         projectileRenderer = GetComponent<MeshRenderer>();
         NetworkIdentity tempTB = triangleBreak.GetComponent<NetworkIdentity>();
+        //triangleBreak = Resources.Load()
     }
 	
 	// Projectiles are updated by the server
@@ -41,6 +42,10 @@ public class ProjectileController : NetworkBehaviour {
         // if the projectile isn't live, leave (we only want to hit one thing and not go through objects)
         if (!isLive)
             return;
+        // the projectile is going to explode and is no longer live
+        isLive = false;
+        // hide the projectile body
+        projectileRenderer.enabled = false;
 
         // if the projectile was fired by your team, leave
         PlayerTeam collisionTeam = collision.gameObject.GetComponent<PlayerTeam>();
@@ -52,11 +57,7 @@ public class ProjectileController : NetworkBehaviour {
         }
         
 
-        // the projectile is going to explode and is no longer live
-        isLive = false;
 
-        // hide the projectile body
-        projectileRenderer.enabled = false;
         // show the explosion particle effect
         GameObject tempHitEffect = Instantiate(hitEffect, gameObject.transform.position, Quaternion.LookRotation(gameObject.transform.forward, Vector3.up));
         Destroy(tempHitEffect, 0.3f);
@@ -134,7 +135,7 @@ public class ProjectileController : NetworkBehaviour {
             tempTriangleExplosion.isCore = isCore;
 
             //NetworkServer.Lo.SetLocalObject(tempTB.netId, triangleBreak);
-            CmdDoBreak(triangleBreak, position, rotation);
+            CmdDoBreak(position, rotation, M.vertices, M.normals, M.uv, M.GetTriangles(0), isStone, isCore);
 
         }
 
@@ -142,16 +143,25 @@ public class ProjectileController : NetworkBehaviour {
     
 
     [Command]
-    public void CmdDoBreak(GameObject triangleBreak, Vector3 position, Quaternion rotation)
+    public void CmdDoBreak(Vector3 position, Quaternion rotation, 
+        Vector3[] verts, Vector3[] normals, Vector2[] uvs, int[] indices, bool isStone, bool isCore)
     {
 
         //GameObject triangleBreak = NetworkServer.FindLocalObject(triangleBreakID);
         GameObject instance = (GameObject)Instantiate(triangleBreak, position, rotation);
+        TriangleExplosion tempTriangleExplosion = instance.GetComponent<TriangleExplosion>();
+        tempTriangleExplosion.verts = verts;
+        tempTriangleExplosion.normals = normals;
+        tempTriangleExplosion.uvs = uvs;
+
+        tempTriangleExplosion.indices = indices;
+        tempTriangleExplosion.isStone = isStone;
+        tempTriangleExplosion.isCore = isCore;
         NetworkServer.Spawn(instance);
         //StartCoroutine(instance.GetComponent<TriangleExplosion>().SplitMesh(true));
         NetworkIdentity tempNetworkID = instance.GetComponent<NetworkIdentity>();
         TriangleExplosion te = instance.GetComponent<TriangleExplosion>();
-        RpcDoBreak(tempNetworkID.netId, position, rotation, te.isStone, te.isCore);
+        RpcDoBreak(tempNetworkID.netId, position, rotation, isStone, isCore);
     }
 
     [ClientRpc]

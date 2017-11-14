@@ -465,11 +465,10 @@ namespace Prototype.NetworkLobby
             return player;
         }
 
-        
+
 
         public Vector3 GetSpawnLocation(int team)
         {
-            CheckIfSpawnsCreated();
             if (team == 0)
             {
                 int currentCounter = redSpawnCounter;
@@ -490,26 +489,32 @@ namespace Prototype.NetworkLobby
                 }
                 return blueSpawns[blueSpawnCounter];
             }
-        }
+        } 
 
         public void CheckIfSpawnsCreated()
         {
             if (!SpawnLoading)
             {
                 SpawnLoading = true;
-                GameObject[] tempRedSpawns = GameObject.FindGameObjectsWithTag("RedSpawn");
-                foreach (GameObject tempSpawn in tempRedSpawns)
+                if (redSpawns.Count < 6)
                 {
-                    redSpawns.Add(tempSpawn.transform.position);
+                    GameObject[] tempRedSpawns = GameObject.FindGameObjectsWithTag("RedSpawn");
+                    foreach (GameObject tempSpawn in tempRedSpawns)
+                    {
+                        redSpawns.Add(tempSpawn.transform.position);
 
+                    }
                 }
-                GameObject[] tempBlueSpawns = GameObject.FindGameObjectsWithTag("BlueSpawn");
-                foreach (GameObject tempSpawn in tempBlueSpawns)
+                if (blueSpawns.Count < 6)
                 {
-                    blueSpawns.Add(tempSpawn.transform.position);
+                    GameObject[] tempBlueSpawns = GameObject.FindGameObjectsWithTag("BlueSpawn");
+                    foreach (GameObject tempSpawn in tempBlueSpawns)
+                    {
+                        blueSpawns.Add(tempSpawn.transform.position);
 
+                    }
                 }
-
+                SpawnLoading = false;
             }
         }
 

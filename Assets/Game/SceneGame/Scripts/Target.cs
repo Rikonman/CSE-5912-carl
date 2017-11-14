@@ -29,7 +29,7 @@ public class Target : NetworkBehaviour {
     Rigidbody rb;
     public PlayerTeam team;
     public BuildIdentifier bid;
-    public EmperorController emperorScript;
+    public GameObject emperor;
     public GunController gunScript;
     public GameObject SpawnObject;
 
@@ -51,7 +51,15 @@ public class Target : NetworkBehaviour {
         gunScript = GetComponent<GunController>();
         renderer = GetComponent<MeshRenderer>();
         
-        StartCoroutine(Delayer());
+        if (bid == null)
+        {
+            StartCoroutine(Delayer());
+        }
+        else
+        {
+            emperor = GameObject.FindGameObjectWithTag("Emperor");
+        }
+        
         //StartCoroutine(EmperorDelayer());
         //healthbar.sizeDelta = new Vector2(health * 2, healthbar.sizeDelta.y);
         }
@@ -67,7 +75,7 @@ public class Target : NetworkBehaviour {
             remainingTime -= Time.deltaTime;
 
         }
-        emperorScript = GameObject.Find("Emperor").GetComponent<EmperorController>();
+        emperor = GameObject.FindGameObjectWithTag("Emperor");
         if (team != null)
         {
             if (team.team == 0)
@@ -178,15 +186,15 @@ public class Target : NetworkBehaviour {
             {
                 if (priorHealth > startingHealth * 3 / 4 && currentHealth <= startingHealth * 3 / 4)
                 {
-                    emperorScript.RpcAddEntertainment(1);
+                    emperor.GetComponent<EmperorController>().RpcAddEntertainment(1);
                 }
                 else if (priorHealth > startingHealth * 2 / 4 && currentHealth <= startingHealth * 2 / 4)
                 {
-                    emperorScript.RpcAddEntertainment(1);
+                    emperor.GetComponent<EmperorController>().RpcAddEntertainment(1);
                 }
                 else if (priorHealth > startingHealth / 4 && currentHealth <= startingHealth / 4)
                 {
-                    emperorScript.RpcAddEntertainment(1);
+                    emperor.GetComponent<EmperorController>().RpcAddEntertainment(1);
                 }
             }
             else
@@ -243,31 +251,31 @@ public class Target : NetworkBehaviour {
     {
         if (team != null)
         {
-            emperorScript.RpcAddEntertainment(5);
+            emperor.GetComponent<EmperorController>().RpcAddEntertainment(5);
             if (team.team == 0)
             {
-                emperorScript.RpcAddBlueFavor(5);
+                emperor.GetComponent<EmperorController>().RpcAddBlueFavor(5);
             }
             else
             {
-                emperorScript.RpcAddRedFavor(5);
+                emperor.GetComponent<EmperorController>().RpcAddRedFavor(5);
             }
         }
         else if (bid != null)
         {
-            emperorScript.RpcAddEntertainment(3);
+            emperor.GetComponent<EmperorController>().RpcAddEntertainment(3);
             if (bid.team == 0)
             {
-                emperorScript.RpcAddBlueFavor(3);
+                emperor.GetComponent<EmperorController>().RpcAddBlueFavor(3);
             }
             else
             {
-                emperorScript.RpcAddRedFavor(3);
+                emperor.GetComponent<EmperorController>().RpcAddRedFavor(3);
             }
         }
         else
         {
-            emperorScript.RpcAddEntertainment(30);
+            emperor.GetComponent<EmperorController>().RpcAddEntertainment(30);
         }
         
 		tempMesh = mesh;

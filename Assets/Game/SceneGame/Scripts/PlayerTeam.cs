@@ -25,15 +25,7 @@ public class PlayerTeam : NetworkBehaviour {
     {
         playerID = playerCount;
         playerCount++;
-
-        trWoodResources = GameObject.Find("TRWoodPanel").GetComponentInChildren<Text>();
-        trStoneResources = GameObject.Find("TRStonePanel").GetComponentInChildren<Text>();
-        trMetalResources = GameObject.Find("TRMetalPanel").GetComponentInChildren<Text>();
-        Text trTeamText = GameObject.Find("TRTeamText").GetComponentInChildren<Text>();
-        Image img1 = GameObject.Find("TRTeamPanel").GetComponent<Image>();
-        Image img2 = GameObject.Find("TRWoodPanel").GetComponent<Image>();
-        Image img3 = GameObject.Find("TRStonePanel").GetComponent<Image>();
-        Image img4 = GameObject.Find("TRMetalPanel").GetComponent<Image>();
+        
         
         PlayerLobbyInfo lobbyInfo = GetComponentInChildren<PlayerLobbyInfo>();
         if (lobbyInfo.playerColor == Color.blue)
@@ -42,6 +34,14 @@ public class PlayerTeam : NetworkBehaviour {
             teamName = "Blue Team";
             if (isLocalPlayer)
             {
+                trWoodResources = GameObject.Find("TRWoodPanel").GetComponentInChildren<Text>();
+                trStoneResources = GameObject.Find("TRStonePanel").GetComponentInChildren<Text>();
+                trMetalResources = GameObject.Find("TRMetalPanel").GetComponentInChildren<Text>();
+                Text trTeamText = GameObject.Find("TRTeamText").GetComponentInChildren<Text>();
+                Image img1 = GameObject.Find("TRTeamPanel").GetComponent<Image>();
+                Image img2 = GameObject.Find("TRWoodPanel").GetComponent<Image>();
+                Image img3 = GameObject.Find("TRStonePanel").GetComponent<Image>();
+                Image img4 = GameObject.Find("TRMetalPanel").GetComponent<Image>();
                 trTeamText.text = teamName;
                 img1.color = new Color(0, 0, 1f, 0.3f);
                 img2.color = new Color(0, 0, 1f, 0.3f);
@@ -55,6 +55,14 @@ public class PlayerTeam : NetworkBehaviour {
             teamName = "Red Team";
             if (isLocalPlayer)
             {
+                trWoodResources = GameObject.Find("TRWoodPanel").GetComponentInChildren<Text>();
+                trStoneResources = GameObject.Find("TRStonePanel").GetComponentInChildren<Text>();
+                trMetalResources = GameObject.Find("TRMetalPanel").GetComponentInChildren<Text>();
+                Text trTeamText = GameObject.Find("TRTeamText").GetComponentInChildren<Text>();
+                Image img1 = GameObject.Find("TRTeamPanel").GetComponent<Image>();
+                Image img2 = GameObject.Find("TRWoodPanel").GetComponent<Image>();
+                Image img3 = GameObject.Find("TRStonePanel").GetComponent<Image>();
+                Image img4 = GameObject.Find("TRMetalPanel").GetComponent<Image>();
                 trTeamText.text = teamName;
                 img1.color = new Color(1f, 0, 0, 0.3f);
                 img2.color = new Color(1f, 0, 0, 0.3f);
@@ -64,8 +72,11 @@ public class PlayerTeam : NetworkBehaviour {
         }
 
         uiRefreshTimer = 0;
+        if (isLocalPlayer)
+        {
+            LobbyManager.s_Singleton.CheckIfSpawnsCreated();
 
-        LobbyManager.s_Singleton.CheckIfSpawnsCreated();
+        }
         StartCoroutine(SpawnDelayer());
     }
 

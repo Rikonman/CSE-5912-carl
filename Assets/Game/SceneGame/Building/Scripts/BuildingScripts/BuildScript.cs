@@ -28,9 +28,9 @@ public class BuildScript : NetworkBehaviour
     Material originalMaterial;
     
 
-    GameObject BuildMenu;
-    GunController gun;
-    PlayerTeam team;
+    public GameObject BuildMenu;
+    public GunController gun;
+    public PlayerTeam team;
     int snapMountIndex = -1;
     int snapBoolIndex = -1;
     public bool locked;
@@ -39,8 +39,6 @@ public class BuildScript : NetworkBehaviour
     {
         locked = false;
         currentObject = 0;
-        BuildMenu = GameObject.Find("BuildMenu");
-        BuildMenu.SetActive(false);
         StartCoroutine(LoadDelayer());
     }
 
@@ -55,10 +53,17 @@ public class BuildScript : NetworkBehaviour
             remainingTime -= Time.deltaTime;
 
         }
-        team = GetComponent<PlayerTeam>();
-        gun = GetComponent<GunController>();
-        baseParent = team.baseObject.transform;
-        baseBuildings = team.baseObject.GetComponent<BaseBuildings>();
+        if (isLocalPlayer)
+        {
+            team = GetComponent<PlayerTeam>();
+            gun = GetComponent<GunController>();
+            BuildMenu = GameObject.Find("BuildMenu");
+            BuildMenu.SetActive(false);
+            buildMode = false;
+            baseParent = team.baseObject.transform;
+            baseBuildings = team.baseObject.GetComponent<BaseBuildings>();
+        }
+        
     }
 
     void Update()

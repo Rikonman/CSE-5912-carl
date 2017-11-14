@@ -138,7 +138,11 @@ public class PlayerController : NetworkBehaviour
             }
             else
             {
-                rb.AddForce(Physics.gravity, ForceMode.Acceleration);
+                if (rb != null)
+                {
+                    rb.AddForce(Physics.gravity, ForceMode.Acceleration);
+                }
+                
             }
             // Update the camera's position/rotation
             MoveCamera();

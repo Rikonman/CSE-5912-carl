@@ -19,6 +19,7 @@ TagManager:
   - RedSpawnCore
   - BlueSpawnCore
   - CapturePoint
+  - Emperor
   layers:
   - Default
   - TransparentFX

@@ -45,7 +45,7 @@ public class RoundManager : NetworkBehaviour {
 
         }
 
-        emperor = GameObject.Find("Emperor").GetComponent<EmperorController>();
+        emperor = GameObject.FindGameObjectWithTag("Emperor").GetComponent<EmperorController>();
 
     }
 
