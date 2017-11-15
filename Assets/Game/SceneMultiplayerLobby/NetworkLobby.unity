@@ -6151,6 +6151,7 @@ MonoBehaviour:
   countdownPanel: {fileID: 1031737792}
   addPlayerButton: {fileID: 1148001565}
   backButton: {fileID: 877163450}
+  exitButton: {fileID: 974142661}
   statusInfo: {fileID: 1770155894}
   hostInfo: {fileID: 1903912849}
   redPlayers: 0

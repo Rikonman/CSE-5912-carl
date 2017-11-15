@@ -36,6 +36,7 @@ namespace Prototype.NetworkLobby
         protected RectTransform currentPanel;
 
         public Button backButton;
+        public Button exitButton;
 
         public Text statusInfo;
         public Text hostInfo;
@@ -156,10 +157,12 @@ namespace Prototype.NetworkLobby
             if (currentPanel != mainMenuPanel)
             {
                 backButton.gameObject.SetActive(true);
+                exitButton.gameObject.SetActive(false);
             }
             else
             {
                 backButton.gameObject.SetActive(false);
+                exitButton.gameObject.SetActive(true);
                 //SetServerInfo("Offline", "None");
                 _isMatchmaking = false;
             }
@@ -192,12 +195,13 @@ namespace Prototype.NetworkLobby
                 backDelegate();
             ChangeTo(null);
 
-            Destroy(GameObject.Find("MainMenuUI(Clone)"));
-            Destroy(GameObject.Find("LobbyManager"));
-
             //backDelegate = StopGameClbk;
             topPanel.isInGame = true;
             topPanel.ToggleVisibility(false);
+
+            Destroy(GameObject.Find("MainMenuUI(Clone)"));
+            Destroy(GameObject.Find("LobbyManager"));
+
             // Unlock the cursor
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
