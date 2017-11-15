@@ -7,7 +7,7 @@ public class BaseBuildings : NetworkBehaviour
 {
     public SyncStructList pointUsed = new SyncStructList();
     public MountPointList mountPoints = new MountPointList();
-    public SyncStructVector3 placedObjects = new SyncStructVector3();
+    public SyncStructVector placedObjects = new SyncStructVector();
     // Use this for initialization
     void Start () {
 
