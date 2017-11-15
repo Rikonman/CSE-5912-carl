@@ -5,7 +5,10 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
-public class RoundManager : NetworkBehaviour {
+public class RoundManager : NetworkBehaviour
+{
+    [SerializeField]
+    private GameObject UIRoundDetailsPanel;
     [SerializeField]
     private Text txtRoundManager;
     [SerializeField]
@@ -28,7 +31,8 @@ public class RoundManager : NetworkBehaviour {
         endedOnce = false;
         lastTick = DateTime.Now;
         buildRoundSecondsLeft = buildRoundSeconds;
-        txtRoundManager = GameObject.Find("RoundUI").GetComponentInChildren<Text>();
+        UIRoundDetailsPanel = GameObject.Find("UIRoundDetails");
+        txtRoundManager = UIRoundDetailsPanel.GetComponentInChildren<Text>();
         goBarriers = GameObject.Find("BuildRoundBarriers");
         StartCoroutine(Delayer());
     }
@@ -106,7 +110,8 @@ public class RoundManager : NetworkBehaviour {
     public void RpcRoundManagerActive(string message)
     {
         txtRoundManager.text = message;
-        txtRoundManager.gameObject.SetActive(true);
+        UIRoundDetailsPanel.SetActive(true);
+        //txtRoundManager.gameObject.SetActive(true);
         endedOnce = true;
     }
 
@@ -195,7 +200,7 @@ public class RoundManager : NetworkBehaviour {
                 // The countdown is still happening. Show the current time left.
                 int minutes = (int)((double)newVal / 60);
                 int seconds = buildRoundSecondsLeft - (minutes * 60);
-                txtRoundManager.text = "Build Round - " + String.Format("{0:00}", minutes) + ":" + String.Format("{0:00}", seconds);
+                txtRoundManager.text = "Build Round" + Environment.NewLine + "<size=45>" + String.Format("{0:00}", minutes) + ":" + String.Format("{0:00}", seconds) + "</size>";
             }
             
         }
@@ -219,7 +224,8 @@ public class RoundManager : NetworkBehaviour {
             else if (newVal == -5)
             {
                 // Take the message off the screen.
-                txtRoundManager.gameObject.SetActive(false);
+                UIRoundDetailsPanel.SetActive(false);
+                //txtRoundManager.gameObject.SetActive(false);
             }
         }
         
