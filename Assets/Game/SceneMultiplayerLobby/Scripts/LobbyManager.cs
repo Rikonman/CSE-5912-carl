@@ -86,7 +86,10 @@ namespace Prototype.NetworkLobby
 
             redSpawns = new List<Vector3>();
             blueSpawns = new List<Vector3>();
-            
+            var config = new ConnectionConfig();
+            config.AddChannel(QosType.ReliableSequenced);
+            config.AddChannel(QosType.Unreliable);
+            NetworkServer.Configure(config, 12);
             //SetServerInfo("Offline", "None");
         }
         
