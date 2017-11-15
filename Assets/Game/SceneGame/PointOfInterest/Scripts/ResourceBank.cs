@@ -58,6 +58,10 @@ public class ResourceBank : NetworkBehaviour
         stone += Amount;
         if (stone > maxResources)
             stone = maxResources;
+        if (stone < 0)
+        {
+            stone = 0;
+        }
     }
 
     public void AddWood(int Amount)
@@ -65,6 +69,10 @@ public class ResourceBank : NetworkBehaviour
         wood += Amount;
         if (wood > maxResources)
             wood = maxResources;
+        if (wood < 0)
+        {
+            wood = 0;
+        }
         NotificationManager.NewNotification("Wood is now at <color=#00FF00>" + wood.ToString() + "</color>");
     }
 
@@ -73,6 +81,10 @@ public class ResourceBank : NetworkBehaviour
         metal += Amount;
         if (metal > maxResources)
             metal = maxResources;
+        if (metal < 0)
+        {
+            metal = 0;
+        }
     }
 
     public void Add(string Type, int Amount)

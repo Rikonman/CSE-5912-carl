@@ -154,6 +154,23 @@ public class Target : NetworkBehaviour {
         }
     }
 
+    public void SetHealth(float amount)
+    {
+        currentHealth = amount;
+        if (currentHealth > startingHealth)
+        {
+            currentHealth = startingHealth;
+        }
+        if (currentHealth < 1)
+        {
+            currentHealth = 1;
+        }
+        if (bid != null)
+        {
+            UpdateLifeColor();
+        }
+    }
+
     public void UpdateLifeColor()
     {
         bool hasChildren = gameObject.transform.childCount > 0 && gameObject.GetComponentInChildren<ParticleSystem>() == null;

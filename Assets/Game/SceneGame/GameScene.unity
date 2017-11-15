@@ -1509,14 +1509,20 @@ MonoBehaviour:
   redFavor: 0
   blueFavor: 0
   entertainment: 0
-  mood: 
-  boredomCooldown: 1
+  giftTimeout: 0
+  giftSeverity: 0
+  mood: 0
   RoundManager: {fileID: 0}
   RoundScript: {fileID: 0}
   emperorText: {fileID: 0}
   emperorOutput: {fileID: 0}
   popupDelay: 3
+  boredomCooldown: 1
+  giftTimer: 0
+  timeoutMultiplier: 4
   moodChangeCost: 10
+  RedBase: {fileID: 0}
+  BlueBase: {fileID: 0}
 --- !u!114 &257309002
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5736,8 +5742,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -300}
-  m_SizeDelta: {x: 1200, y: 100}
+  m_AnchoredPosition: {x: 0, y: -280}
+  m_SizeDelta: {x: 1600, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &982398567
 MonoBehaviour:
@@ -5771,7 +5777,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: The Emperor is Entertained!
+  m_Text: The Emperor has granted Blue resources!
 --- !u!222 &982398568
 CanvasRenderer:
   m_ObjectHideFlags: 0
