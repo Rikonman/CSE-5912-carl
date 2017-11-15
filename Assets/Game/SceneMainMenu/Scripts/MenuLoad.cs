@@ -7,10 +7,10 @@ public class MenuLoad : MonoBehaviour {
 
     bool exists;
     public static string filepath = System.Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-    string pong = System.IO.Path.Combine(filepath, "Pong/");
-    string saves = System.IO.Path.Combine(filepath, "Pong/Saves");
-    string screenshots = System.IO.Path.Combine(filepath, "Pong/Screenshots");
-    string videos = System.IO.Path.Combine(filepath, "Pong/Videos");
+    string pong = System.IO.Path.Combine(filepath, "BattlementBlast/");
+    string saves = System.IO.Path.Combine(filepath, "BattlementBlast/Saves");
+    string screenshots = System.IO.Path.Combine(filepath, "BattlementBlast/Screenshots");
+    string videos = System.IO.Path.Combine(filepath, "BattlementBlast/Videos");
 
     // Use this for initialization
     void Start()
@@ -61,6 +61,10 @@ public class MenuLoad : MonoBehaviour {
                 break;
             }
         }
+        //Debug.Log("Unlock the cursor...just to be sure");
+        //// Unlock the cursor
+        //Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.visible = false;
     }
 
     private int GetCurrentAntiAliasingSetting()

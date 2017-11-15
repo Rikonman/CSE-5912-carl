@@ -133,7 +133,6 @@ namespace Prototype.NetworkLobby
                 ChangeTo(null);
 
                 Destroy(GameObject.Find("MainMenuUI(Clone)"));
-
                 //backDelegate = StopGameClbk;
                 topPanel.isInGame = true;
                 topPanel.ToggleVisibility(false);
@@ -185,6 +184,25 @@ namespace Prototype.NetworkLobby
         {
             backDelegate();
 			topPanel.isInGame = false;
+        }
+
+        public void ExitButton()
+        {
+            if (backDelegate != null)
+                backDelegate();
+            ChangeTo(null);
+
+            Destroy(GameObject.Find("MainMenuUI(Clone)"));
+            Destroy(GameObject.Find("LobbyManager"));
+
+            //backDelegate = StopGameClbk;
+            topPanel.isInGame = true;
+            topPanel.ToggleVisibility(false);
+            // Unlock the cursor
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            // Change the scene
+            SceneManager.LoadScene("MenuScene");
         }
 
         // ----------------- Server management
