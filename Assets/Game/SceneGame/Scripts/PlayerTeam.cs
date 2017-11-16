@@ -138,6 +138,7 @@ public class PlayerTeam : NetworkBehaviour {
                 TempController.StartRespawnTimer();
                 other.gameObject.GetComponent<MeshRenderer>().enabled = false;
                 other.gameObject.GetComponent<BoxCollider>().enabled = false;
+                NotificationManager.NewNotification("Picked up <color=#00FF00>" + TempController.amount.ToString() + "</color> stone");
             }
             else if (other.gameObject.CompareTag("Pick Up (Wood)"))
             {
@@ -146,6 +147,7 @@ public class PlayerTeam : NetworkBehaviour {
                 TempController.StartRespawnTimer();
                 other.gameObject.GetComponent<MeshRenderer>().enabled = false;
                 other.gameObject.GetComponent<BoxCollider>().enabled = false;
+                NotificationManager.NewNotification("Picked up <color=#00FF00>" + TempController.amount.ToString() + "</color> wood");
             }
             else if (other.gameObject.CompareTag("Pick Up (Metal)"))
             {
@@ -154,6 +156,7 @@ public class PlayerTeam : NetworkBehaviour {
                 TempController.StartRespawnTimer();
                 other.gameObject.GetComponent<MeshRenderer>().enabled = false;
                 other.gameObject.GetComponent<BoxCollider>().enabled = false;
+                NotificationManager.NewNotification("Picked up <color=#00FF00>" + TempController.amount.ToString() + "</color> metal");
             }
         }
         

@@ -73,7 +73,6 @@ public class ResourceBank : NetworkBehaviour
         {
             wood = 0;
         }
-        NotificationManager.NewNotification("Wood is now at <color=#00FF00>" + wood.ToString() + "</color>");
     }
 
     public void AddMetal(int Amount)
