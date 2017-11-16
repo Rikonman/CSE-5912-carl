@@ -20,8 +20,9 @@ public class EmperorController : NetworkBehaviour
     public Mood mood;
     public GameObject RoundManager;
     public RoundManager RoundScript;
-    public GameObject emperorText;
-    public Text emperorOutput;
+    //public GameObject emperorText;
+    public GameObject UIEmperorPanel;
+    public Text UIEmperorText;
     public float popupDelay;
     private float boredomTimer;
     public float boredomCooldown;
@@ -36,6 +37,9 @@ public class EmperorController : NetworkBehaviour
         ResetEmperor();
         RoundManager = GameObject.Find("Round Manager");
         RoundScript = RoundManager.GetComponent<RoundManager>();
+        UIEmperorPanel = GameObject.Find("UIEmperorInfo");
+        UIEmperorText = GameObject.Find("EmperorText").GetComponent<Text>();
+        UIEmperorPanel.SetActive(false);
         StartCoroutine(Delayer());
     }
 
@@ -60,8 +64,7 @@ public class EmperorController : NetworkBehaviour
 
         }
 
-        emperorText = GameObject.Find("EmperorText");
-        emperorOutput = emperorText.GetComponent<Text>();
+        //emperorText = GameObject.Find("EmperorText");
         RedBase = GameObject.Find("Base1Center");
         BlueBase = GameObject.Find("Base2Center");
     }
@@ -307,8 +310,9 @@ public class EmperorController : NetworkBehaviour
     [ClientRpc]
     public void RpcUpdateMessage(string inText)
     {
-        emperorOutput.enabled = true;
-        emperorOutput.text = inText;
+        UIEmperorPanel.SetActive(true);
+        //emperorOutput.enabled = true;
+        UIEmperorText.text = inText;
         StartCoroutine(MessageChangeDelay());
     }
 
@@ -373,12 +377,13 @@ public class EmperorController : NetworkBehaviour
             giftSeverity = 3;
             giftTimeout = 3 * timeoutMultiplier;
         }
-        if (emperorOutput != null)
+        if (UIEmperorText != null && UIEmperorPanel != null)
         {
             if (previousMood != mood)
             {
-                emperorOutput.enabled = true;
-                emperorOutput.text = "The Emperor is " + mood + "!";
+                UIEmperorPanel.SetActive(true);
+                //emperorOutput.enabled = true;
+                UIEmperorText.text = "The Emperor is " + mood + "!";
                 StartCoroutine(MessageChangeDelay());
             }
         }
@@ -396,7 +401,8 @@ public class EmperorController : NetworkBehaviour
             remainingTime -= Time.deltaTime;
 
         }
-        emperorOutput.enabled = false;
+        UIEmperorPanel.SetActive(false);
+        //emperorOutput.enabled = false;
     }
 
     [ClientRpc]
