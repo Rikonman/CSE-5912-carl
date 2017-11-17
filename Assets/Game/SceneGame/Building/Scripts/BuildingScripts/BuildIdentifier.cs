@@ -14,6 +14,12 @@ public class BuildIdentifier : NetworkBehaviour {
     public int parentMountBool;
     [SyncVar]
     public bool isStone;
+    [SyncVar]
+    public int woodCost;
+    [SyncVar]
+    public int stoneCost;
+    [SyncVar]
+    public int metalCost;
     // Use this for initialization
     void Start ()
     {

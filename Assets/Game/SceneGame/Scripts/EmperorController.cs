@@ -45,10 +45,10 @@ public class EmperorController : NetworkBehaviour
 
     public void ResetEmperor()
     {
-        redFavor = 40;
-        blueFavor = 40;
+        redFavor = 20;
+        blueFavor = 20;
         giftTimer = 0;
-        entertainment = 50;
+        entertainment = 36;
         boredomTimer = 0f;
     }
 

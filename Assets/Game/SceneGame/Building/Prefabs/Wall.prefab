@@ -162,10 +162,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   team: 0
-  id: 1
-  parentMountPoint: 0
-  parentMountBool: 2
+  id: 6
+  parentMountPoint: 1
+  parentMountBool: 3
   isStone: 1
+  woodCost: 0
+  stoneCost: 100
+  metalCost: 0
 --- !u!114 &114350331176231390
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -198,7 +201,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe3106a7a3e87d24393a1d7da8f89879, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingHealth: 100
+  startingHealth: 150
   currentHealth: 0
   isVulnerable: 1
   startingPos: {x: 0, y: 0, z: 0}
@@ -206,5 +209,6 @@ MonoBehaviour:
   timer: 0
   team: {fileID: 0}
   bid: {fileID: 0}
-  healthbar: {fileID: 0}
-  emperorScript: {fileID: 0}
+  emperor: {fileID: 0}
+  gunScript: {fileID: 0}
+  SpawnObject: {fileID: 0}

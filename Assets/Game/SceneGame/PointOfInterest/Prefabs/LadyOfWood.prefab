@@ -601,7 +601,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 20
-  respawnTime: 10
+  respawnTime: 20
   amount: 100
 --- !u!114 &114623025070268822
 MonoBehaviour:
@@ -615,7 +615,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 20
-  respawnTime: 10
+  respawnTime: 20
   amount: 100
 --- !u!114 &114783549219242672
 MonoBehaviour:
@@ -629,7 +629,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 20
-  respawnTime: 10
+  respawnTime: 20
   amount: 100
 --- !u!114 &114966543361030304
 MonoBehaviour:
@@ -643,7 +643,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 20
-  respawnTime: 10
+  respawnTime: 20
   amount: 100
 --- !u!205 &205553495657017932
 LODGroup:

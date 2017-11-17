@@ -155,6 +155,9 @@ MonoBehaviour:
   parentMountPoint: 1
   parentMountBool: 3
   isStone: 0
+  woodCost: 75
+  stoneCost: 0
+  metalCost: 0
 --- !u!114 &114628479760992848
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -174,8 +177,9 @@ MonoBehaviour:
   timer: 0
   team: {fileID: 0}
   bid: {fileID: 0}
-  healthbar: {fileID: 0}
-  emperorScript: {fileID: 0}
+  emperor: {fileID: 0}
+  gunScript: {fileID: 0}
+  SpawnObject: {fileID: 0}
 --- !u!114 &114688317901816470
 MonoBehaviour:
   m_ObjectHideFlags: 1

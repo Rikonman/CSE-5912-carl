@@ -171,7 +171,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe3106a7a3e87d24393a1d7da8f89879, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingHealth: 100
+  startingHealth: 400
   currentHealth: 0
   isVulnerable: 1
   startingPos: {x: 0, y: 0, z: 0}
@@ -179,8 +179,8 @@ MonoBehaviour:
   timer: 0
   team: {fileID: 0}
   bid: {fileID: 0}
-  healthbar: {fileID: 0}
-  emperorScript: {fileID: 0}
+  emperor: {fileID: 0}
+  gunScript: {fileID: 0}
   SpawnObject: {fileID: 0}
 --- !u!198 &198400392786268994
 ParticleSystem:

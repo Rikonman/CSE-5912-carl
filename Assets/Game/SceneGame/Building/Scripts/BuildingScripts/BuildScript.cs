@@ -379,19 +379,23 @@ public class BuildScript : NetworkBehaviour
 
     void SetpreviewObjectObject(int id)
     {
-
-        if (previewObject != null)
+        BuildIdentifier bid = objects[id].GetComponent<BuildIdentifier>();
+        ResourceBank rba = team.baseObject.GetComponent<ResourceBank>();
+        if (bid.woodCost <= rba.wood && bid.stoneCost <= rba.stone && bid.metalCost <= rba.metal)
         {
-            Destroy(previewObject);
+            if (previewObject != null)
+            {
+                Destroy(previewObject);
+            }
+            currentObject = id;
+            previewObject = Instantiate(objects[currentObject], baseParent);
+            meshRend = previewObject.GetComponent<MeshRenderer>();
+            SaveMaterials();
+            SetMaterial(invalidMaterial);
+            previewObject.layer = 2;
+            previewBuildPoints = previewObject.GetComponent<BuildPoints>();
+            previewObject.transform.localEulerAngles = new Vector3(0, 0, 0);
         }
-        currentObject = id;
-        previewObject = Instantiate(objects[currentObject], baseParent);
-        meshRend = previewObject.GetComponent<MeshRenderer>();
-        SaveMaterials();
-        SetMaterial(invalidMaterial);
-        previewObject.layer = 2;
-        previewBuildPoints = previewObject.GetComponent<BuildPoints>();
-        previewObject.transform.localEulerAngles = new Vector3(0, 0, 0);
     }
     
     void PlaceObject()
@@ -420,6 +424,11 @@ public class BuildScript : NetworkBehaviour
             Destroy(previewObject);
             CmdSpawnBuildingPart(objects[currentObject].ToString(), currentObject, poPosition,
                 poRotation, mountIndex, team.team, snapMountIndex, snapBoolIndex);
+            BuildIdentifier bid = objects[currentObject].GetComponent<BuildIdentifier>();
+            ResourceBank rba = team.baseObject.GetComponent<ResourceBank>();
+            rba.wood -= bid.woodCost;
+            rba.stone -= bid.stoneCost;
+            rba.metal -= bid.metalCost;
             previewObject = null;
             meshRend = null;
         }

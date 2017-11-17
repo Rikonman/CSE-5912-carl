@@ -186,3 +186,6 @@ MonoBehaviour:
   parentMountPoint: -1
   parentMountBool: -1
   isStone: 0
+  woodCost: 50
+  stoneCost: 0
+  metalCost: 0
