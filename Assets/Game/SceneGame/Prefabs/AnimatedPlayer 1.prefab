@@ -3286,7 +3286,7 @@ MonoBehaviour:
   timer: 0
   team: {fileID: 0}
   bid: {fileID: 0}
-  emperorScript: {fileID: 0}
+  emperor: {fileID: 0}
   gunScript: {fileID: 0}
   SpawnObject: {fileID: 0}
 --- !u!114 &114344024519532110
@@ -3360,6 +3360,7 @@ MonoBehaviour:
   cameraTrans: {fileID: 4194384603101518}
   team: {fileID: 0}
   lookTextBox: {fileID: 0}
+  repairCost: 10
   lookText: {fileID: 0}
   locked: 0
 --- !u!114 &114495435776536394
@@ -3570,6 +3571,9 @@ MonoBehaviour:
   camera: {fileID: 4194384603101518}
   floorPrefab: {fileID: 1816443313050996, guid: d746710a6e5e6724a8a0f8e2adba98a2,
     type: 2}
+  BuildMenu: {fileID: 0}
+  gun: {fileID: 0}
+  team: {fileID: 0}
   locked: 0
 --- !u!114 &114951380066682690
 MonoBehaviour:

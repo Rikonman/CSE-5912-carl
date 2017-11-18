@@ -148,18 +148,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 4289536284287788, guid: bd1d8e47fe0dc6841a353d3fdbba55ed, type: 2}
-      propertyPath: m_LocalScale.x
-      value: 0.55171573
-      objectReference: {fileID: 0}
-    - target: {fileID: 4289536284287788, guid: bd1d8e47fe0dc6841a353d3fdbba55ed, type: 2}
-      propertyPath: m_LocalScale.y
-      value: 0.42782763
-      objectReference: {fileID: 0}
-    - target: {fileID: 4289536284287788, guid: bd1d8e47fe0dc6841a353d3fdbba55ed, type: 2}
-      propertyPath: m_LocalScale.z
-      value: 0.8408744
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bd1d8e47fe0dc6841a353d3fdbba55ed, type: 2}
   m_IsPrefabParent: 0
@@ -6089,6 +6077,10 @@ Prefab:
     - target: {fileID: 1928261785021310, guid: 550759d5c31477c46b0cb559eb03bdf2, type: 2}
       propertyPath: m_Name
       value: Platform_Long_01 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1928261785021310, guid: 550759d5c31477c46b0cb559eb03bdf2, type: 2}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 550759d5c31477c46b0cb559eb03bdf2, type: 2}

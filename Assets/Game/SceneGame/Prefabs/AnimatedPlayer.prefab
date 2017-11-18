@@ -2607,8 +2607,7 @@ MonoBehaviour:
   timer: 0
   team: {fileID: 0}
   bid: {fileID: 0}
-  healthbar: {fileID: 0}
-  emperorScript: {fileID: 0}
+  emperor: {fileID: 0}
   gunScript: {fileID: 0}
   SpawnObject: {fileID: 0}
 --- !u!114 &114094260574085528
@@ -2737,6 +2736,7 @@ MonoBehaviour:
   cameraTrans: {fileID: 4839705401594148}
   team: {fileID: 0}
   lookTextBox: {fileID: 0}
+  repairCost: 10
   lookText: {fileID: 0}
   locked: 0
 --- !u!114 &114667632685925420
@@ -2764,6 +2764,8 @@ MonoBehaviour:
   startingReserveAmmo: 50
   currentAmmoInMag: 0
   currentAmmoInReserve: 0
+  currentGun: 0
+  numberOfGuns: 2
   projectilePrefab: {fileID: 1266938302354856, guid: 8bfc41b206862c546b987a5026cabc62,
     type: 2}
   barrellExit: {fileID: 4933223509420998}
@@ -2796,6 +2798,9 @@ MonoBehaviour:
   camera: {fileID: 4839705401594148}
   floorPrefab: {fileID: 1816443313050996, guid: d746710a6e5e6724a8a0f8e2adba98a2,
     type: 2}
+  BuildMenu: {fileID: 0}
+  gun: {fileID: 0}
+  team: {fileID: 0}
   locked: 0
 --- !u!114 &114730772948196992
 MonoBehaviour:
@@ -2816,7 +2821,6 @@ MonoBehaviour:
   tpCameraDistance: 6
   tpCameraY: 7
   isFirstPerson: 1
-  HUDLayout: {fileID: 1116641536544642, guid: e6a03c3d7ec960546aeafa9d0edf15c2, type: 2}
   walking: {fileID: 82183765313542732}
   mainCamera: {fileID: 4839705401594148}
 --- !u!114 &114939091980711450
@@ -2843,7 +2847,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerColor: {r: 0, g: 0, b: 0, a: 0}
   playerName: 
-  playerNameIndicator: {fileID: 0}
 --- !u!124 &124472556404887598
 Behaviour:
   m_ObjectHideFlags: 1
