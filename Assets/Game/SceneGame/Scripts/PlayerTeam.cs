@@ -158,6 +158,26 @@ public class PlayerTeam : NetworkBehaviour {
                 other.gameObject.GetComponent<BoxCollider>().enabled = false;
                 NotificationManager.NewNotification("Picked up <color=#00FF00>" + TempController.amount.ToString() + "</color> metal");
             }
+            else if (other.gameObject.CompareTag("Pick Up (Ammo)"))
+            {
+                GunController gc = GetComponent<GunController>();
+                gc.ResetAmmo();
+                PickUpController TempController = other.gameObject.GetComponent<PickUpController>();
+                TempController.StartRespawnTimer();
+                other.gameObject.GetComponent<MeshRenderer>().enabled = false;
+                other.gameObject.GetComponent<BoxCollider>().enabled = false;
+                NotificationManager.NewNotification("Picked up ammo");
+            }
+            else if (other.gameObject.CompareTag("Pick Up (Health)"))
+            {
+                Target target = gameObject.GetComponent<Target>();
+                target.SetHealth(target.startingHealth);
+                PickUpController TempController = other.gameObject.GetComponent<PickUpController>();
+                TempController.StartRespawnTimer();
+                other.gameObject.GetComponent<MeshRenderer>().enabled = false;
+                other.gameObject.GetComponent<BoxCollider>().enabled = false;
+                NotificationManager.NewNotification("Picked up health");
+            }
         }
         
 

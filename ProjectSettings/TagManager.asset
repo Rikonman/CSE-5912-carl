@@ -20,6 +20,8 @@ TagManager:
   - BlueSpawnCore
   - CapturePoint
   - Emperor
+  - Pick Up (Ammo)
+  - Pick Up (Health)
   layers:
   - Default
   - TransparentFX
