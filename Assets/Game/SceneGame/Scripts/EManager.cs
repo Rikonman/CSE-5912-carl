@@ -12,6 +12,7 @@ public class EManager : NetworkBehaviour {
     public Transform cameraTrans;
     public PlayerTeam team;
     public GameObject lookTextBox;
+    public int repairCost;
     public Text lookText;
     public bool locked;
     // Use this for initialization
@@ -54,19 +55,31 @@ public class EManager : NetworkBehaviour {
                     Transform hitTrans = previewHit.transform;
                     GameObject hitGameObject = hitTrans.parent != null ? hitTrans.parent.gameObject : hitTrans.gameObject;
                 Target hitTarget = hitGameObject.GetComponent<Target>();
+                bool CanAfford = true;
                 if (hitTarget != null)
                 {
                     if (hitTarget.currentHealth < hitTarget.startingHealth && hitTarget.bid != null)
                     {
-                        lookText.text = "Hold 'E' to repair (" + string.Format("{0:P0}", hitTarget.currentHealth / hitTarget.startingHealth) + ")";
+                        ResourceBank tempBank = team.baseObject.GetComponent<ResourceBank>();
+                        if (tempBank.wood >= repairCost && tempBank.stone >= repairCost)
+                        {
+                            lookText.text = "Hold 'E' to repair (" + string.Format("{0:P0}", hitTarget.currentHealth / hitTarget.startingHealth) + ")";
+                            
+                        }
+                        else
+                        {
+                            lookText.text = "Can't afford to repair!";
+                            CanAfford = false;
+                        }
                         lookText.enabled = true;
                     }
                     else
                     {
                         lookText.enabled = false;
+                        CanAfford = false;
                     }
                 }
-                if (Input.GetKey(KeyCode.E))
+                if (Input.GetKey(KeyCode.E) && CanAfford)
                 {
                     BuildIdentifier bid = hitGameObject.GetComponent<BuildIdentifier>();
 
@@ -82,6 +95,9 @@ public class EManager : NetworkBehaviour {
                             eTime += Time.deltaTime;
                             if (eTime > repairTime)
                             {
+                                ResourceBank tempBank = team.baseObject.GetComponent<ResourceBank>();
+                                tempBank.Add("Wood", -repairCost);
+                                tempBank.Add("Stone", -repairCost);
                                 eTime = 0;
                                 CmdRepair(hitGameObject.GetComponent<NetworkIdentity>().netId);
                             }

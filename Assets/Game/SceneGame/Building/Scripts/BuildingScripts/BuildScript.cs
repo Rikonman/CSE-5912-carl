@@ -426,9 +426,9 @@ public class BuildScript : NetworkBehaviour
                 poRotation, mountIndex, team.team, snapMountIndex, snapBoolIndex);
             BuildIdentifier bid = objects[currentObject].GetComponent<BuildIdentifier>();
             ResourceBank rba = team.baseObject.GetComponent<ResourceBank>();
-            rba.wood -= bid.woodCost;
-            rba.stone -= bid.stoneCost;
-            rba.metal -= bid.metalCost;
+            rba.Add("Wood", -bid.woodCost);
+            rba.Add("Stone", -bid.stoneCost);
+            rba.Add("Metal", -bid.metalCost);
             previewObject = null;
             meshRend = null;
         }
