@@ -106,5 +106,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 20
-  respawnTime: 10
+  respawnTime: 20
   amount: 100
