@@ -9080,6 +9080,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1902126370}
   - component: {fileID: 1902126369}
+  - component: {fileID: 1902126372}
   m_Layer: 0
   m_Name: MusicAudioSource
   m_TagString: Untagged
@@ -9095,9 +9096,10 @@ AudioSource:
   m_GameObject: {fileID: 1902126368}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 429ee9331f18e2c4180b6087bec2749d, type: 3}
-  m_PlayOnAwake: 1
+  OutputAudioMixerGroup: {fileID: 243884029039587990, guid: 3e507193637aec24696d88ff2cd67de8,
+    type: 2}
+  m_audioClip: {fileID: 8300000, guid: 67b5caf90588f2240a0058475028e525, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 0.57
   m_Pitch: 1
   Loop: 1
@@ -9180,6 +9182,48 @@ Transform:
   m_Father: {fileID: 505224359}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1902126372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1902126368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f60b4c9b00a6ab4db5e647528830a2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  menuShot: {fileID: 245968873846277384, guid: 3e507193637aec24696d88ff2cd67de8, type: 2}
+  buildShot: {fileID: 245490519558694016, guid: 3e507193637aec24696d88ff2cd67de8,
+    type: 2}
+  combatShot: {fileID: 245614383437787250, guid: 3e507193637aec24696d88ff2cd67de8,
+    type: 2}
+  menuMix: {fileID: 243884029039587990, guid: 3e507193637aec24696d88ff2cd67de8, type: 2}
+  buildMix: {fileID: 243095505550558598, guid: 3e507193637aec24696d88ff2cd67de8, type: 2}
+  combatMix: {fileID: 243350638391870722, guid: 3e507193637aec24696d88ff2cd67de8,
+    type: 2}
+  menuSongs:
+  - {fileID: 8300000, guid: 1a6a712b97f95794180c0dad267b5446, type: 3}
+  - {fileID: 8300000, guid: 6fb9efbd00293be4e8ecaee7eaee453a, type: 3}
+  - {fileID: 8300000, guid: b9c3e0c97a9de7d458a1a78279a9a0fb, type: 3}
+  - {fileID: 8300000, guid: 0f7266ac149b1894392c5ccaee2161c8, type: 3}
+  - {fileID: 8300000, guid: 8adccc33e24344c49b8af05108defa95, type: 3}
+  buildSongs:
+  - {fileID: 8300000, guid: d943bb53bfa6ce0409395acfa7355f9b, type: 3}
+  - {fileID: 8300000, guid: 187e0c77c179ce1409184867073ef1c7, type: 3}
+  - {fileID: 8300000, guid: 6667117619d4d9a46840b44072d7fd24, type: 3}
+  - {fileID: 8300000, guid: 72094daa5c878ed4bb0f4e810df09472, type: 3}
+  - {fileID: 8300000, guid: 67b5caf90588f2240a0058475028e525, type: 3}
+  combatSongs:
+  - {fileID: 8300000, guid: f0dafe686b14a914687026db124849dd, type: 3}
+  - {fileID: 8300000, guid: 382d59fc19b091e4a8519a0c25c1de5b, type: 3}
+  - {fileID: 8300000, guid: b5604505cb9083e43bc886bb495c9f73, type: 3}
+  - {fileID: 8300000, guid: a47c88f37b52e8d4fa857177963f2e96, type: 3}
+  - {fileID: 8300000, guid: feb516287fd4f8644b0fd5f46468a6e7, type: 3}
+  - {fileID: 8300000, guid: 45a285fce87704f478e9bfaa6688a8b1, type: 3}
+  source: {fileID: 1902126369}
+  bpm: 128
+  currentState: 0
 --- !u!1 &1920953077
 GameObject:
   m_ObjectHideFlags: 0
@@ -10394,7 +10438,8 @@ AudioSource:
   m_GameObject: {fileID: 2134664654}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 243574771316519454, guid: 3e507193637aec24696d88ff2cd67de8,
+    type: 2}
   m_audioClip: {fileID: 8300000, guid: 0c96af32a0f2f4547ac0285adedf34fb, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1

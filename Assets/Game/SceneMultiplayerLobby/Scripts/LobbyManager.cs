@@ -190,6 +190,9 @@ namespace Prototype.NetworkLobby
         {
             backDelegate();
 			topPanel.isInGame = false;
+            GameObject tempMusic = GameObject.Find("MusicAudioSource");
+            MusicScript ms = tempMusic.GetComponent<MusicScript>();
+            ms.SwitchState(MusicScript.SongStates.Menu);
         }
 
         public void ExitButton()
@@ -197,7 +200,6 @@ namespace Prototype.NetworkLobby
             if (backDelegate != null)
                 backDelegate();
             ChangeTo(null);
-
             //backDelegate = StopGameClbk;
             topPanel.isInGame = true;
             topPanel.ToggleVisibility(false);

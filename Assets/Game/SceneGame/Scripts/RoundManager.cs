@@ -25,15 +25,19 @@ public class RoundManager : NetworkBehaviour
     public GameObject BlueSpawnCore;
     public EmperorController emperor;
     public bool endedOnce;
-
-	// Use this for initialization
-	void Start () {
+    GameObject audioObject;
+    MusicScript music;
+    // Use this for initialization
+    void Start () {
         endedOnce = false;
         lastTick = DateTime.Now;
         buildRoundSecondsLeft = buildRoundSeconds;
         UIRoundDetailsPanel = GameObject.Find("UIRoundDetails");
         txtRoundManager = UIRoundDetailsPanel.GetComponentInChildren<Text>();
         goBarriers = GameObject.Find("BuildRoundBarriers");
+        audioObject = GameObject.Find("MusicAudioSource");
+        music = audioObject.GetComponent<MusicScript>();
+        music.SwitchState(MusicScript.SongStates.Build);
         StartCoroutine(Delayer());
     }
 
@@ -90,11 +94,13 @@ public class RoundManager : NetworkBehaviour
             {
                 CmdRoundManagerActive("Blue Wins!!!");
                 CmdRestartRound();
+                music.SwitchState(MusicScript.SongStates.Build);
             }
             if (!blueLives && blueCounter > 0)
             {
                 CmdRoundManagerActive("Red Wins!!!");
                 CmdRestartRound();
+                music.SwitchState(MusicScript.SongStates.Build);
             }
             
         }
@@ -113,6 +119,12 @@ public class RoundManager : NetworkBehaviour
         UIRoundDetailsPanel.SetActive(true);
         //txtRoundManager.gameObject.SetActive(true);
         endedOnce = true;
+    }
+
+    [ClientRpc]
+    public void RpcChangeSongState(MusicScript.SongStates state)
+    {
+        music.SwitchState(state);
     }
 
     [Command]
@@ -210,6 +222,7 @@ public class RoundManager : NetworkBehaviour
             txtRoundManager.text = "Build Round Ended!";
             // Disable the round barriers
             goBarriers.SetActive(false);
+            music.SwitchState(MusicScript.SongStates.Combat);
             //Destroy(goBarriers);
         }
         else
