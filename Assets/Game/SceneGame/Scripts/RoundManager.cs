@@ -100,7 +100,7 @@ public class RoundManager : NetworkBehaviour
             {
                 CmdRoundManagerActive("Red Wins!!!");
                 CmdRestartRound();
-                music.SwitchState(MusicScript.SongStates.Build);
+                RpcChangeSongState(MusicScript.SongStates.Build);
             }
             
         }

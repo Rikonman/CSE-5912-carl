@@ -48,7 +48,7 @@ public class EmperorController : NetworkBehaviour
         redFavor = 20;
         blueFavor = 20;
         giftTimer = 0;
-        entertainment = -10;
+        entertainment = 36;
         boredomTimer = 0f;
     }
 
