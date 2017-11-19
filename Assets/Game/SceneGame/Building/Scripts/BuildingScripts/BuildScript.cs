@@ -26,11 +26,13 @@ public class BuildScript : NetworkBehaviour
     MeshRenderer meshRend;
     int currentObject;
     Material originalMaterial;
-    
+
 
     public GameObject BuildMenu;
+    public GameObject BuyMenu;
     public GunController gun;
     public PlayerTeam team;
+    public BuyManager buyManager;
     int snapMountIndex = -1;
     int snapBoolIndex = -1;
     public bool locked;
@@ -42,8 +44,9 @@ public class BuildScript : NetworkBehaviour
         if (isLocalPlayer)
         {
             BuildMenu = GameObject.Find("BuildMenu");
-            BuildMenu.SetActive(false);
+            BuyMenu = GameObject.Find("BuyMenu");
         }
+        buyManager = GetComponent<BuyManager>();
         StartCoroutine(LoadDelayer());
     }
 
@@ -83,7 +86,9 @@ public class BuildScript : NetworkBehaviour
             if (isLocalPlayer && buildMode)
             {
                 gun.enabled = !buildMode;
-                BuildMenu.SetActive(buildMode);
+                buyManager.buyMode = false;
+                BuyMenu.SetActive(false);
+                BuildMenu.SetActive(true);
                 if (Input.GetKeyDown(KeyCode.Alpha1))
                 {
                     SetpreviewObjectObject(0);

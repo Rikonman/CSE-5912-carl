@@ -82,9 +82,6 @@ public class GunController : NetworkBehaviour {
         if (!locked)
         {
 
-            if (Input.GetKeyDown(KeyCode.F))
-                Switch();
-
             if (automatic)
             {
                 if (Input.GetButton("Fire1") && Time.time >= fireDelay)
@@ -166,30 +163,31 @@ public class GunController : NetworkBehaviour {
     }
 
     [Command]
-    public void CmdSwitch()
+    public void CmdSwitch(int gunIndex)
     {
 
-        Switch();
-        RpcSwitch();
+        Switch(gunIndex);
+        RpcSwitch(gunIndex);
 
     }
 
     [ClientRpc]
-    void RpcSwitch()
+    void RpcSwitch(int gunIndex)
     {
 
-        Switch();
+        Switch(gunIndex);
 
     }
 
-    void Switch()
+    void Switch(int gunIndex)
     {
         gun.transform.GetChild(currentGun).gameObject.SetActive(false);
-        automatic = !automatic;
-        if (currentGun < numberOfGuns - 1)
+        automatic = gunIndex == 1;
+        /*if (currentGun < numberOfGuns - 1)
             currentGun++;
         else
-            currentGun = 0;
+            currentGun = 0;*/
+        currentGun = gunIndex;
         gun.transform.GetChild(currentGun).gameObject.SetActive(true);
         barrellExit = gun.transform.GetChild(currentGun).GetChild(0);
 

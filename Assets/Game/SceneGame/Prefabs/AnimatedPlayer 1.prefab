@@ -1020,6 +1020,7 @@ GameObject:
   - component: {fileID: 82967112497458940}
   - component: {fileID: 136614270701351118}
   - component: {fileID: 114407150181105730}
+  - component: {fileID: 114556005693186812}
   m_Layer: 0
   m_Name: AnimatedPlayer 1
   m_TagString: Player
@@ -3460,6 +3461,23 @@ MonoBehaviour:
   param3: 
   param4: 
   param5: 
+--- !u!114 &114556005693186812
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1737969107234910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5eb17646c19de75468183a972e4066cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buyMode: 0
+  BuildMenu: {fileID: 0}
+  BuyMenu: {fileID: 0}
+  locked: 0
+  team: {fileID: 0}
+  gun: {fileID: 0}
 --- !u!114 &114572449254455388
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3572,6 +3590,7 @@ MonoBehaviour:
   floorPrefab: {fileID: 1816443313050996, guid: d746710a6e5e6724a8a0f8e2adba98a2,
     type: 2}
   BuildMenu: {fileID: 0}
+  BuyMenu: {fileID: 0}
   gun: {fileID: 0}
   team: {fileID: 0}
   locked: 0
