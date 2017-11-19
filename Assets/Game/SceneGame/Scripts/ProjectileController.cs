@@ -16,6 +16,7 @@ public class ProjectileController : NetworkBehaviour {
     public int firingTeam;
     public int firingPlayer;
     public GameObject triangleBreak;
+    public float damage;
 
     // Use this for initialization
     void Start () {
@@ -83,7 +84,7 @@ public class ProjectileController : NetworkBehaviour {
         Quaternion rotation = collisionTarget.transform.localRotation;
 
         // have the target take damage
-        bool died = collisionTarget.TakeDamage(25);
+        bool died = collisionTarget.TakeDamage(damage);
 
         //explode the dead
         if (died && collisionTeam == null)

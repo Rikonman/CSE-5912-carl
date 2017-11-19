@@ -40,6 +40,7 @@ public class GunController : NetworkBehaviour {
         ResetAmmo();
         //gun = transform.GetChild(0).GetChild(0).gameObject;
         team = GetComponent<PlayerTeam>();
+        CmdSwitch(0);
     }
 
     [ClientRpc]
@@ -121,7 +122,7 @@ public class GunController : NetworkBehaviour {
             flash.Play();
             gunshot.Play();
             gunshot.loop = false;
-            CmdSpawnProjectile(team.team, team.playerID, barrellExit.position, barrellExit.rotation, barrellExit.forward);
+            CmdSpawnProjectile(team.team, team.playerID, damage, barrellExit.position, barrellExit.rotation, barrellExit.forward);
             currentAmmoInMag--;
         }
         else
@@ -152,13 +153,14 @@ public class GunController : NetworkBehaviour {
 
     // This command is called from the localPlayer and run on the server. Note that Commands must begin with 'Cmd'
     [Command]
-    void CmdSpawnProjectile(int team, int playerID, Vector3 position, Quaternion rotation, Vector3 forward)
+    void CmdSpawnProjectile(int team, int playerID, float damage, Vector3 position, Quaternion rotation, Vector3 forward)
     {
         GameObject instance = Instantiate(projectilePrefab, position, rotation);
         instance.GetComponent<Rigidbody>().AddForce(forward * range);
         ProjectileController pc = instance.GetComponent<ProjectileController>();
         pc.firingTeam = team;
         pc.firingPlayer = playerID;
+        pc.damage = damage;
         NetworkServer.Spawn(instance);
     }
 
@@ -193,7 +195,7 @@ public class GunController : NetworkBehaviour {
 
         if (!automatic)
         {
-            damage = 2;
+            damage = 20;
             maxAmmoInMag = 20;
             startingReserveAmmo = 50;
             currentAmmoInMag = maxAmmoInMag;

@@ -139,6 +139,11 @@ public class Target : NetworkBehaviour {
         {
             bs.locked = locked;
         }
+        BuyManager bm = playerObj.GetComponent<BuyManager>();
+        if (bm != null)
+        {
+            bm.locked = locked;
+        }
     }
 
     public void RepairBuilding(float amount)
@@ -333,6 +338,7 @@ public class Target : NetworkBehaviour {
         if (isServer)
         {
             team.RpcChangeLocation(LobbyManager.s_Singleton.GetSpawnLocation(team.team));
+            gunScript.CmdSwitch(0);
             gunScript.RpcResetAmmo();
         }
         //rend.enabled = true;
