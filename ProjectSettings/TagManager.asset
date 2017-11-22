@@ -22,6 +22,7 @@ TagManager:
   - Emperor
   - Pick Up (Ammo)
   - Pick Up (Health)
+  - Projectile
   layers:
   - Default
   - TransparentFX

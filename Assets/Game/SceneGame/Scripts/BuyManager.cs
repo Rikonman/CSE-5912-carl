@@ -66,9 +66,18 @@ public class BuyManager : NetworkBehaviour {
                     if (Input.GetKeyDown(KeyCode.Alpha1))
                     {
                         ResourceBank resources = team.baseObject.GetComponent<ResourceBank>();
-                        if (resources.metal >= 50 && gun.currentGun != 1)
+                        if (resources.metal >= 50 && gun.currentGun == 0)
                         {
                             gun.CmdSwitch(1);
+                            resources.Add("Metal", -50);
+                        }
+                    }
+                    else if (Input.GetKeyDown(KeyCode.Alpha2))
+                    {
+                        ResourceBank resources = team.baseObject.GetComponent<ResourceBank>();
+                        if (resources.metal >= 50 && gun.currentGun == 0)
+                        {
+                            gun.CmdSwitch(2);
                             resources.Add("Metal", -50);
                         }
                     }

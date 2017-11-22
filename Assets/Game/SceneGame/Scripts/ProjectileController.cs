@@ -40,6 +40,8 @@ public class ProjectileController : NetworkBehaviour {
 
     void OnCollisionEnter(Collision collision)
     {
+        if (collision.gameObject.tag == "Projectile")
+            return;
         // if the projectile isn't live, leave (we only want to hit one thing and not go through objects)
         if (!isLive)
             return;

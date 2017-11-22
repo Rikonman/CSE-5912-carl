@@ -15,6 +15,7 @@ public class GunController : NetworkBehaviour {
     public float fireRate = .1f;
     public float fireDelay = 0f;
     public bool automatic = false;
+    public bool shotgun = false;
 
     //=============================
     // Ammunition stuffs
@@ -122,7 +123,7 @@ public class GunController : NetworkBehaviour {
             flash.Play();
             gunshot.Play();
             gunshot.loop = false;
-            CmdSpawnProjectile(team.team, team.playerID, damage, barrellExit.position, barrellExit.rotation, barrellExit.forward);
+            CmdSpawnProjectile(team.team, team.playerID, damage, currentGun, barrellExit.position, barrellExit.rotation, barrellExit.forward);
             currentAmmoInMag--;
         }
         else
@@ -153,15 +154,60 @@ public class GunController : NetworkBehaviour {
 
     // This command is called from the localPlayer and run on the server. Note that Commands must begin with 'Cmd'
     [Command]
-    void CmdSpawnProjectile(int team, int playerID, float damage, Vector3 position, Quaternion rotation, Vector3 forward)
+    void CmdSpawnProjectile(int team, int playerID, float damage, int gunChoice, Vector3 position, Quaternion rotation, Vector3 forward)
     {
-        GameObject instance = Instantiate(projectilePrefab, position, rotation);
-        instance.GetComponent<Rigidbody>().AddForce(forward * range);
-        ProjectileController pc = instance.GetComponent<ProjectileController>();
-        pc.firingTeam = team;
-        pc.firingPlayer = playerID;
-        pc.damage = damage;
-        NetworkServer.Spawn(instance);
+        if (gunChoice == 2)
+        {
+            for (int counter = 0; counter < 8; counter++)
+            {
+                Vector3 changeVector;
+                float val1 = Random.Range(.5f, 2f);
+                float val2 = Random.Range(.5f, 2f);
+                float variation = Random.Range(100f, 700f);
+                int choice = Random.Range(0, 3);
+                if (choice == 0 && forward.z != 0f)
+                {
+                    float val3 = (-val1 * forward.x - val2 * forward.y) / forward.z;
+                    changeVector = new Vector3(val1, val2, val3);
+                    changeVector.Normalize();
+                }
+                else if ((choice == 1 || forward.z == 0f) && forward.y != 0f)
+                {
+                    float val3 = (-val1 * forward.x - val2 * forward.z) / forward.y;
+                    changeVector = new Vector3(val1, val3, val2);
+                    changeVector.Normalize();
+                }
+                else if ((choice == 1 || forward.z == 0f || forward.y == 0f) && forward.x != 0f)
+                {
+                    float val3 = (-val1 * forward.z - val2 * forward.y) / forward.x;
+                    changeVector = new Vector3(val3, val2, val1);
+                    changeVector.Normalize();
+                }
+                else
+                {
+                    changeVector = forward;
+                    changeVector.Normalize();
+                }
+                GameObject instance = Instantiate(projectilePrefab, position, rotation);
+                instance.GetComponent<Rigidbody>().AddForce(forward * range + changeVector * variation);
+                
+                ProjectileController pc = instance.GetComponent<ProjectileController>();
+                pc.firingTeam = team;
+                pc.firingPlayer = playerID;
+                pc.damage = damage;
+                NetworkServer.Spawn(instance);
+            }
+        }
+        else
+        {
+            GameObject instance = Instantiate(projectilePrefab, position, rotation);
+            instance.GetComponent<Rigidbody>().AddForce(forward * range);
+            ProjectileController pc = instance.GetComponent<ProjectileController>();
+            pc.firingTeam = team;
+            pc.firingPlayer = playerID;
+            pc.damage = damage;
+            NetworkServer.Spawn(instance);
+        }
     }
 
     [Command]
@@ -185,27 +231,35 @@ public class GunController : NetworkBehaviour {
     {
         gun.transform.GetChild(currentGun).gameObject.SetActive(false);
         automatic = gunIndex == 1;
-        /*if (currentGun < numberOfGuns - 1)
-            currentGun++;
-        else
-            currentGun = 0;*/
+        shotgun = gunIndex == 2;
         currentGun = gunIndex;
         gun.transform.GetChild(currentGun).gameObject.SetActive(true);
         barrellExit = gun.transform.GetChild(currentGun).GetChild(0);
 
-        if (!automatic)
+        if (shotgun)
         {
-            damage = 20;
-            maxAmmoInMag = 20;
-            startingReserveAmmo = 50;
+            damage = 10;
+            maxAmmoInMag = 5;
+            startingReserveAmmo = 30;
+            fireRate = 1f;
+            currentAmmoInMag = maxAmmoInMag;
+            currentAmmoInReserve = startingReserveAmmo;
+        }
+        else if (automatic)
+        {
+            damage = 10;
+            maxAmmoInMag = 50;
+            startingReserveAmmo = 150;
+            fireRate = .1f;
             currentAmmoInMag = maxAmmoInMag;
             currentAmmoInReserve = startingReserveAmmo;
         }
         else
         {
-            damage = 10;
-            maxAmmoInMag = 50;
-            startingReserveAmmo = 150;
+            damage = 20;
+            maxAmmoInMag = 20;
+            startingReserveAmmo = 50;
+            fireRate = .1f;
             currentAmmoInMag = maxAmmoInMag;
             currentAmmoInReserve = startingReserveAmmo;
         }
