@@ -46,9 +46,13 @@ public class PlayerController : NetworkBehaviour
     float lookSmoothDamp = 0.1f;
     float speed;
     float walkingSpeed = 6f;
-    float sprintSpeed = 12f;
+    float sprintSpeed = 10f;
     Vector3 flatTransform;
-    public Transform mainCamera;
+    public GameObject mainCamera;
+    public bool isSniping;
+    public GunController gc;
+    public Camera camera;
+    public GameObject[] snipeObjects;
 
     private Rigidbody rb;
     //private GameObject clientHUD;
@@ -75,9 +79,10 @@ public class PlayerController : NetworkBehaviour
         Billboard.CameraToFocusOn = GetComponentInChildren<Camera>();
         //crosshair.enabled = true;
         rb = GetComponent<Rigidbody>();
-
+        gc = GetComponent<GunController>();
         tpCameraOffset = new Vector3(0f, tpCameraY, -tpCameraDistance);
         fpCameraOffset = new Vector3(fpCameraX, fpCameraY, fpCameraZ);
+        camera = mainCamera.GetComponent<Camera>();
         //mainCamera = transform.GetChild(0);
         //MoveCamera();
     }
@@ -144,6 +149,10 @@ public class PlayerController : NetworkBehaviour
                 }
                 
             }
+            if (gc.sniper && Input.GetButtonUp("Fire2"))
+            {
+                isSniping = !isSniping;
+            }
             // Update the camera's position/rotation
             MoveCamera();
 
@@ -158,13 +167,30 @@ public class PlayerController : NetworkBehaviour
         {
             //fpCameraOffset = new Vector3(fpCameraX, fpCameraY, fpCameraZ);
             //mainCamera.Translate(fpCameraOffset);
+            if (isSniping && camera.fieldOfView == 70)
+            {
+                foreach (GameObject tempSnipe in snipeObjects)
+                {
+
+                    tempSnipe.SetActive(false);
+                }
+                camera.fieldOfView = 20;
+            }
+            else if (!isSniping && camera.fieldOfView == 20)
+            {
+                foreach (GameObject tempSnipe in snipeObjects)
+                {
+                    tempSnipe.SetActive(true);
+                }
+                camera.fieldOfView = 70;
+            }
             mainCamera.transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
         }
         else
         {
             tpCameraOffset = new Vector3(0f, tpCameraY, -tpCameraDistance);
-            mainCamera.Translate(tpCameraOffset);
-            mainCamera.LookAt(transform);
+            mainCamera.transform.Translate(tpCameraOffset);
+            mainCamera.transform.LookAt(transform);
         }
     }
 

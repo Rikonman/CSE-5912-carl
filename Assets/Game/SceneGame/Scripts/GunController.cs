@@ -16,6 +16,7 @@ public class GunController : NetworkBehaviour {
     public float fireDelay = 0f;
     public bool automatic = false;
     public bool shotgun = false;
+    public bool sniper = false;
     public float speedModifier = 1f;
 
     //=============================
@@ -245,6 +246,7 @@ public class GunController : NetworkBehaviour {
         gun.transform.GetChild(currentGun).gameObject.SetActive(false);
         automatic = gunIndex == 1;
         shotgun = gunIndex == 2;
+        sniper = gunIndex == 3;
         currentGun = gunIndex;
         gun.transform.GetChild(currentGun).gameObject.SetActive(true);
         barrellExit = gun.transform.GetChild(currentGun).GetChild(0);
@@ -255,6 +257,7 @@ public class GunController : NetworkBehaviour {
             maxAmmoInMag = 5;
             startingReserveAmmo = 30;
             fireRate = 1f;
+            range = 2000f;
             currentAmmoInMag = maxAmmoInMag;
             currentAmmoInReserve = startingReserveAmmo;
         }
@@ -264,6 +267,17 @@ public class GunController : NetworkBehaviour {
             maxAmmoInMag = 50;
             startingReserveAmmo = 150;
             fireRate = .1f;
+            range = 2000f;
+            currentAmmoInMag = maxAmmoInMag;
+            currentAmmoInReserve = startingReserveAmmo;
+        }
+        else if (sniper)
+        {
+            damage = 60;
+            maxAmmoInMag = 1;
+            startingReserveAmmo = 16;
+            fireRate = 1f;
+            range = 10000f;
             currentAmmoInMag = maxAmmoInMag;
             currentAmmoInReserve = startingReserveAmmo;
         }
@@ -273,6 +287,7 @@ public class GunController : NetworkBehaviour {
             maxAmmoInMag = 20;
             startingReserveAmmo = 50;
             fireRate = .1f;
+            range = 2000f;
             currentAmmoInMag = maxAmmoInMag;
             currentAmmoInReserve = startingReserveAmmo;
         }
