@@ -192,13 +192,13 @@ public class GunController : NetworkBehaviour {
                 }
                 GameObject instance = Instantiate(projectilePrefab, position, rotation);
                 instance.GetComponent<Rigidbody>().AddForce(forward * rangeModifier + changeVector * variation);
-                
+
                 ProjectileController pc = instance.GetComponent<ProjectileController>();
                 pc.firingTeam = team;
                 pc.firingPlayer = playerID;
                 pc.damage = damage;
                 NetworkServer.Spawn(instance);
-                RpcUpdateProjectileData(instance.GetComponent<NetworkIdentity>().netId, team, playerID, damage);
+                RpcUpdateProjectileData(instance.GetComponent<NetworkIdentity>().netId, team, playerID, damage, pc.projectileLifetime);
             }
         }
         else
@@ -209,19 +209,24 @@ public class GunController : NetworkBehaviour {
             pc.firingTeam = team;
             pc.firingPlayer = playerID;
             pc.damage = damage;
+            if (gunChoice == 3)
+            {
+                pc.projectileLifetime = 4f;
+            }
             NetworkServer.Spawn(instance);
-            RpcUpdateProjectileData(instance.GetComponent<NetworkIdentity>().netId, team, playerID, damage);
+            RpcUpdateProjectileData(instance.GetComponent<NetworkIdentity>().netId, team, playerID, damage, pc.projectileLifetime);
         }
     }
 
     [ClientRpc]
-    public void RpcUpdateProjectileData(NetworkInstanceId nid, int team, int playerID, float damage)
+    public void RpcUpdateProjectileData(NetworkInstanceId nid, int team, int playerID, float damage, float projectileLifetime)
     {
         GameObject projectile = ClientScene.FindLocalObject(nid);
         ProjectileController pc = projectile.GetComponent<ProjectileController>();
         pc.firingTeam = team;
         pc.firingPlayer = playerID;
         pc.damage = damage;
+        pc.projectileLifetime = projectileLifetime;
     }
 
     [Command]
@@ -277,7 +282,7 @@ public class GunController : NetworkBehaviour {
             maxAmmoInMag = 1;
             startingReserveAmmo = 16;
             fireRate = 1f;
-            range = 10000f;
+            range = 3000f;
             currentAmmoInMag = maxAmmoInMag;
             currentAmmoInReserve = startingReserveAmmo;
         }

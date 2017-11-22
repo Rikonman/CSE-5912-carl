@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class ProjectileController : NetworkBehaviour {
 
     [SerializeField]
-    float projectileLifetime = 2f;
+    public float projectileLifetime = 2f;
     [SerializeField]
     bool canKill = false;
     public GameObject hitEffect;
