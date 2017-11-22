@@ -133,9 +133,9 @@ public class EmperorController : NetworkBehaviour
                 }
                 if (resources != null)
                 {
-                    resources.Add("Wood", giftSeverity * 500);
-                    resources.Add("Stone", giftSeverity * 500);
-                    resources.Add("Metal", giftSeverity * 250);
+                    resources.Add("Wood", giftSeverity * 300);
+                    resources.Add("Stone", giftSeverity * 300);
+                    resources.Add("Metal", giftSeverity * 150);
                 }
 
                 if (team > -1)

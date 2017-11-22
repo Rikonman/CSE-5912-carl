@@ -45,10 +45,6 @@ public class ProjectileController : NetworkBehaviour {
         // if the projectile isn't live, leave (we only want to hit one thing and not go through objects)
         if (!isLive)
             return;
-        // the projectile is going to explode and is no longer live
-        isLive = false;
-        // hide the projectile body
-        projectileRenderer.enabled = false;
 
         // if the projectile was fired by your team, leave
         PlayerTeam collisionTeam = collision.gameObject.GetComponent<PlayerTeam>();
@@ -58,7 +54,11 @@ public class ProjectileController : NetworkBehaviour {
         {
             return;
         }
-        
+
+        // the projectile is going to explode and is no longer live
+        isLive = false;
+        // hide the projectile body
+        projectileRenderer.enabled = false;
 
 
         // show the explosion particle effect

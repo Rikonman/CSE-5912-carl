@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 public class GunController : NetworkBehaviour {
 
     public float damage = 1f;
-    public float range = 1000f;
+    public float range = 2000f;
     public Camera fpsCamera;
     public ParticleSystem flash;
     public GameObject hitEffect;
@@ -16,6 +16,7 @@ public class GunController : NetworkBehaviour {
     public float fireDelay = 0f;
     public bool automatic = false;
     public bool shotgun = false;
+    public float speedModifier = 1f;
 
     //=============================
     // Ammunition stuffs
@@ -123,7 +124,7 @@ public class GunController : NetworkBehaviour {
             flash.Play();
             gunshot.Play();
             gunshot.loop = false;
-            CmdSpawnProjectile(team.team, team.playerID, damage, currentGun, barrellExit.position, barrellExit.rotation, barrellExit.forward);
+            CmdSpawnProjectile(team.team, team.playerID, damage, currentGun, range, barrellExit.position, barrellExit.rotation, barrellExit.forward);
             currentAmmoInMag--;
         }
         else
@@ -154,7 +155,7 @@ public class GunController : NetworkBehaviour {
 
     // This command is called from the localPlayer and run on the server. Note that Commands must begin with 'Cmd'
     [Command]
-    void CmdSpawnProjectile(int team, int playerID, float damage, int gunChoice, Vector3 position, Quaternion rotation, Vector3 forward)
+    void CmdSpawnProjectile(int team, int playerID, float damage, int gunChoice, float rangeModifier, Vector3 position, Quaternion rotation, Vector3 forward)
     {
         if (gunChoice == 2)
         {
@@ -163,7 +164,7 @@ public class GunController : NetworkBehaviour {
                 Vector3 changeVector;
                 float val1 = Random.Range(.5f, 2f);
                 float val2 = Random.Range(.5f, 2f);
-                float variation = Random.Range(100f, 700f);
+                float variation = Random.Range(200f, 1000f);
                 int choice = Random.Range(0, 3);
                 if (choice == 0 && forward.z != 0f)
                 {
@@ -189,25 +190,37 @@ public class GunController : NetworkBehaviour {
                     changeVector.Normalize();
                 }
                 GameObject instance = Instantiate(projectilePrefab, position, rotation);
-                instance.GetComponent<Rigidbody>().AddForce(forward * range + changeVector * variation);
+                instance.GetComponent<Rigidbody>().AddForce(forward * rangeModifier + changeVector * variation);
                 
                 ProjectileController pc = instance.GetComponent<ProjectileController>();
                 pc.firingTeam = team;
                 pc.firingPlayer = playerID;
                 pc.damage = damage;
                 NetworkServer.Spawn(instance);
+                RpcUpdateProjectileData(instance.GetComponent<NetworkIdentity>().netId, team, playerID, damage);
             }
         }
         else
         {
             GameObject instance = Instantiate(projectilePrefab, position, rotation);
-            instance.GetComponent<Rigidbody>().AddForce(forward * range);
+            instance.GetComponent<Rigidbody>().AddForce(forward * rangeModifier);
             ProjectileController pc = instance.GetComponent<ProjectileController>();
             pc.firingTeam = team;
             pc.firingPlayer = playerID;
             pc.damage = damage;
             NetworkServer.Spawn(instance);
+            RpcUpdateProjectileData(instance.GetComponent<NetworkIdentity>().netId, team, playerID, damage);
         }
+    }
+
+    [ClientRpc]
+    public void RpcUpdateProjectileData(NetworkInstanceId nid, int team, int playerID, float damage)
+    {
+        GameObject projectile = ClientScene.FindLocalObject(nid);
+        ProjectileController pc = projectile.GetComponent<ProjectileController>();
+        pc.firingTeam = team;
+        pc.firingPlayer = playerID;
+        pc.damage = damage;
     }
 
     [Command]

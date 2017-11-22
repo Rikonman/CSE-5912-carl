@@ -2511,7 +2511,7 @@ Transform:
   m_GameObject: {fileID: 1023041396058674}
   m_LocalRotation: {x: 0.00000007450579, y: 0.00000005960463, z: 0.00000005960463,
     w: 1}
-  m_LocalPosition: {x: 0.019, y: 0.051, z: 0.248}
+  m_LocalPosition: {x: 0.019, y: 0.051, z: 0.372}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4891619722285818}
@@ -4029,7 +4029,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 10
-  range: 1000
+  range: 2000
   fpsCamera: {fileID: 0}
   flash: {fileID: 198680723655224896}
   hitEffect: {fileID: 1065484811972784, guid: bea493569da8b1d4c9087b08c090ae4b, type: 2}
@@ -4039,6 +4039,7 @@ MonoBehaviour:
   fireDelay: 0
   automatic: 0
   shotgun: 0
+  speedModifier: 1
   maxAmmoInMag: 20
   startingReserveAmmo: 50
   currentAmmoInMag: 0
