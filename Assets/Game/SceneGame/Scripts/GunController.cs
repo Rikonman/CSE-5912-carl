@@ -17,6 +17,7 @@ public class GunController : NetworkBehaviour {
     public bool automatic = false;
     public bool shotgun = false;
     public bool sniper = false;
+    public bool rockets = false;
     public float speedModifier = 1f;
 
     //=============================
@@ -31,6 +32,8 @@ public class GunController : NetworkBehaviour {
 
     [SerializeField]
     GameObject projectilePrefab;
+    [SerializeField]
+    GameObject rocketPrefab;
     [SerializeField]
     Transform barrellExit;
     public AudioSource gunshot;
@@ -125,7 +128,7 @@ public class GunController : NetworkBehaviour {
             flash.Play();
             gunshot.Play();
             gunshot.loop = false;
-            CmdSpawnProjectile(team.team, team.playerID, damage, currentGun, range, barrellExit.position, barrellExit.rotation, barrellExit.forward);
+            CmdSpawnProjectile(team.team, team.playerID, damage, currentGun, range, barrellExit.position, fpsCamera.transform.rotation, fpsCamera.transform.forward);
             currentAmmoInMag--;
         }
         else
@@ -203,7 +206,7 @@ public class GunController : NetworkBehaviour {
         }
         else
         {
-            GameObject instance = Instantiate(projectilePrefab, position, rotation);
+            GameObject instance = Instantiate(gunChoice == 4 ? rocketPrefab : projectilePrefab, position, rotation);
             instance.GetComponent<Rigidbody>().AddForce(forward * rangeModifier);
             ProjectileController pc = instance.GetComponent<ProjectileController>();
             pc.firingTeam = team;
@@ -252,6 +255,7 @@ public class GunController : NetworkBehaviour {
         automatic = gunIndex == 1;
         shotgun = gunIndex == 2;
         sniper = gunIndex == 3;
+        rockets = gunIndex == 4;
         currentGun = gunIndex;
         gun.transform.GetChild(currentGun).gameObject.SetActive(true);
         barrellExit = gun.transform.GetChild(currentGun).GetChild(0);
@@ -280,9 +284,19 @@ public class GunController : NetworkBehaviour {
         {
             damage = 60;
             maxAmmoInMag = 1;
-            startingReserveAmmo = 16;
+            startingReserveAmmo = 15;
             fireRate = 1f;
             range = 3000f;
+            currentAmmoInMag = maxAmmoInMag;
+            currentAmmoInReserve = startingReserveAmmo;
+        }
+        else if (rockets)
+        {
+            damage = 40;
+            maxAmmoInMag = 4;
+            startingReserveAmmo = 20;
+            fireRate = 1f;
+            range = 1000f;
             currentAmmoInMag = maxAmmoInMag;
             currentAmmoInReserve = startingReserveAmmo;
         }

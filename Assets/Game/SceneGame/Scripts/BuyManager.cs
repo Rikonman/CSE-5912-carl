@@ -90,6 +90,15 @@ public class BuyManager : NetworkBehaviour {
                             resources.Add("Metal", -50);
                         }
                     }
+                    else if (Input.GetKeyDown(KeyCode.Alpha4))
+                    {
+                        ResourceBank resources = team.baseObject.GetComponent<ResourceBank>();
+                        if (resources.metal >= 50 && gun.currentGun == 0)
+                        {
+                            gun.CmdSwitch(4);
+                            resources.Add("Metal", -100);
+                        }
+                    }
                 }
                 else
                 {

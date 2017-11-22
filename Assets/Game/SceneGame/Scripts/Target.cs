@@ -341,6 +341,11 @@ public class Target : NetworkBehaviour {
             gunScript.CmdSwitch(0);
             gunScript.RpcResetAmmo();
         }
+        if (isLocalPlayer)
+        {
+            gameObject.GetComponent<PlayerController>().isSniping = false;
+        }
+        
         //rend.enabled = true;
         col.enabled = true;
         rb.useGravity = true;
