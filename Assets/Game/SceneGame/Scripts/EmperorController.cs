@@ -29,6 +29,7 @@ public class EmperorController : NetworkBehaviour
     public float giftTimer;
     public float timeoutMultiplier;
     public int moodChangeCost;
+    public float playerTimeModifier = 1f;
 
     public GameObject RedBase;
     public GameObject BlueBase;
@@ -48,7 +49,7 @@ public class EmperorController : NetworkBehaviour
         redFavor = 20;
         blueFavor = 20;
         giftTimer = 0;
-        entertainment = 36;
+        entertainment = 30;
         boredomTimer = 0f;
     }
 
@@ -63,7 +64,8 @@ public class EmperorController : NetworkBehaviour
             remainingTime -= Time.deltaTime;
 
         }
-
+        GameObject[] tempPlayers = GameObject.FindGameObjectsWithTag("Player");
+        playerTimeModifier = 1f + (12 - tempPlayers.Length) * .25f;
         //emperorText = GameObject.Find("EmperorText");
         RedBase = GameObject.Find("Base1Center");
         BlueBase = GameObject.Find("Base2Center");
@@ -78,7 +80,7 @@ public class EmperorController : NetworkBehaviour
             {
 
                 boredomTimer += Time.deltaTime;
-                if (boredomTimer >= boredomCooldown)
+                if (boredomTimer >= boredomCooldown * playerTimeModifier)
                 {
                     entertainment -= 1;
                     boredomTimer = 0;
