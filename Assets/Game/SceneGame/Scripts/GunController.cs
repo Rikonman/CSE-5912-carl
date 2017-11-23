@@ -294,7 +294,7 @@ public class GunController : NetworkBehaviour {
         }
         else if (rockets)
         {
-            damage = 40;
+            damage = 50;
             maxAmmoInMag = 4;
             startingReserveAmmo = 20;
             fireRate = 1f;

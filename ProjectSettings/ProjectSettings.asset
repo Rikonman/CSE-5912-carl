@@ -606,9 +606,9 @@ PlayerSettings:
     UNet: 1
   facebookSdkVersion: 7.9.4
   apiCompatibilityLevel: 2
-  cloudProjectId: b6ba1782-7e3e-4e43-bf04-2f555f8ff50d
+  cloudProjectId: 1398d9a1-5f29-46ac-84db-7672ae53e4c3
   projectName: CSE-5912-carl
-  organizationId: compman2408
+  organizationId: richard-kidwell
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0

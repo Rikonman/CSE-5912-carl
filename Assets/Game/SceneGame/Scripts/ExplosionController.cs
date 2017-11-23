@@ -7,17 +7,42 @@ public class ExplosionController : NetworkBehaviour {
     public ProjectileController pc;
     public SphereCollider sc;
     public CapsuleCollider cc;
+    public ParticleSystem smokePS;
+    public GameObject explosion;
+
     // Use this for initialization
     void Start () {
         pc = gameObject.GetComponent<ProjectileController>();
-        sc = gameObject.GetComponentInChildren<SphereCollider>();
-        cc = gameObject.GetComponentInChildren<CapsuleCollider>();
-	}
+        sc = gameObject.GetComponent<SphereCollider>();
+        cc = gameObject.GetComponent<CapsuleCollider>();
+        smokePS = gameObject.GetComponentInChildren<ParticleSystem>();
+    }
 
     public void StartExplosion()
     {
         sc.enabled = true;
+        CmdStartExplosion();
+
         StartCoroutine(Delayer());
+    }
+
+    [Command]
+    public void CmdStartExplosion()
+    {
+        smokePS.Stop(true);
+        explosion.SetActive(true);
+        explosion.GetComponent<ParticleSystem>().Emit(50);
+        RpcStartExplosion(gameObject.GetComponent<NetworkIdentity>().netId);
+    }
+
+    [ClientRpc]
+    public void RpcStartExplosion(NetworkInstanceId nid)
+    {
+        GameObject rocket = ClientScene.FindLocalObject(nid);
+        rocket.GetComponent<ParticleSystem>().Stop(true);
+        GameObject tempExp = rocket.transform.GetChild(0).gameObject;
+        tempExp.SetActive(true);
+        tempExp.GetComponent<ParticleSystem>().Emit(50);
     }
 
     public IEnumerator Delayer()
@@ -46,8 +71,9 @@ public class ExplosionController : NetworkBehaviour {
         {
             collisionTarget = other.gameObject.GetComponent<Target>();
         }
-        if (other.gameObject.tag != "Player" && other.gameObject.tag != "Building" && !hasParent || hasParent && 
-            other.gameObject.transform.parent.gameObject.tag != "Player" && other.gameObject.transform.parent.gameObject.tag != "Building")
+        if (other.gameObject.tag != "Player" && other.gameObject.tag != "Building" && other.gameObject.tag != "RedSpawnCore" && other.gameObject.tag != "BlueSpawnCore" && !hasParent || 
+            hasParent && other.gameObject.transform.parent.gameObject.tag != "Player" && other.gameObject.transform.parent.gameObject.tag != "Building" &&
+            other.gameObject.transform.parent.gameObject.tag != "RedSpawnCore" && other.gameObject.transform.parent.gameObject.tag != "BlueSpawnCore")
             return;
 
         PlayerTeam collisionTeam = other.gameObject.GetComponent<PlayerTeam>();
