@@ -18,6 +18,7 @@ public class GunController : NetworkBehaviour {
     public bool shotgun = false;
     public bool sniper = false;
     public bool rockets = false;
+    public bool minigun = false;
     public float speedModifier = 1f;
 
     //=============================
@@ -39,6 +40,7 @@ public class GunController : NetworkBehaviour {
     public AudioSource gunshot;
     public PlayerTeam team;
     public bool locked;
+    Rigidbody rb;
 
     void Start()
     {
@@ -46,6 +48,7 @@ public class GunController : NetworkBehaviour {
         ResetAmmo(true);
         //gun = transform.GetChild(0).GetChild(0).gameObject;
         team = GetComponent<PlayerTeam>();
+        rb = GetComponent<Rigidbody>();
         CmdSwitch(0);
     }
 
@@ -95,23 +98,14 @@ public class GunController : NetworkBehaviour {
 
         if (!locked)
         {
-
-            if (automatic)
+            if (((automatic || minigun) && Input.GetButton("Fire1") || !(automatic || minigun) && Input.GetButtonDown("Fire1")) && Time.time >= fireDelay)
             {
-                if (Input.GetButton("Fire1") && Time.time >= fireDelay)
+                fireDelay = Time.time + fireRate;
+                Debug.Log(fireDelay - Time.time);
+                Shoot();
+                if (minigun)
                 {
-                    fireDelay = Time.time + (fireRate/2f);
-                    Debug.Log(fireDelay - Time.time);
-                    Shoot();
-                }
-            }
-            else
-            {
-                if (Input.GetButtonDown("Fire1") && Time.time >= fireDelay)
-                {
-                    fireDelay = Time.time + fireRate;
-                    Debug.Log(fireDelay - Time.time);
-                    Shoot();
+                    rb.AddForce(-fpsCamera.transform.forward, ForceMode.Impulse);
                 }
             }
 
@@ -263,6 +257,7 @@ public class GunController : NetworkBehaviour {
         shotgun = gunIndex == 2;
         sniper = gunIndex == 3;
         rockets = gunIndex == 4;
+        minigun = gunIndex == 5;
         currentGun = gunIndex;
         gun.transform.GetChild(currentGun).gameObject.SetActive(true);
         barrellExit = gun.transform.GetChild(currentGun).GetChild(0);
@@ -280,7 +275,7 @@ public class GunController : NetworkBehaviour {
         else if (automatic)
         {
             damage = 10;
-            maxAmmoInMag = 50;
+            maxAmmoInMag = 30;
             startingReserveAmmo = 150;
             fireRate = .1f;
             range = 2000f;
@@ -304,6 +299,16 @@ public class GunController : NetworkBehaviour {
             startingReserveAmmo = 20;
             fireRate = 1f;
             range = 1000f;
+            currentAmmoInMag = maxAmmoInMag;
+            currentAmmoInReserve = startingReserveAmmo;
+        }
+        else if (minigun)
+        {
+            damage = 10;
+            maxAmmoInMag = 60;
+            startingReserveAmmo = 180;
+            fireRate = .05f;
+            range = 2000f;
             currentAmmoInMag = maxAmmoInMag;
             currentAmmoInReserve = startingReserveAmmo;
         }
