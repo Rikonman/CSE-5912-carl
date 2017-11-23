@@ -483,7 +483,7 @@ namespace Prototype.NetworkLobby
             //CheckIfSpawnsCreated();
             Debug.Log("Player Adding");
             playerCounter++;
-            GameObject player = GameObject.Instantiate(gamePlayerPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
+            GameObject player = GameObject.Instantiate(gamePlayerPrefab, new Vector3(0f, 100f, 0f), Quaternion.identity);
 
 
             player.SetActive(true);

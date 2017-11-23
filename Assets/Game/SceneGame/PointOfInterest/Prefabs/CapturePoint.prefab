@@ -243,7 +243,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   radius: 10
   captureTime: 10
-  resourcePerSecond: 5
+  resourcePerSecond: 4
   ownership: 0
   resourceTimer: 0
   currentOwner: 
+  uiObject: {fileID: 0}
+  localTeam: 0

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
+
 [System.Serializable]
 public class CapturePoint : NetworkBehaviour
 {
@@ -16,7 +18,9 @@ public class CapturePoint : NetworkBehaviour
     public float resourceTimer;
     [SyncVar]
     public string currentOwner;
-    
+
+    public GameObject uiObject;
+    public int localTeam;
 
     public float Ownership
     {
@@ -39,14 +43,21 @@ public class CapturePoint : NetworkBehaviour
                 if (value < -captureTime)
                 {
                     currentOwner = "Team Two";
+                    uiObject.GetComponent<Image>().color = Color.blue;
+                    uiObject.transform.GetChild(1).GetComponent<Text>().text = string.Format("{0:F0}", Mathf.Abs(value) - captureTime);
+
                 }
                 else if (value > captureTime)
                 {
                     currentOwner = "Team One";
+                    uiObject.GetComponent<Image>().color = Color.red;
+                    uiObject.transform.GetChild(1).GetComponent<Text>().text = string.Format("{0:F0}", Mathf.Abs(value) - captureTime);
                 }
                 else
                 {
                     currentOwner = "No One";
+                    uiObject.GetComponent<Image>().color = new Color(1f, 1f, 1f, 100f / 256);
+                    uiObject.transform.GetChild(1).GetComponent<Text>().text = string.Format("{0:F0}", localTeam == 0 ? value : -value);
                 }
                 ownership = value;
             }

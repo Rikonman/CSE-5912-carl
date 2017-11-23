@@ -47,6 +47,11 @@ public class PlayerTeam : NetworkBehaviour {
                 img2.color = new Color(0, 0, 1f, 0.3f);
                 img3.color = new Color(0, 0, 1f, 0.3f);
                 img4.color = new Color(0, 0, 1f, 0.3f);
+                GameObject[] capPoints = GameObject.FindGameObjectsWithTag("CapturePoint");
+                foreach (GameObject tempPoint in capPoints)
+                {
+                    tempPoint.GetComponent<CapturePoint>().localTeam = team;
+                }
             }
         }
         else
@@ -68,6 +73,11 @@ public class PlayerTeam : NetworkBehaviour {
                 img2.color = new Color(1f, 0, 0, 0.3f);
                 img3.color = new Color(1f, 0, 0, 0.3f);
                 img4.color = new Color(1f, 0, 0, 0.3f);
+                GameObject[] capPoints = GameObject.FindGameObjectsWithTag("CapturePoint");
+                foreach (GameObject tempPoint in capPoints)
+                {
+                    tempPoint.GetComponent<CapturePoint>().localTeam = team;
+                }
             }
         }
 
