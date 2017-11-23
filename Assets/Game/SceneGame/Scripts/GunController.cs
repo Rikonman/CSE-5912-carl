@@ -105,7 +105,7 @@ public class GunController : NetworkBehaviour {
                 Shoot();
                 if (minigun)
                 {
-                    rb.AddForce(-fpsCamera.transform.forward, ForceMode.Impulse);
+                    rb.AddForce(-fpsCamera.transform.forward * 35, ForceMode.Impulse);
                 }
             }
 
