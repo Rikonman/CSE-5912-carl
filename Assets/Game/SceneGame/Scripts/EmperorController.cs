@@ -182,7 +182,7 @@ public class EmperorController : NetworkBehaviour
                             if (giftSeverity >= 2)
                             {
                                 GunController gc = tempPlayer.GetComponent<GunController>();
-                                gc.RpcResetAmmo();
+                                gc.RpcResetAmmo(false);
                             }
                         }
                     }

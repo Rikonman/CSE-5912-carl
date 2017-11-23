@@ -161,7 +161,7 @@ public class PlayerTeam : NetworkBehaviour {
             else if (other.gameObject.CompareTag("Pick Up (Ammo)"))
             {
                 GunController gc = GetComponent<GunController>();
-                gc.ResetAmmo();
+                gc.ResetAmmo(false);
                 PickUpController TempController = other.gameObject.GetComponent<PickUpController>();
                 TempController.StartRespawnTimer();
                 other.gameObject.GetComponent<MeshRenderer>().enabled = false;

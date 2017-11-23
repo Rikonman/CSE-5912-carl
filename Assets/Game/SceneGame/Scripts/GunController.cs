@@ -43,30 +43,37 @@ public class GunController : NetworkBehaviour {
     void Start()
     {
         locked = false;
-        ResetAmmo();
+        ResetAmmo(true);
         //gun = transform.GetChild(0).GetChild(0).gameObject;
         team = GetComponent<PlayerTeam>();
         CmdSwitch(0);
     }
 
     [ClientRpc]
-    public void RpcResetAmmo()
+    public void RpcResetAmmo(bool refillMag)
     {
-        ResetAmmo();
+        ResetAmmo(refillMag);
     }
 
-    public void ResetAmmo()
+    public void ResetAmmo(bool refillMag)
     {
         currentAmmoInReserve = startingReserveAmmo;
         if (currentAmmoInReserve >= maxAmmoInMag)
         {
-            currentAmmoInMag = maxAmmoInMag;
-            currentAmmoInReserve -= maxAmmoInMag;
+            if (refillMag)
+            {
+                currentAmmoInMag = maxAmmoInMag;
+                currentAmmoInReserve -= maxAmmoInMag;
+            }
+            
         }
         else
         {
-            currentAmmoInMag = currentAmmoInReserve;
-            currentAmmoInReserve = 0;
+            if (refillMag)
+            {
+                currentAmmoInMag = currentAmmoInReserve;
+                currentAmmoInReserve = 0;
+            }
         }
 
     }

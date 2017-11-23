@@ -339,7 +339,7 @@ public class Target : NetworkBehaviour {
         {
             team.RpcChangeLocation(LobbyManager.s_Singleton.GetSpawnLocation(team.team));
             gunScript.CmdSwitch(0);
-            gunScript.RpcResetAmmo();
+            gunScript.RpcResetAmmo(true);
         }
         if (isLocalPlayer)
         {

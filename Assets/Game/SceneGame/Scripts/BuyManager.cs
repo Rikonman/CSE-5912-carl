@@ -70,6 +70,8 @@ public class BuyManager : NetworkBehaviour {
                         {
                             gun.CmdSwitch(1);
                             resources.Add("Metal", -50);
+                            buyMode = false;
+                            BuyMenu.SetActive(false);
                         }
                     }
                     else if (Input.GetKeyDown(KeyCode.Alpha2))
@@ -79,6 +81,8 @@ public class BuyManager : NetworkBehaviour {
                         {
                             gun.CmdSwitch(2);
                             resources.Add("Metal", -50);
+                            buyMode = false;
+                            BuyMenu.SetActive(false);
                         }
                     }
                     else if (Input.GetKeyDown(KeyCode.Alpha3))
@@ -88,6 +92,8 @@ public class BuyManager : NetworkBehaviour {
                         {
                             gun.CmdSwitch(3);
                             resources.Add("Metal", -50);
+                            buyMode = false;
+                            BuyMenu.SetActive(false);
                         }
                     }
                     else if (Input.GetKeyDown(KeyCode.Alpha4))
@@ -97,6 +103,8 @@ public class BuyManager : NetworkBehaviour {
                         {
                             gun.CmdSwitch(4);
                             resources.Add("Metal", -100);
+                            buyMode = false;
+                            BuyMenu.SetActive(false);
                         }
                     }
                 }

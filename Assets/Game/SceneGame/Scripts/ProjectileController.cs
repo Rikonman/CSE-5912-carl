@@ -17,10 +17,12 @@ public class ProjectileController : NetworkBehaviour {
     public int firingPlayer;
     public GameObject triangleBreak;
     public float damage;
-
+    Rigidbody rb;
     // Use this for initialization
-    void Start () {
+    void Start ()
+    {
         projectileRenderer = GetComponent<MeshRenderer>();
+        rb = GetComponent<Rigidbody>();
         NetworkIdentity tempTB = triangleBreak.GetComponent<NetworkIdentity>();
         //triangleBreak = Resources.Load()
     }
@@ -59,7 +61,15 @@ public class ProjectileController : NetworkBehaviour {
         isLive = false;
         // hide the projectile body
         projectileRenderer.enabled = false;
-
+        RpcHideProj();
+        ExplosionController tempExp = gameObject.GetComponent<ExplosionController>();
+        if (tempExp != null)
+        {
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+            tempExp.StartExplosion();
+            return;
+        }
 
         // show the explosion particle effect
         GameObject tempHitEffect = Instantiate(hitEffect, gameObject.transform.position, Quaternion.LookRotation(gameObject.transform.forward, Vector3.up));
@@ -82,14 +92,29 @@ public class ProjectileController : NetworkBehaviour {
         if (!canKill || collisionTarget == null)
             return;
 
+        DamageTarget(collisionTarget, collisionTeam == null, collision.gameObject.tag, hasParent, 1f);
+
+    }
+
+    [ClientRpc]
+    public void RpcHideProj()
+    {
+        // the projectile is going to explode and is no longer live
+        isLive = false;
+        // hide the projectile body
+        projectileRenderer.enabled = false;
+    }
+    
+    public void DamageTarget(Target collisionTarget, bool isBuilding, string collisionTag, bool hasParent, float damageModifier)
+    {
         Vector3 position = collisionTarget.transform.position;
         Quaternion rotation = collisionTarget.transform.localRotation;
 
         // have the target take damage
-        bool died = collisionTarget.TakeDamage(damage);
+        bool died = collisionTarget.TakeDamage(damage / damageModifier);
 
         //explode the dead
-        if (died && collisionTeam == null)
+        if (died && isBuilding)
         {
             bool isStone = false;
             bool isCore = false;
@@ -97,10 +122,10 @@ public class ProjectileController : NetworkBehaviour {
             {
                 isStone = collisionTarget.bid.isStone;
             }
-            else if (collision.gameObject.tag == "RedSpawnCore" || collision.gameObject.tag == "BlueSpawnCore")
+            else if (collisionTag == "RedSpawnCore" || collisionTag == "BlueSpawnCore")
             {
                 isCore = true;
-            } 
+            }
             Mesh M = new Mesh();
             MeshFilter tempFilter;
             SkinnedMeshRenderer tempSkinnedRenderer;
@@ -126,7 +151,7 @@ public class ProjectileController : NetworkBehaviour {
             {
                 M = tempSkinnedRenderer.sharedMesh;
             }
-            
+
 
             TriangleExplosion tempTriangleExplosion = triangleBreak.GetComponent<TriangleExplosion>();
             tempTriangleExplosion.verts = M.vertices;
@@ -141,9 +166,7 @@ public class ProjectileController : NetworkBehaviour {
             CmdDoBreak(position, rotation, M.vertices, M.normals, M.uv, M.GetTriangles(0), isStone, isCore);
 
         }
-
     }
-    
 
     [Command]
     public void CmdDoBreak(Vector3 position, Quaternion rotation, 
