@@ -14,16 +14,19 @@ public class ProjectileController : NetworkBehaviour {
     float age;
     MeshRenderer projectileRenderer;
     public int firingTeam;
-    public int firingPlayer;
+    public string firingPlayer;
+    public int firingGun;
     public GameObject triangleBreak;
     public float damage;
     Rigidbody rb;
+    public KillManager killManager;
     // Use this for initialization
     void Start ()
     {
         projectileRenderer = GetComponent<MeshRenderer>();
         rb = GetComponent<Rigidbody>();
         NetworkIdentity tempTB = triangleBreak.GetComponent<NetworkIdentity>();
+        killManager = GameObject.Find("KillsPanel").GetComponent<KillManager>();
         //triangleBreak = Resources.Load()
     }
 	
@@ -104,7 +107,19 @@ public class ProjectileController : NetworkBehaviour {
         // hide the projectile body
         projectileRenderer.enabled = false;
     }
-    
+
+    [Command]
+    public void CmdAddKillMessage(string killerPlayer, int killerTeam, string victimName, int victimTeam, int firingGun)
+    {
+        RpcAddKillMessage(killerPlayer, killerTeam, victimName, victimTeam, firingGun);
+    }
+
+    [ClientRpc]
+    public void RpcAddKillMessage(string killerPlayer, int killerTeam, string victimName, int victimTeam, int firingGun)
+    {
+        killManager.GetComponent<KillManager>().AddKill(killerPlayer, killerTeam, victimName, victimTeam, firingGun);
+    }
+
     public void DamageTarget(Target collisionTarget, bool isBuilding, string collisionTag, bool hasParent, float damageModifier)
     {
         Vector3 position = collisionTarget.transform.position;
@@ -112,9 +127,13 @@ public class ProjectileController : NetworkBehaviour {
 
         // have the target take damage
         bool died = collisionTarget.TakeDamage(damage / damageModifier);
+        if (died && !isBuilding)
+        {
 
-        //explode the dead
-        if (died && isBuilding)
+            CmdAddKillMessage(firingPlayer, firingTeam, collisionTarget.gameObject.GetComponent<PlayerLobbyInfo>().playerName,
+                collisionTarget.gameObject.GetComponent<PlayerTeam>().team, firingGun);
+        }
+        else if (died && isBuilding)
         {
             bool isStone = false;
             bool isCore = false;
@@ -124,6 +143,7 @@ public class ProjectileController : NetworkBehaviour {
             }
             else if (collisionTag == "RedSpawnCore" || collisionTag == "BlueSpawnCore")
             {
+                CmdAddKillMessage(firingPlayer, firingTeam, "Spawn Core", firingTeam == 0 ? 1 : 0, firingGun);
                 isCore = true;
             }
             Mesh M = new Mesh();

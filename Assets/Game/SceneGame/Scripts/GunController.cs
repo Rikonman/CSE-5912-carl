@@ -41,6 +41,7 @@ public class GunController : NetworkBehaviour {
     public PlayerTeam team;
     public bool locked;
     Rigidbody rb;
+    public PlayerLobbyInfo pli;
 
     void Start()
     {
@@ -49,6 +50,7 @@ public class GunController : NetworkBehaviour {
         //gun = transform.GetChild(0).GetChild(0).gameObject;
         team = GetComponent<PlayerTeam>();
         rb = GetComponent<Rigidbody>();
+        pli = GetComponent<PlayerLobbyInfo>();
         CmdSwitch(0);
     }
 
@@ -129,7 +131,8 @@ public class GunController : NetworkBehaviour {
             flash.Play();
             gunshot.Play();
             gunshot.loop = false;
-            CmdSpawnProjectile(team.team, team.playerID, damage, currentGun, range, barrellExit.position, fpsCamera.transform.rotation, fpsCamera.transform.forward);
+            CmdSpawnProjectile(team.team, team.playerID, damage, currentGun, range, pli.playerName, barrellExit.position, 
+                fpsCamera.transform.rotation, fpsCamera.transform.forward);
             currentAmmoInMag--;
         }
         else
@@ -160,7 +163,7 @@ public class GunController : NetworkBehaviour {
 
     // This command is called from the localPlayer and run on the server. Note that Commands must begin with 'Cmd'
     [Command]
-    void CmdSpawnProjectile(int team, int playerID, float damage, int gunChoice, float rangeModifier, Vector3 position, Quaternion rotation, Vector3 forward)
+    void CmdSpawnProjectile(int team, int playerID, float damage, int gunChoice, float rangeModifier, string playerName, Vector3 position, Quaternion rotation, Vector3 forward)
     {
         if (gunChoice == 2)
         {
@@ -199,10 +202,11 @@ public class GunController : NetworkBehaviour {
 
                 ProjectileController pc = instance.GetComponent<ProjectileController>();
                 pc.firingTeam = team;
-                pc.firingPlayer = playerID;
+                pc.firingPlayer = playerName;
                 pc.damage = damage;
+                pc.firingGun = gunChoice;
                 NetworkServer.Spawn(instance);
-                RpcUpdateProjectileData(instance.GetComponent<NetworkIdentity>().netId, team, playerID, damage, pc.projectileLifetime);
+                RpcUpdateProjectileData(instance.GetComponent<NetworkIdentity>().netId, team, playerID, damage, pc.projectileLifetime, playerName);
             }
         }
         else
@@ -211,24 +215,25 @@ public class GunController : NetworkBehaviour {
             instance.GetComponent<Rigidbody>().AddForce(forward * rangeModifier);
             ProjectileController pc = instance.GetComponent<ProjectileController>();
             pc.firingTeam = team;
-            pc.firingPlayer = playerID;
+            pc.firingPlayer = playerName;
             pc.damage = damage;
+            pc.firingGun = gunChoice;
             if (gunChoice == 3)
             {
                 pc.projectileLifetime = 4f;
             }
             NetworkServer.Spawn(instance);
-            RpcUpdateProjectileData(instance.GetComponent<NetworkIdentity>().netId, team, playerID, damage, pc.projectileLifetime);
+            RpcUpdateProjectileData(instance.GetComponent<NetworkIdentity>().netId, team, playerID, damage, pc.projectileLifetime, playerName);
         }
     }
 
     [ClientRpc]
-    public void RpcUpdateProjectileData(NetworkInstanceId nid, int team, int playerID, float damage, float projectileLifetime)
+    public void RpcUpdateProjectileData(NetworkInstanceId nid, int team, int playerID, float damage, float projectileLifetime, string playerName)
     {
         GameObject projectile = ClientScene.FindLocalObject(nid);
         ProjectileController pc = projectile.GetComponent<ProjectileController>();
         pc.firingTeam = team;
-        pc.firingPlayer = playerID;
+        pc.firingPlayer = playerName;
         pc.damage = damage;
         pc.projectileLifetime = projectileLifetime;
     }
@@ -264,7 +269,7 @@ public class GunController : NetworkBehaviour {
 
         if (shotgun)
         {
-            damage = 10;
+            damage = 15;
             maxAmmoInMag = 5;
             startingReserveAmmo = 30;
             fireRate = 1f;
