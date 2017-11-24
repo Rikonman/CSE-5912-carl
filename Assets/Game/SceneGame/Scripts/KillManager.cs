@@ -47,7 +47,11 @@ public class KillManager : NetworkBehaviour {
 
         }
         int childCount = gameObject.transform.childCount;
-        Destroy(gameObject.transform.GetChild(0).gameObject);
+        if (childCount > 0)
+        {
+            Destroy(gameObject.transform.GetChild(0).gameObject);
+        }
+        
         if (childCount > 1)
         {
             StartCoroutine(Delayer(1.5f));

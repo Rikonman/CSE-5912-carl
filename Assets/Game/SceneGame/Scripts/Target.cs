@@ -89,60 +89,89 @@ public class Target : NetworkBehaviour {
         }
     }
 
-    private void Update()
-    {
-        if (isDead)
-        {
-            timer += Time.deltaTime;
-        }
-        if (timer >= respawnTime)
-        {
-            if (team != null && SpawnObject != null)
-            {
-                Respawn();
-            }
-            else if (team != null)
-            {
-                CmdLockPlayer(gameObject.GetComponent<NetworkIdentity>().netId, true);
-            }
-            timer = 0;
-        }
-    }
 
     [Command]
-    public void CmdLockPlayer(NetworkInstanceId nid, bool locked)
+    public void CmdUpdateSpawnObject(int team)
     {
-        RpcLockPlayer(nid, locked);
+        GameObject tempObject = GameObject.FindGameObjectWithTag(team == 0 ? "RedSpawnCore" : "BlueSpawnCore");
+        SpawnObject = tempObject;
+        RpcUpdateSpawnObject(team);
     }
 
     [ClientRpc]
-    public void RpcLockPlayer(NetworkInstanceId nid, bool locked)
+    public void RpcUpdateSpawnObject(int team)
     {
-        GameObject playerObj = ClientScene.FindLocalObject(nid);
-        PlayerController pc = playerObj.GetComponent<PlayerController>();
-        if (pc != null)
+        GameObject tempObject = GameObject.FindGameObjectWithTag(team == 0 ? "RedSpawnCore" : "BlueSpawnCore");
+        SpawnObject = tempObject;
+    }
+
+    private void Update()
+    {
+        if (team != null)
         {
-            pc.locked = locked;
+            if (isServer)
+            {
+                if (isDead)
+                {
+                    timer += Time.deltaTime;
+                }
+                if (timer >= respawnTime)
+                {
+
+                    if (SpawnObject != null)
+                    {
+                        Respawn();
+                    }
+                    else
+                    {
+                        CmdLockPlayer(true);
+                    }
+                    timer = 0;
+                }
+            }
         }
-        GunController gc = playerObj.GetComponent<GunController>();
+        
+    }
+
+    [Command]
+    public void CmdLockPlayer(bool locked)
+    {
+        //LockPlayer(locked);
+        RpcLockPlayer(locked);
+    }
+
+    [ClientRpc]
+    public void RpcLockPlayer(bool locked)
+    {
+        LockPlayer(locked);
+    }
+
+    public void LockPlayer(bool locked)
+    {
+        GunController gc = gameObject.GetComponent<GunController>();
         if (gc != null)
         {
             gc.locked = locked;
         }
-        EManager em = playerObj.GetComponent<EManager>();
+        EManager em = gameObject.GetComponent<EManager>();
         if (em != null)
         {
             em.locked = locked;
         }
-        BuildScript bs = playerObj.GetComponent<BuildScript>();
+        BuildScript bs = gameObject.GetComponent<BuildScript>();
         if (bs != null)
         {
             bs.locked = locked;
         }
-        BuyManager bm = playerObj.GetComponent<BuyManager>();
+        BuyManager bm = gameObject.GetComponent<BuyManager>();
         if (bm != null)
         {
             bm.locked = locked;
+        }
+        PlayerController pc = gameObject.GetComponent<PlayerController>();
+        if (pc != null)
+        {
+            pc.locked = locked;
         }
     }
 
@@ -325,7 +354,6 @@ public class Target : NetworkBehaviour {
         }
         else
         {
-            //GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
             Destroy(gameObject);
         }
         //rend.enabled = false;

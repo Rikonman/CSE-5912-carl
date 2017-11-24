@@ -42,6 +42,7 @@ public class ProjectileController : NetworkBehaviour {
             NetworkServer.Destroy(gameObject);
         }
 	}
+    
 
     void OnCollisionEnter(Collision collision)
     {
@@ -64,7 +65,7 @@ public class ProjectileController : NetworkBehaviour {
         isLive = false;
         // hide the projectile body
         projectileRenderer.enabled = false;
-        RpcHideProj();
+        HideProj();
         ExplosionController tempExp = gameObject.GetComponent<ExplosionController>();
         if (tempExp != null)
         {
@@ -98,9 +99,8 @@ public class ProjectileController : NetworkBehaviour {
         DamageTarget(collisionTarget, collisionTeam == null, collision.gameObject.tag, hasParent, 1f);
 
     }
-
-    [ClientRpc]
-    public void RpcHideProj()
+    
+    public void HideProj()
     {
         // the projectile is going to explode and is no longer live
         isLive = false;

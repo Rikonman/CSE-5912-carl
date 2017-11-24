@@ -77,15 +77,23 @@ public class RoundManager : NetworkBehaviour
                 {
                     redLives = true;
                 }
-                if (!blueLives && tempPlayer.GetComponent<PlayerTeam>().team == 1 && tempPlayer.GetComponent<BuildScript>().locked == false)
+                else if (!blueLives && tempPlayer.GetComponent<PlayerTeam>().team == 1 && tempPlayer.GetComponent<BuildScript>().locked == false)
                 {
                     blueLives = true;
+                }
+                if (!redLives && tempPlayer.GetComponent<PlayerTeam>().team == 0 && tempPlayer.GetComponent<BuildScript>().locked == true)
+                {
+                    redLives = redLives;
+                }
+                if (!blueLives && tempPlayer.GetComponent<PlayerTeam>().team == 1 && tempPlayer.GetComponent<BuildScript>().locked == true)
+                {
+                    blueLives = blueLives;
                 }
                 if (tempPlayer.GetComponent<PlayerTeam>().team == 0)
                 {
                     redCounter++;
                 }
-                if (tempPlayer.GetComponent<PlayerTeam>().team == 1)
+                else if (tempPlayer.GetComponent<PlayerTeam>().team == 1)
                 {
                     blueCounter++;
                 }
@@ -141,22 +149,14 @@ public class RoundManager : NetworkBehaviour
             Destroy(currentBlueCore);
         }
         CmdSpawnCores();
-        GameObject redCore = GameObject.FindGameObjectWithTag("RedSpawnCore");
-        GameObject blueCore = GameObject.FindGameObjectWithTag("BlueSpawnCore");
         GameObject[] tempPlayers = GameObject.FindGameObjectsWithTag("Player");
         foreach (GameObject tempPlayer in tempPlayers)
         {
             Target tempTarget = tempPlayer.GetComponent<Target>();
-            tempTarget.CmdLockPlayer(tempPlayer.GetComponent<NetworkIdentity>().netId, false);
+            tempTarget.LockPlayer(false);
+            tempTarget.CmdLockPlayer(false);
+            tempTarget.CmdUpdateSpawnObject(tempPlayer.GetComponent<PlayerTeam>().team);
             tempTarget.Respawn();
-            if (tempPlayer.GetComponent<PlayerTeam>().team == 0)
-            {
-                tempTarget.SpawnObject = redCore;
-            }
-            else
-            {
-                tempTarget.SpawnObject = blueCore;
-            }
         }
         GameObject[] tempBuildings = GameObject.FindGameObjectsWithTag("Building");
         for (int counter = tempBuildings.Length - 1; counter >= 0; counter--)

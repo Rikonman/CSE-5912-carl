@@ -27,6 +27,7 @@ public class BuyManager : NetworkBehaviour {
         }
     }
 
+
     public IEnumerator Delayer()
     {
         float remainingTime = 1f;
