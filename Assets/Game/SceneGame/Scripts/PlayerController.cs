@@ -149,7 +149,7 @@ public class PlayerController : NetworkBehaviour
                 }
                 
             }
-            if (gc.sniper && Input.GetButtonUp("Fire2"))
+            if (gc != null && gc.sniper && Input.GetButtonUp("Fire2"))
             {
                 isSniping = !isSniping;
             }

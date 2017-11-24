@@ -15,6 +15,7 @@ public class EManager : NetworkBehaviour {
     public int repairCost;
     public Text lookText;
     public bool locked;
+    public bool isLooking;
     // Use this for initialization
     void Start () {
         locked = false;
@@ -72,6 +73,7 @@ public class EManager : NetworkBehaviour {
                             CanAfford = false;
                         }
                         lookText.enabled = true;
+                        isLooking = true;
                     }
                     else
                     {
@@ -119,9 +121,10 @@ public class EManager : NetworkBehaviour {
             {
                 eTime = 0;
                 eTarget = -1;
-                if (lookText != null)
+                if (lookText != null && isLooking)
                 {
                     lookText.enabled = false;
+                    isLooking = false;
                 }
                 
             }

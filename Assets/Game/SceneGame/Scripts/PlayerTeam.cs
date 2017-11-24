@@ -105,6 +105,7 @@ public class PlayerTeam : NetworkBehaviour {
 
         baseObject = GameObject.Find("Base" + (team + 1) + "Center");
         RpcChangeLocation(LobbyManager.s_Singleton.GetSpawnLocation(team));
+        GameObject.Find("Round Manager").GetComponent<RoundManager>().RpcUpdateForRoundBegin();
 
     }
 

@@ -25,6 +25,7 @@ public class RoundManager : NetworkBehaviour
     public GameObject BlueSpawnCore;
     public EmperorController emperor;
     public bool endedOnce;
+    public GameObject lookText;
     GameObject audioObject;
     MusicScript music;
     // Use this for initialization
@@ -38,6 +39,7 @@ public class RoundManager : NetworkBehaviour
         audioObject = GameObject.Find("MusicAudioSource");
         music = audioObject.GetComponent<MusicScript>();
         music.SwitchState(MusicScript.SongStates.Build);
+        RpcUpdateForRoundBegin();
         StartCoroutine(Delayer());
     }
 
@@ -80,14 +82,6 @@ public class RoundManager : NetworkBehaviour
                 else if (!blueLives && tempPlayer.GetComponent<PlayerTeam>().team == 1 && tempPlayer.GetComponent<BuildScript>().locked == false)
                 {
                     blueLives = true;
-                }
-                if (!redLives && tempPlayer.GetComponent<PlayerTeam>().team == 0 && tempPlayer.GetComponent<BuildScript>().locked == true)
-                {
-                    redLives = redLives;
-                }
-                if (!blueLives && tempPlayer.GetComponent<PlayerTeam>().team == 1 && tempPlayer.GetComponent<BuildScript>().locked == true)
-                {
-                    blueLives = blueLives;
                 }
                 if (tempPlayer.GetComponent<PlayerTeam>().team == 0)
                 {
@@ -177,6 +171,33 @@ public class RoundManager : NetworkBehaviour
         base2.GetComponent<BaseBuildings>().CmdResetBuildings();
         emperor.ResetEmperor();
         RpcRefreshRoundStuff();
+        RpcUpdateForRoundBegin();
+    }
+
+    [ClientRpc]
+    public void RpcUpdateForRoundBegin()
+    {
+        Text tempText = lookText.GetComponent<Text>();
+        tempText.text = "Destroy the opposing Spawn Core!" + Environment.NewLine + "Press 'B' to build." +
+            Environment.NewLine + "Press 'V' to buy weapons.";
+        tempText.enabled = true;
+        StartCoroutine(TextDelayer());
+    }
+
+    public IEnumerator TextDelayer()
+    {
+        float remainingTime = 5f;
+
+        while (remainingTime > 0)
+        {
+            yield return null;
+
+            remainingTime -= Time.deltaTime;
+
+        }
+
+        lookText.GetComponent<Text>().enabled = false;
+
     }
 
     [ClientRpc]

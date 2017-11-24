@@ -23,7 +23,7 @@ public class ResourceBank : NetworkBehaviour
     {
         stone = 500;
         wood = 500;
-        metal = 200;
+        metal = 300;
     }
 
     // Update is called once per frame

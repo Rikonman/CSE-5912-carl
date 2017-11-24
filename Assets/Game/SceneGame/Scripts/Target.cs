@@ -32,6 +32,7 @@ public class Target : NetworkBehaviour {
     public GameObject emperor;
     public GunController gunScript;
     public GameObject SpawnObject;
+    public GameObject lookText;
 
     public delegate void OnHealthChanged(float prevValue, float newValue);
     public OnHealthChanged onHealthChanged;
