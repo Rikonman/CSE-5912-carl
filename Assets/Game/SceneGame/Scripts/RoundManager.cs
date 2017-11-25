@@ -179,7 +179,7 @@ public class RoundManager : NetworkBehaviour
     {
         Text tempText = lookText.GetComponent<Text>();
         tempText.text = "Destroy the opposing Spawn Core!" + Environment.NewLine + "Press 'B' to build." +
-            Environment.NewLine + "Press 'V' to buy weapons.";
+            Environment.NewLine + "Press 'V' to buy weapons." + Environment.NewLine + "Press 'T' to talk.";
         tempText.enabled = true;
         StartCoroutine(TextDelayer());
     }

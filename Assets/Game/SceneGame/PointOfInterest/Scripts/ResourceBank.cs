@@ -101,4 +101,21 @@ public class ResourceBank : NetworkBehaviour
             AddWood(Amount);
         }
     }
+
+    public void Set(string Type, int Amount)
+    {
+        if (Type == "Stone")
+        {
+            SetStone(Amount);
+        }
+        else if (Type == "Metal")
+        {
+            SetMetal(Amount);
+        }
+        else
+        {
+            SetWood(Amount);
+        }
+    }
+
 }

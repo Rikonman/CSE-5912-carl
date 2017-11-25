@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System;
+using UnityEngine.Networking;
+using System.Collections.Generic;
+using System.Collections;
 
-public class HostConsole : MonoBehaviour
+public class HostConsole : NetworkBehaviour
 {
     bool open;
     bool toClose;
@@ -18,366 +21,420 @@ public class HostConsole : MonoBehaviour
     public GunController playerGun;
     public Target playerTarget;
     public GameObject player;
+    public NotificationManager nm;
+    public string playerName;
+    public PlayerTeam team;
 
     void Start()
     {
-        UIPanelImg = GameObject.Find("UINotificationCenter").GetComponent<Image>();
-        panel = GameObject.Find("UINotificationConsole");
-        input = panel.GetComponentInChildren<InputField>();
-        panel.SetActive(open);
-        SetNotificationCenterBackVisible(open);
+        if (isLocalPlayer)
+        {
+            UIPanelImg = GameObject.Find("UINotificationCenter").GetComponent<Image>();
+            panel = GameObject.Find("UINotificationConsole");
+            input = panel.GetComponentInChildren<InputField>();
+            panel.SetActive(open);
+            SetNotificationCenterBackVisible(open);
+            playerName = gameObject.GetComponent<PlayerLobbyInfo>().playerName;
+            team = gameObject.GetComponent<PlayerTeam>();
+        }
+
+        StartCoroutine(Delayer());
+    }
+
+    public IEnumerator Delayer()
+    {
+        float remainingTime = 1f;
+
+        while (remainingTime > 0)
+        {
+            yield return null;
+
+            remainingTime -= Time.deltaTime;
+
+        }
+        nm = GameObject.Find("UINotifications").GetComponent<NotificationManager>();
+        
+
     }
 
     void Update()
     {
-        if (bank1 == null)
+        if (isLocalPlayer)
         {
-            GameObject b1c = GameObject.Find("Base1Center");
-            if (b1c != null)
-                bank1 = b1c.GetComponent<ResourceBank>();
-        }
-        if (bank2 == null)
-        {
-            GameObject b2c = GameObject.Find("Base2Center");
-            if (b2c != null)
-                bank1 = b2c.GetComponent<ResourceBank>();
-        }
-        if (player == null)
-        {
-            GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-            foreach (GameObject tempPlayer in players)
+            if (bank1 == null)
             {
-                PlayerController tempController = tempPlayer.GetComponent<PlayerController>();
-                if (tempController != null)
+                GameObject b1c = GameObject.Find("Base1Center");
+                if (b1c != null)
+                    bank1 = b1c.GetComponent<ResourceBank>();
+            }
+            if (bank2 == null)
+            {
+                GameObject b2c = GameObject.Find("Base2Center");
+                if (b2c != null)
+                    bank2 = b2c.GetComponent<ResourceBank>();
+            }
+            if (player == null)
+            {
+                GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+                foreach (GameObject tempPlayer in players)
                 {
-                    player = tempPlayer;
-                    playerTarget = player.GetComponent<Target>();
-                    playerGun = player.GetComponent<GunController>();
+                    PlayerController tempController = tempPlayer.GetComponent<PlayerController>();
+                    if (tempController != null)
+                    {
+                        player = tempPlayer;
+                        playerTarget = player.GetComponent<Target>();
+                        playerGun = player.GetComponent<GunController>();
+                    }
                 }
             }
-        }
-        //Open close console
-        if (toClose || Input.GetKeyDown(KeyCode.BackQuote))
-        {
-            toClose = false;
-            open = !open;
-            panel.SetActive(open);
-            SetNotificationCenterBackVisible(open);
-            if (open)
+            //Open close console
+            if (toClose || !open && Input.GetKeyDown(KeyCode.T))
             {
-                player.GetComponent<PlayerController>().enabled = false;
-                player.GetComponent<BuildScript>().enabled = false;
-                input.ActivateInputField();
-            }
-            else
-            {
-                player.GetComponent<PlayerController>().enabled = true;
-                player.GetComponent<BuildScript>().enabled = true;
-                input.text = "";
-            }
-        }
-        if (open)
-        {
-            if (Input.GetKeyDown(KeyCode.Return))
-            {
-                String msgToParse = input.text.Trim();
-                PlayerLobbyInfo lobbyInfo = player.GetComponent<PlayerLobbyInfo>();
-                Color playerTeamColor = lobbyInfo.playerColor;
-                String playerName = lobbyInfo.playerName;
-
-                if (msgToParse.Length > 0 && msgToParse.StartsWith("/"))
+                toClose = false;
+                open = !open;
+                panel.SetActive(open);
+                SetNotificationCenterBackVisible(open);
+                if (open)
                 {
-                    msgToParse = msgToParse.Remove(0, 1);
-                    tokens = msgToParse.Split(' ');
-                    if (tokens.Length >= 3 && tokens[0] == "add")
-                    {
-                        if (tokens.Length == 4 && tokens[1] == "wood")
-                        {
-                            if (!IsInt(tokens[2]) || !IsInt(tokens[3]))
-                            {
-                                NotificationManager.NewNotification(NotificationManager.GetRedString("Team or Amount not numbers"));
-                                input.text = "";
-                                input.ActivateInputField();
-                                return;
-                            }
-                            ResourceBank temp;
-                            if (tokens[2].Equals("1"))
-                            {
-                                temp = bank1;
-                            }
-                            else if (tokens[2].Equals("2"))
-                            {
-                                temp = bank2;
-                            }
-                            else
-                            {
-                                NotificationManager.NewNotification(NotificationManager.GetRedString("Invalid team number"));
-                                input.text = "";
-                                input.ActivateInputField();
-                                return;
-                            }
-                            NotificationManager.NewNotification("Adding " + NotificationManager.GetColoredString(Color.green, Convert.ToInt32(tokens[3]).ToString()) + " to wood...");
-                            temp.AddWood(Convert.ToInt32(tokens[3]));
-                            input.text = "";
-                            input.ActivateInputField();
-                            return;
-                        }
-                        else if (tokens.Length == 4 && tokens[1] == "stone")
-                        {
-                            if (!IsInt(tokens[2]) || !IsInt(tokens[3]))
-                            {
-                                NotificationManager.NewNotification(NotificationManager.GetRedString("Team or Amount not numbers"));
-                                input.text = "";
-                                input.ActivateInputField();
-                                return;
-                            }
-                            ResourceBank temp;
-                            if (tokens[2].Equals("1"))
-                            {
-                                temp = bank1;
-                            }
-                            else if (tokens[2].Equals("2"))
-                            {
-                                temp = bank2;
-                            }
-                            else
-                            {
-                                NotificationManager.NewNotification(NotificationManager.GetRedString("Invalid team number"));
-                                input.text = "";
-                                input.ActivateInputField();
-                                return;
-                            }
-                            NotificationManager.NewNotification("Adding " + NotificationManager.GetColoredString(Color.green, Convert.ToInt32(tokens[3]).ToString()) + " to stone...");
-                            temp.AddStone(Convert.ToInt32(tokens[3]));
-                            input.text = "";
-                            input.ActivateInputField();
-                            return;
-                        }
-                        else if (tokens.Length == 4 && tokens[1] == "metal")
-                        {
-                            if (!IsInt(tokens[2]) || !IsInt(tokens[3]))
-                            {
-                                NotificationManager.NewNotification(NotificationManager.GetRedString("Team or Amount not numbers"));
-                                input.text = "";
-                                input.ActivateInputField();
-                                return;
-                            }
-                            ResourceBank temp;
-                            if (tokens[2].Equals("1"))
-                            {
-                                temp = bank1;
-                            }
-                            else if (tokens[2].Equals("2"))
-                            {
-                                temp = bank2;
-                            }
-                            else
-                            {
-                                NotificationManager.NewNotification(NotificationManager.GetRedString("Invalid team number"));
-                                input.text = "";
-                                input.ActivateInputField();
-                                return;
-                            }
-                            NotificationManager.NewNotification("Adding " + NotificationManager.GetColoredString(Color.green, Convert.ToInt32(tokens[3]).ToString()) + " to metal...");
-                            temp.AddMetal(Convert.ToInt32(tokens[3]));
-                            input.text = "";
-                            input.ActivateInputField();
-                            return;
-                        }
-                        else if (tokens[1] == "ammo")
-                        {
-                            if (!IsInt(tokens[2]))
-                            {
-                                NotificationManager.NewNotification(NotificationManager.GetRedString("Amount must be a number"));
-                                input.text = "";
-                                input.ActivateInputField();
-                                return;
-                            }
-                            NotificationManager.NewNotification("Adding " + NotificationManager.GetColoredString(Color.green, Convert.ToInt32(tokens[2]).ToString()) + " to reserve ammo...");
-                            playerGun.currentAmmoInReserve += int.Parse(tokens[2]);
-                            toClose = true;
-                        }
-                        else
-                        {
-                            NotificationManager.NewNotification(NotificationManager.GetRedString("Unknown command"));
-                            input.text = "";
-                            input.ActivateInputField();
-                        }
-                    }
-                    else if (tokens.Length >= 3 && tokens[0] == "set")
-                    {
-                        if (tokens.Length == 4 && tokens[1] == "wood")
-                        {
-                            if (!IsInt(tokens[2]) || !IsInt(tokens[3]))
-                            {
-                                NotificationManager.NewNotification(NotificationManager.GetRedString("Team or Amount not numbers"));
-                                input.text = "";
-                                input.ActivateInputField();
-                                return;
-                            }
-                            ResourceBank temp;
-                            if (tokens[2].Equals("1"))
-                            {
-                                temp = bank1;
-                            }
-                            else if (tokens[2].Equals("2"))
-                            {
-                                temp = bank2;
-                            }
-                            else
-                            {
-                                NotificationManager.NewNotification(NotificationManager.GetRedString("Invalid team number"));
-                                input.text = "";
-                                input.ActivateInputField();
-                                return;
-                            }
-                            NotificationManager.NewNotification("Setting wood to " + NotificationManager.GetColoredString(Color.green, Convert.ToInt32(tokens[3]).ToString()));
-                            temp.SetWood(Convert.ToInt32(tokens[3]));
-                            input.text = "";
-                            input.ActivateInputField();
-                            return;
-                        }
-                        else if (tokens.Length == 4 && tokens[1] == "stone")
-                        {
-                            if (!IsInt(tokens[2]) || !IsInt(tokens[3]))
-                            {
-                                NotificationManager.NewNotification(NotificationManager.GetRedString("Team or Amount not numbers"));
-                                input.text = "";
-                                input.ActivateInputField();
-                                return;
-                            }
-                            ResourceBank temp;
-                            if (tokens[2].Equals("1"))
-                            {
-                                temp = bank1;
-                            }
-                            else if (tokens[2].Equals("2"))
-                            {
-                                temp = bank2;
-                            }
-                            else
-                            {
-                                NotificationManager.NewNotification(NotificationManager.GetRedString("Invalid team number"));
-                                input.text = "";
-                                input.ActivateInputField();
-                                return;
-                            }
-                            NotificationManager.NewNotification("Setting stone to " + NotificationManager.GetColoredString(Color.green, Convert.ToInt32(tokens[3]).ToString()));
-                            temp.SetStone(Convert.ToInt32(tokens[3]));
-                            input.text = "";
-                            input.ActivateInputField();
-                            return;
-                        }
-                        else if (tokens.Length == 4 && tokens[1] == "metal")
-                        {
-                            if (!IsInt(tokens[2]) || !IsInt(tokens[3]))
-                            {
-                                NotificationManager.NewNotification(NotificationManager.GetRedString("Team or Amount not numbers"));
-                                input.text = "";
-                                input.ActivateInputField();
-                                return;
-                            }
-                            ResourceBank temp;
-                            if (tokens[2].Equals("1"))
-                            {
-                                temp = bank1;
-                            }
-                            else if (tokens[2].Equals("2"))
-                            {
-                                temp = bank2;
-                            }
-                            else
-                            {
-                                NotificationManager.NewNotification(NotificationManager.GetRedString("Invalid team number"));
-                                input.text = "";
-                                input.ActivateInputField();
-                                return;
-                            }
-                            NotificationManager.NewNotification("Setting metal to " + NotificationManager.GetColoredString(Color.green, Convert.ToInt32(tokens[3]).ToString()));
-                            temp.SetMetal(Convert.ToInt32(tokens[3]));
-                            input.text = "";
-                            input.ActivateInputField();
-                            return;
-                        }
-                        else if (tokens[1] == "ammo")
-                        {
-                            if (!IsInt(tokens[2]))
-                            {
-                                NotificationManager.NewNotification(NotificationManager.GetRedString("Amount must be a number"));
-                                input.text = "";
-                                input.ActivateInputField();
-                                return;
-                            }
-                            NotificationManager.NewNotification("Setting reserve ammo to " + NotificationManager.GetColoredString(Color.green, Convert.ToInt32(tokens[2]).ToString()));
-                            playerGun.currentAmmoInReserve = int.Parse(tokens[2]);
-                            input.text = "";
-                            input.ActivateInputField();
-                        }
-                        else if (tokens[1] == "health")
-                        {
-                            if (!IsInt(tokens[2]) || int.Parse(tokens[2]) > 100 || int.Parse(tokens[2]) < 0)
-                            {
-                                NotificationManager.NewNotification(NotificationManager.GetRedString("Health must be between 0 and 100"));
-                                input.text = "";
-                                input.ActivateInputField();
-                                return;
-                            }
-                            int newHealth = int.Parse(tokens[2]);
-                            if (newHealth > playerTarget.startingHealth)
-                                newHealth = (int)playerTarget.startingHealth;
-                            NotificationManager.NewNotification("Setting health to " + NotificationManager.GetColoredString(Color.green, newHealth.ToString()));
-                            playerTarget.currentHealth = (float)newHealth;
-                            input.text = "";
-                            input.ActivateInputField();
-                        }
-                        else
-                        {
-                            NotificationManager.NewNotification(NotificationManager.GetRedString("Unknown command"));
-                            input.text = "";
-                            input.ActivateInputField();
-                        }
-                    }
-                    else if (tokens.Length == 1 && tokens[0] == "kill")
-                    {
-                        if (playerTeamColor == Color.blue)
-                            NotificationManager.NewNotification(NotificationManager.GetBlueString(playerName) + " commited suicide");
-                        else
-                            NotificationManager.NewNotification(NotificationManager.GetRedString(playerName) + " commited suicide");
-                        playerTarget.Die();
-                        input.text = "";
-                        input.ActivateInputField();
-                    }
-                    else
-                    {
-                        NotificationManager.NewNotification(NotificationManager.GetRedString("Unknown command"));
-                        input.text = "";
-                        input.ActivateInputField();
-                    }
+                    player.GetComponent<PlayerController>().enabled = false;
+                    player.GetComponent<BuildScript>().enabled = false;
+                    input.ActivateInputField();
                 }
                 else
                 {
-                    // Send message to other players here
-                    // This message isn't actually implemented yet, but it will be later...possibly.
-                    if (playerTeamColor == Color.blue)
-                        NotificationManager.NewNotification(NotificationManager.GetBlueString(playerName) + ": " + msgToParse);
-                    else
-                        NotificationManager.NewNotification(NotificationManager.GetRedString(playerName) + ": " + msgToParse);
+                    player.GetComponent<PlayerController>().enabled = true;
+                    player.GetComponent<BuildScript>().enabled = true;
                     input.text = "";
-                    input.ActivateInputField();
+                }
+            }
+            if (open)
+            {
+                if (Input.GetKeyDown(KeyCode.Return))
+                {
+                    toClose = true;
+                    String msgToParse = input.text.Trim();
+                    PlayerLobbyInfo lobbyInfo = player.GetComponent<PlayerLobbyInfo>();
+                    Color playerTeamColor = lobbyInfo.playerColor;
+                    String playerName = lobbyInfo.playerName;
+
+                    if (msgToParse.Length > 0 && msgToParse.StartsWith("/"))
+                    {
+                        msgToParse = msgToParse.Remove(0, 1);
+                        tokens = msgToParse.Split(' ');
+                        if (tokens.Length >= 3 && tokens[0] == "add")
+                        {
+                            if (tokens.Length == 4 && tokens[1] == "wood")
+                            {
+                                if (!IsInt(tokens[2]) || !IsInt(tokens[3]))
+                                {
+                                    nm.NewNotification(NotificationManager.GetRedString("Team or Amount not numbers"), false);
+                                    input.text = "";
+                                    input.ActivateInputField();
+                                    return;
+                                }
+                                if (tokens[2].Equals("1"))
+                                {
+                                    nm.NewNotification("Adding " + NotificationManager.GetColoredString(Color.green, Convert.ToInt32(tokens[3]).ToString()) + " to wood...", false);
+                                    CmdAddToResources("Wood", Convert.ToInt32(tokens[3]), 0);
+                                }
+                                else if (tokens[2].Equals("2"))
+                                {
+                                    nm.NewNotification("Adding " + NotificationManager.GetColoredString(Color.green, Convert.ToInt32(tokens[3]).ToString()) + " to wood...", false);
+                                    CmdAddToResources("Wood", Convert.ToInt32(tokens[3]), 1);
+                                }
+                                else
+                                {
+                                    nm.NewNotification(NotificationManager.GetRedString("Invalid team number"), false);
+                                    input.text = "";
+                                    input.ActivateInputField();
+                                    return;
+                                }
+                                input.text = "";
+                                input.ActivateInputField();
+                                return;
+                            }
+                            else if (tokens.Length == 4 && tokens[1] == "stone")
+                            {
+                                if (!IsInt(tokens[2]) || !IsInt(tokens[3]))
+                                {
+                                    nm.NewNotification(NotificationManager.GetRedString("Team or Amount not numbers"), false);
+                                    input.text = "";
+                                    input.ActivateInputField();
+                                    return;
+                                }
+                                if (tokens[2].Equals("1"))
+                                {
+                                    nm.NewNotification("Adding " + NotificationManager.GetColoredString(Color.green, Convert.ToInt32(tokens[3]).ToString()) + " to stone...", false);
+                                    CmdAddToResources("Stone", Convert.ToInt32(tokens[3]), 0);
+                                }
+                                else if (tokens[2].Equals("2"))
+                                {
+                                    nm.NewNotification("Adding " + NotificationManager.GetColoredString(Color.green, Convert.ToInt32(tokens[3]).ToString()) + " to stone...", false);
+                                    CmdAddToResources("Stone", Convert.ToInt32(tokens[3]), 1);
+                                }
+                                else
+                                {
+                                    nm.NewNotification(NotificationManager.GetRedString("Invalid team number"), false);
+                                    input.text = "";
+                                    input.ActivateInputField();
+                                    return;
+                                }
+                                input.text = "";
+                                input.ActivateInputField();
+                                return;
+                            }
+                            else if (tokens.Length == 4 && tokens[1] == "metal")
+                            {
+                                if (!IsInt(tokens[2]) || !IsInt(tokens[3]))
+                                {
+                                    nm.NewNotification(NotificationManager.GetRedString("Team or Amount not numbers"), false);
+                                    input.text = "";
+                                    input.ActivateInputField();
+                                    return;
+                                }
+                                if (tokens[2].Equals("1"))
+                                {
+                                    nm.NewNotification("Adding " + NotificationManager.GetColoredString(Color.green, Convert.ToInt32(tokens[3]).ToString()) + " to metal...", false);
+                                    CmdAddToResources("Metal", Convert.ToInt32(tokens[3]), 0);
+                                }
+                                else if (tokens[2].Equals("2"))
+                                {
+                                    nm.NewNotification("Adding " + NotificationManager.GetColoredString(Color.green, Convert.ToInt32(tokens[3]).ToString()) + " to metal...", false);
+                                    CmdAddToResources("Metal", Convert.ToInt32(tokens[3]), 1);
+                                }
+                                else
+                                {
+                                    nm.NewNotification(NotificationManager.GetRedString("Invalid team number"), false);
+                                    input.text = "";
+                                    input.ActivateInputField();
+                                    return;
+                                }
+                                input.text = "";
+                                input.ActivateInputField();
+                                return;
+                            }
+                            else if (tokens[1] == "ammo")
+                            {
+                                if (!IsInt(tokens[2]))
+                                {
+                                    nm.NewNotification(NotificationManager.GetRedString("Amount must be a number"), false);
+                                    input.text = "";
+                                    input.ActivateInputField();
+                                    return;
+                                }
+                                nm.NewNotification("Adding " + NotificationManager.GetColoredString(Color.green, Convert.ToInt32(tokens[2]).ToString()) + " to reserve ammo...", false);
+                                playerGun.currentAmmoInReserve += int.Parse(tokens[2]);
+                                toClose = true;
+                            }
+                            else
+                            {
+                                nm.NewNotification(NotificationManager.GetRedString("Unknown command"), false);
+                                input.text = "";
+                                input.ActivateInputField();
+                            }
+                        }
+                        else if (tokens.Length >= 3 && tokens[0] == "set")
+                        {
+                            if (tokens.Length == 4 && tokens[1] == "wood")
+                            {
+                                if (!IsInt(tokens[2]) || !IsInt(tokens[3]))
+                                {
+                                    nm.NewNotification(NotificationManager.GetRedString("Team or Amount not numbers"), false);
+                                    input.text = "";
+                                    input.ActivateInputField();
+                                    return;
+                                }
+                                if (tokens[2].Equals("1"))
+                                {
+                                    nm.NewNotification("Setting wood to " + NotificationManager.GetColoredString(Color.green, Convert.ToInt32(tokens[3]).ToString()), false);
+                                    CmdSetResources("Wood", Convert.ToInt32(tokens[3]), 0);
+                                }
+                                else if (tokens[2].Equals("2"))
+                                {
+                                    nm.NewNotification("Setting wood to " + NotificationManager.GetColoredString(Color.green, Convert.ToInt32(tokens[3]).ToString()), false);
+                                    CmdSetResources("Wood", Convert.ToInt32(tokens[3]), 1);
+                                }
+                                else
+                                {
+                                    nm.NewNotification(NotificationManager.GetRedString("Invalid team number"), false);
+                                    input.text = "";
+                                    input.ActivateInputField();
+                                    return;
+                                }
+                                input.text = "";
+                                input.ActivateInputField();
+                                return;
+                            }
+                            else if (tokens.Length == 4 && tokens[1] == "stone")
+                            {
+                                if (!IsInt(tokens[2]) || !IsInt(tokens[3]))
+                                {
+                                    nm.NewNotification(NotificationManager.GetRedString("Team or Amount not numbers"), false);
+                                    input.text = "";
+                                    input.ActivateInputField();
+                                    return;
+                                }
+                                if (tokens[2].Equals("1"))
+                                {
+                                    nm.NewNotification("Setting stone to " + NotificationManager.GetColoredString(Color.green, Convert.ToInt32(tokens[3]).ToString()), false);
+                                    CmdSetResources("Stone", Convert.ToInt32(tokens[3]), 0);
+                                }
+                                else if (tokens[2].Equals("2"))
+                                {
+                                    nm.NewNotification("Setting stone to " + NotificationManager.GetColoredString(Color.green, Convert.ToInt32(tokens[3]).ToString()), false);
+                                    CmdSetResources("Stone", Convert.ToInt32(tokens[3]), 1);
+                                }
+                                else
+                                {
+                                    nm.NewNotification(NotificationManager.GetRedString("Invalid team number"), false);
+                                    input.text = "";
+                                    input.ActivateInputField();
+                                    return;
+                                }
+                                input.text = "";
+                                input.ActivateInputField();
+                                return;
+                            }
+                            else if (tokens.Length == 4 && tokens[1] == "metal")
+                            {
+                                if (!IsInt(tokens[2]) || !IsInt(tokens[3]))
+                                {
+                                    nm.NewNotification(NotificationManager.GetRedString("Team or Amount not numbers"), false);
+                                    input.text = "";
+                                    input.ActivateInputField();
+                                    return;
+                                }
+                                if (tokens[2].Equals("1"))
+                                {
+                                    nm.NewNotification("Setting metal to " + NotificationManager.GetColoredString(Color.green, Convert.ToInt32(tokens[3]).ToString()), false);
+                                    CmdSetResources("Metal", Convert.ToInt32(tokens[3]), 0);
+                                }
+                                else if (tokens[2].Equals("2"))
+                                {
+                                    nm.NewNotification("Setting metal to " + NotificationManager.GetColoredString(Color.green, Convert.ToInt32(tokens[3]).ToString()), false);
+                                    CmdSetResources("Metal", Convert.ToInt32(tokens[3]), 1);
+                                }
+                                else
+                                {
+                                    nm.NewNotification(NotificationManager.GetRedString("Invalid team number"), false);
+                                    input.text = "";
+                                    input.ActivateInputField();
+                                    return;
+                                }
+                                input.text = "";
+                                input.ActivateInputField();
+                                return;
+                            }
+                            else if (tokens[1] == "ammo")
+                            {
+                                if (!IsInt(tokens[2]))
+                                {
+                                    nm.NewNotification(NotificationManager.GetRedString("Amount must be a number"), false);
+                                    input.text = "";
+                                    input.ActivateInputField();
+                                    return;
+                                }
+                                nm.NewNotification("Setting reserve ammo to " + NotificationManager.GetColoredString(Color.green, Convert.ToInt32(tokens[2]).ToString()), false);
+                                playerGun.currentAmmoInReserve = int.Parse(tokens[2]);
+                                input.text = "";
+                                input.ActivateInputField();
+                            }
+                            else if (tokens[1] == "health")
+                            {
+                                if (!IsInt(tokens[2]) || int.Parse(tokens[2]) > 100 || int.Parse(tokens[2]) < 0)
+                                {
+                                    nm.NewNotification(NotificationManager.GetRedString("Health must be between 0 and 100"), false);
+                                    input.text = "";
+                                    input.ActivateInputField();
+                                    return;
+                                }
+                                int newHealth = int.Parse(tokens[2]);
+                                if (newHealth > playerTarget.startingHealth)
+                                    newHealth = (int)playerTarget.startingHealth;
+                                nm.NewNotification("Setting health to " + NotificationManager.GetColoredString(Color.green, newHealth.ToString()), false);
+                                playerTarget.currentHealth = (float)newHealth;
+                                input.text = "";
+                                input.ActivateInputField();
+                            }
+                            else
+                            {
+                                nm.NewNotification(NotificationManager.GetRedString("Unknown command"), false);
+                                input.text = "";
+                                input.ActivateInputField();
+                            }
+                        }
+                        else if (tokens.Length == 1 && tokens[0] == "kill")
+                        {
+                            if (playerTeamColor == Color.blue)
+                                nm.NewNotification(NotificationManager.GetBlueString(playerName) + " committed suicide", false);
+                            else
+                                nm.NewNotification(NotificationManager.GetRedString(playerName) + " committed suicide", false);
+                            playerTarget.Die();
+                            input.text = "";
+                            input.ActivateInputField();
+                        }
+                        else
+                        {
+                            nm.NewNotification(NotificationManager.GetRedString("Unknown command"), false);
+                            input.text = "";
+                            input.ActivateInputField();
+                        }
+                    }
+                    else if (msgToParse.Length > 0)
+                    {
+                        CmdSendMessage(NotificationManager.GetColoredString(team.team == 0 ? Color.red : Color.blue, 
+                            playerName) + ": " + msgToParse);
+                        input.text = "";
+                        input.ActivateInputField();
+                    }
+                    else
+                    {
+                        input.text = "";
+                        input.ActivateInputField();
+                    }
                 }
             }
         }
     }
 
+    [Command]
+    public void CmdSendMessage(string message)
+    {
+        RpcSendMessage(message);
+    }
+
+    [ClientRpc]
+    public void RpcSendMessage(string message)
+    {
+        nm.NewNotification(message, true);
+    }
+
+    [Command]
+    void CmdAddToResources(string Type, int amount, int team)
+    {
+        GameObject serverBaseObject = GameObject.Find("Base" + (team + 1) + "Center");
+        serverBaseObject.GetComponent<ResourceBank>().Add(Type, amount);
+    }
+
+    [Command]
+    void CmdSetResources(string Type, int amount, int team)
+    {
+        GameObject serverBaseObject = GameObject.Find("Base" + (team + 1) + "Center");
+        serverBaseObject.GetComponent<ResourceBank>().Set(Type, amount);
+    }
+
     private void SetNotificationCenterBackVisible(Boolean visible)
     {
-        if (visible)
+        if (isLocalPlayer)
         {
-            UIPanelImg.color = new Color(1f, 1f, 1f, 0.32f);
-        }
-        else
-        {
-            UIPanelImg.color = new Color(1f, 1f, 1f, 0);
+            if (visible)
+            {
+                UIPanelImg.color = new Color(1f, 1f, 1f, 0.32f);
+            }
+            else
+            {
+                UIPanelImg.color = new Color(1f, 1f, 1f, 0);
+            }
         }
     }
 

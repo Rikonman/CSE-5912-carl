@@ -20,6 +20,7 @@ public class PlayerTeam : NetworkBehaviour {
     Text trWoodResources;
     Text trStoneResources;
     Text trMetalResources;
+    NotificationManager nm;
     // Use this for initialization
     void Start()
     {
@@ -106,6 +107,10 @@ public class PlayerTeam : NetworkBehaviour {
         baseObject = GameObject.Find("Base" + (team + 1) + "Center");
         RpcChangeLocation(LobbyManager.s_Singleton.GetSpawnLocation(team));
         GameObject.Find("Round Manager").GetComponent<RoundManager>().RpcUpdateForRoundBegin();
+        if (isLocalPlayer)
+        {
+            nm = GameObject.Find("UINotifications").GetComponent<NotificationManager>();
+        }
 
     }
 
@@ -149,7 +154,7 @@ public class PlayerTeam : NetworkBehaviour {
                 TempController.StartRespawnTimer();
                 other.gameObject.GetComponent<MeshRenderer>().enabled = false;
                 other.gameObject.GetComponent<BoxCollider>().enabled = false;
-                NotificationManager.NewNotification("Picked up <color=#00FF00>" + TempController.amount.ToString() + "</color> stone");
+                nm.NewNotification("Picked up <color=#00FF00>" + TempController.amount.ToString() + "</color> stone", false);
             }
             else if (other.gameObject.CompareTag("Pick Up (Wood)"))
             {
@@ -158,7 +163,7 @@ public class PlayerTeam : NetworkBehaviour {
                 TempController.StartRespawnTimer();
                 other.gameObject.GetComponent<MeshRenderer>().enabled = false;
                 other.gameObject.GetComponent<BoxCollider>().enabled = false;
-                NotificationManager.NewNotification("Picked up <color=#00FF00>" + TempController.amount.ToString() + "</color> wood");
+                nm.NewNotification("Picked up <color=#00FF00>" + TempController.amount.ToString() + "</color> wood", false);
             }
             else if (other.gameObject.CompareTag("Pick Up (Metal)"))
             {
@@ -167,7 +172,7 @@ public class PlayerTeam : NetworkBehaviour {
                 TempController.StartRespawnTimer();
                 other.gameObject.GetComponent<MeshRenderer>().enabled = false;
                 other.gameObject.GetComponent<BoxCollider>().enabled = false;
-                NotificationManager.NewNotification("Picked up <color=#00FF00>" + TempController.amount.ToString() + "</color> metal");
+                nm.NewNotification("Picked up <color=#00FF00>" + TempController.amount.ToString() + "</color> metal", false);
             }
             else if (other.gameObject.CompareTag("Pick Up (Ammo)"))
             {
@@ -177,7 +182,7 @@ public class PlayerTeam : NetworkBehaviour {
                 TempController.StartRespawnTimer();
                 other.gameObject.GetComponent<MeshRenderer>().enabled = false;
                 other.gameObject.GetComponent<BoxCollider>().enabled = false;
-                NotificationManager.NewNotification("Picked up ammo");
+                nm.NewNotification("Picked up ammo", false);
             }
             else if (other.gameObject.CompareTag("Pick Up (Health)"))
             {
@@ -187,7 +192,7 @@ public class PlayerTeam : NetworkBehaviour {
                 TempController.StartRespawnTimer();
                 other.gameObject.GetComponent<MeshRenderer>().enabled = false;
                 other.gameObject.GetComponent<BoxCollider>().enabled = false;
-                NotificationManager.NewNotification("Picked up health");
+                nm.NewNotification("Picked up health", false);
             }
         }
         
@@ -197,7 +202,7 @@ public class PlayerTeam : NetworkBehaviour {
     [Command]
     void CmdAddToResources(string Type, int amount, int Team)
     {
-        GameObject serverBaseObject = GameObject.Find("Base" + (team + 1) + "Center");
+        GameObject serverBaseObject = GameObject.Find("Base" + (Team + 1) + "Center");
         serverBaseObject.GetComponent<ResourceBank>().Add(Type, amount);
     }
 }

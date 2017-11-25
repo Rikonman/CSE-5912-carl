@@ -1337,6 +1337,7 @@ GameObject:
   - component: {fileID: 136614270701351118}
   - component: {fileID: 114407150181105730}
   - component: {fileID: 114556005693186812}
+  - component: {fileID: 114034809643478484}
   m_Layer: 0
   m_Name: AnimatedPlayer 1
   m_TagString: Player
@@ -4947,6 +4948,25 @@ Animation:
   m_PlayAutomatically: 0
   m_AnimatePhysics: 0
   m_CullingType: 0
+--- !u!114 &114034809643478484
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1737969107234910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89276c0c45522a942b1e7a84829333e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  panel: {fileID: 0}
+  input: {fileID: 0}
+  tokens: []
+  bank1: {fileID: 0}
+  bank2: {fileID: 0}
+  playerGun: {fileID: 0}
+  playerTarget: {fileID: 0}
+  player: {fileID: 0}
 --- !u!114 &114204714156624540
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4990,6 +5010,7 @@ MonoBehaviour:
   emperor: {fileID: 0}
   gunScript: {fileID: 0}
   SpawnObject: {fileID: 0}
+  lookText: {fileID: 0}
 --- !u!114 &114344024519532110
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5069,6 +5090,7 @@ MonoBehaviour:
   repairCost: 10
   lookText: {fileID: 0}
   locked: 0
+  isLooking: 0
 --- !u!114 &114495435776536394
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5166,6 +5188,7 @@ MonoBehaviour:
   gunshot: {fileID: 82759509741126208}
   team: {fileID: 0}
   locked: 0
+  pli: {fileID: 0}
 --- !u!114 &114543766237166692
 MonoBehaviour:
   m_ObjectHideFlags: 1

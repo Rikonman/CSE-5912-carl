@@ -1,15 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class NotificationManager : MonoBehaviour {
+public class NotificationManager : NetworkBehaviour {
 
     [SerializeField]
     private GameObject notificationItemPrefab;
 
-    private static float notificationTime = 5f; // The amount of time (in seconds) to show the notification before making it disappear
-    private static GameObject notificationItem;
-    private static GameObject notificationPanel;
+    private float notificationTime = 5f; // The amount of time (in seconds) to show the notification before making it disappear
+    private float messageTime = 120f; // The amount of time (in seconds) to show the messages before making it disappear
+    private GameObject notificationItem;
+    private GameObject notificationPanel;
 
     private void Start()
     {
@@ -17,13 +19,19 @@ public class NotificationManager : MonoBehaviour {
         notificationItem = notificationItemPrefab;
     }
 
-    public static void NewNotification(string message)
+    
+
+    public void NewNotification(string message, bool isMessage)
     {
         if (notificationItem != null && notificationPanel != null)
         {
+            if (notificationPanel.transform.childCount > 9)
+            {
+                Destroy(notificationPanel.transform.GetChild(0).gameObject);
+            }
             GameObject newObj = Instantiate(notificationItem, notificationPanel.transform);
             newObj.GetComponent<NotificationItem>().Setup(message);
-            Destroy(newObj, notificationTime);
+            Destroy(newObj, isMessage ? messageTime : notificationTime);
         }
         else
         {
