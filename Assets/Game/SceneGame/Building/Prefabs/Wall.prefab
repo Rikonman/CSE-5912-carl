@@ -163,7 +163,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   team: 0
   id: 6
-  parentMountPoint: 1
+  parentMountPoint: 5
   parentMountBool: 3
   isStone: 1
   woodCost: 0
@@ -203,6 +203,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingHealth: 150
   currentHealth: 0
+  startingFatigue: 100
+  currentFatigue: 0
   isVulnerable: 1
   startingPos: {x: 0, y: 0, z: 0}
   respawnTime: 5
@@ -212,3 +214,4 @@ MonoBehaviour:
   emperor: {fileID: 0}
   gunScript: {fileID: 0}
   SpawnObject: {fileID: 0}
+  lookText: {fileID: 0}

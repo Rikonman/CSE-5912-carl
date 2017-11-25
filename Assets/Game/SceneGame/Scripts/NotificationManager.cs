@@ -8,7 +8,7 @@ public class NotificationManager : NetworkBehaviour {
     [SerializeField]
     private GameObject notificationItemPrefab;
 
-    private float notificationTime = 5f; // The amount of time (in seconds) to show the notification before making it disappear
+    private float notificationTime = 3f; // The amount of time (in seconds) to show the notification before making it disappear
     private float messageTime = 120f; // The amount of time (in seconds) to show the messages before making it disappear
     private GameObject notificationItem;
     private GameObject notificationPanel;

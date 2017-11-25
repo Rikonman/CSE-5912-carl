@@ -86,7 +86,7 @@ public class EmperorController : NetworkBehaviour
                     boredomTimer = 0;
                 }
                 giftTimer += Time.deltaTime;
-                if (giftTimer >= giftTimeout)
+                if (giftTimer >= giftTimeout * playerTimeModifier)
                 {
                     CmdGenerateGift();
                     giftTimer = 0;

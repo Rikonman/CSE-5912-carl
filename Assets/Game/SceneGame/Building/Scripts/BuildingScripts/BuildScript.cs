@@ -350,6 +350,47 @@ public class BuildScript : NetworkBehaviour
                                     {
                                         previewObject.transform.localEulerAngles = tempObj.transform.localEulerAngles;
                                     }
+                                    if (previewBuildPoints.type == BuildPoints.MountType.Stair1)
+                                    {
+                                        Matrix4x4 tempMatrix = Matrix4x4.identity;
+                                        tempMatrix[0, 0] = Mathf.Cos(-tempObj.transform.localEulerAngles.y * Mathf.Deg2Rad);
+                                        tempMatrix[0, 2] = -Mathf.Sin(-tempObj.transform.localEulerAngles.y * Mathf.Deg2Rad);
+                                        tempMatrix[2, 0] = Mathf.Sin(-tempObj.transform.localEulerAngles.y * Mathf.Deg2Rad);
+                                        tempMatrix[2, 2] = Mathf.Cos(-tempObj.transform.localEulerAngles.y * Mathf.Deg2Rad);
+                                        Vector3 localCorner1 = new Vector3(tempObj.transform.localScale.x / 2, 0, tempObj.transform.localScale.z / 2);
+                                        Vector3 localCorner2 = new Vector3(tempObj.transform.localScale.x / 2, 0, -tempObj.transform.localScale.z / 2);
+                                        Vector3 localCorner3 = new Vector3(-tempObj.transform.localScale.x / 2, 0, -tempObj.transform.localScale.z / 2);
+                                        Vector3 localCorner4 = new Vector3(-tempObj.transform.localScale.x / 2, 0, tempObj.transform.localScale.z / 2);
+                                        localCorner1 = tempMatrix * localCorner1;
+                                        localCorner2 = tempMatrix * localCorner2;
+                                        localCorner3 = tempMatrix * localCorner3;
+                                        localCorner4 = tempMatrix * localCorner4;
+                                        Vector3 worldCorner1 = tempObj.transform.position + localCorner1;
+                                        Vector3 worldCorner2 = tempObj.transform.position + localCorner2;
+                                        Vector3 worldCorner3 = tempObj.transform.position + localCorner3;
+                                        Vector3 worldCorner4 = tempObj.transform.position + localCorner4;
+                                        float distCorner1 = (worldCorner1 - gameObject.transform.position).magnitude;
+                                        float distCorner2 = (worldCorner2 - gameObject.transform.position).magnitude;
+                                        float distCorner3 = (worldCorner3 - gameObject.transform.position).magnitude;
+                                        float distCorner4 = (worldCorner4 - gameObject.transform.position).magnitude;
+                                        if (distCorner1 < distCorner3 && distCorner1 < distCorner4 && distCorner2 < distCorner3 && distCorner2 < distCorner4)
+                                        {
+                                            previewObject.transform.localEulerAngles = new Vector3(0, tempObj.transform.localEulerAngles.y + 90, 0);
+                                        }
+                                        else if (distCorner2 < distCorner4 && distCorner2 < distCorner1 && distCorner3 < distCorner4 && distCorner3 < distCorner1)
+                                        {
+                                            previewObject.transform.localEulerAngles = new Vector3(0, tempObj.transform.localEulerAngles.y + 180, 0);
+                                        }
+                                        else if (distCorner3 < distCorner1 && distCorner3 < distCorner2 && distCorner4 < distCorner1 && distCorner4 < distCorner2)
+                                        {
+                                            previewObject.transform.localEulerAngles = new Vector3(0, tempObj.transform.localEulerAngles.y + 270, 0);
+                                        }
+                                        else
+                                        {
+                                            previewObject.transform.localEulerAngles = new Vector3(0, tempObj.transform.localEulerAngles.y, 0);
+                                        }
+
+                                    }
                                     if (previewBuildPoints.type == BuildPoints.MountType.Wall
                                         && mp.parentMountType == BuildPoints.MountType.Door1)
                                     {
@@ -359,10 +400,6 @@ public class BuildScript : NetworkBehaviour
                                        && mp.parentMountType == BuildPoints.MountType.Wall)
                                     {
                                         previewObject.transform.localEulerAngles = tempObj.transform.localEulerAngles;
-                                    }
-                                    if (previewBuildPoints.type == BuildPoints.MountType.Stair1)
-                                    {
-                                        previewObject.transform.localEulerAngles = tempObj.transform.localEulerAngles + new Vector3(38, 0, 0);
                                     }
                                     SetMaterial(validMaterial);
                                     previewBuildPoints.valid = true;
@@ -394,6 +431,18 @@ public class BuildScript : NetworkBehaviour
             }
             currentObject = id;
             previewObject = Instantiate(objects[currentObject], baseParent);
+
+            if (previewObject.transform.childCount > 0)
+            {
+                for (int counter = 0; counter < previewObject.transform.childCount; counter++)
+                {
+                    previewObject.transform.GetChild(counter).gameObject.GetComponent<BoxCollider>().enabled = false;
+                }
+            }
+            else
+            {
+                previewObject.GetComponent<BoxCollider>().enabled = false;
+            }
             meshRend = previewObject.GetComponent<MeshRenderer>();
             SaveMaterials();
             SetMaterial(invalidMaterial);
@@ -538,6 +587,17 @@ public class BuildScript : NetworkBehaviour
         Debug.Log("Placing " + objectString + "With Object ID:" + currentObject + " at X:" + position.x + "; Y:" + position.y + "; Z:" + position.z);
         GameObject tempObj = objects[objectID];
         BuildIdentifier tempID = tempObj.GetComponent<BuildIdentifier>();
+        if (tempObj.transform.childCount > 0)
+        {
+            for (int counter = 0; counter < tempObj.transform.childCount; counter++)
+            {
+                tempObj.transform.GetChild(counter).gameObject.GetComponent<BoxCollider>().enabled = true;
+            }
+        }
+        else
+        {
+            tempObj.GetComponent<BoxCollider>().enabled = true;
+        }
         tempID.team = inTeam;
         tempID.id = objectIndex;
         tempID.parentMountPoint = parentMountPoint;

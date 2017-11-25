@@ -141,7 +141,7 @@ public class PlayerController : NetworkBehaviour
             RaycastHit jumpRayhit;
 
             Vector3 jumpForce = Vector3.zero;
-            if (Physics.Raycast(jumpRay, out jumpRayhit, 0.2f))
+            if (Physics.Raycast(jumpRay, out jumpRayhit, 0.5f))
             {
                 if (Input.GetButtonDown("Jump"))
                 {

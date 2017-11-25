@@ -182,9 +182,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   team: 0
-  id: 0
-  parentMountPoint: -1
-  parentMountBool: -1
+  id: 3
+  parentMountPoint: 0
+  parentMountBool: 10
   isStone: 0
   woodCost: 50
   stoneCost: 0
