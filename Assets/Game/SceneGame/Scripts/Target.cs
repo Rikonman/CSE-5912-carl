@@ -10,7 +10,12 @@ public class Target : NetworkBehaviour {
     public float startingHealth = 100f;
     [SyncVar(hook = "OnCurrentHealthChange")]
     public float currentHealth;
-	public bool isVulnerable = true;
+
+    public float startingFatigue = 100f;
+    [SyncVar(hook = "OnCurrentFatigueChange")]
+    public float currentFatigue;
+
+    public bool isVulnerable = true;
     public Vector3 startingPos;
     public int respawnTime = 5;
     public float timer;
@@ -37,10 +42,14 @@ public class Target : NetworkBehaviour {
     public delegate void OnHealthChanged(float prevValue, float newValue);
     public OnHealthChanged onHealthChanged;
 
+    public delegate void OnFatigueChanged(float prevValue, float newValue);
+    public OnFatigueChanged onFatigueChanged;
+
     void Start()
     {
         currentHealth = startingHealth;
-        
+        currentFatigue = startingFatigue;
+
         isDead = false;
         //rend = transform.GetComponent<Renderer>();
         col = transform.GetComponent<CapsuleCollider>();
@@ -294,9 +303,44 @@ public class Target : NetworkBehaviour {
 
     private void OnCurrentHealthChange(float newHealth)
     {
+        if (newHealth > startingHealth)
+        {
+            newHealth = startingHealth;
+        }
+        if (newHealth < 0)
+        {
+            newHealth = 0;
+        }
         currentHealth = newHealth;
         if (onHealthChanged != null)
             onHealthChanged(currentHealth, newHealth);
+    }
+
+    private void OnCurrentFatigueChange(float newFatigue)
+    {
+        if (newFatigue > startingFatigue)
+        {
+            newFatigue = startingFatigue;
+        }
+        if (newFatigue < 0)
+        {
+            newFatigue = 0;
+        }
+        currentFatigue = newFatigue;
+        if (onFatigueChanged != null)
+            onFatigueChanged(currentFatigue, newFatigue);
+    }
+
+    [Command]
+    public void CmdChangeFatigue(float amount)
+    {
+        RpcChangeFatigue(amount);
+    }
+
+    [ClientRpc]
+    public void RpcChangeFatigue(float amount)
+    {
+        currentFatigue += amount;
     }
 
     public void Die()
@@ -379,6 +423,7 @@ public class Target : NetworkBehaviour {
         col.enabled = true;
         rb.useGravity = true;
         currentHealth = startingHealth;
+        currentFatigue = startingFatigue;
         isDead = false;
     }
     

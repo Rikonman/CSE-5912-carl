@@ -53,6 +53,7 @@ public class PlayerController : NetworkBehaviour
     public GunController gc;
     public Camera camera;
     public GameObject[] snipeObjects;
+    public Target target;
 
     private Rigidbody rb;
     //private GameObject clientHUD;
@@ -83,6 +84,7 @@ public class PlayerController : NetworkBehaviour
         tpCameraOffset = new Vector3(0f, tpCameraY, -tpCameraDistance);
         fpCameraOffset = new Vector3(fpCameraX, fpCameraY, fpCameraZ);
         camera = mainCamera.GetComponent<Camera>();
+        target = GetComponent<Target>();
         //mainCamera = transform.GetChild(0);
         //MoveCamera();
     }
@@ -102,13 +104,21 @@ public class PlayerController : NetworkBehaviour
                 xRotation = -80;
             }
 
-            if (Input.GetKey(KeyCode.LeftShift))
+            if (Input.GetKey(KeyCode.LeftShift) && target.currentFatigue > 0)
             {
                 speed = sprintSpeed;
+                if (target != null)
+                {
+                    target.CmdChangeFatigue(-Time.deltaTime * 25);
+                }
             }
             else
             {
                 speed = walkingSpeed;
+                if (target != null && !Input.GetKey(KeyCode.LeftShift) && target.currentFatigue < 100)
+                {
+                    target.CmdChangeFatigue(Time.deltaTime * 25);
+                }
             }
 
             yRotation += Input.GetAxis("Mouse X") * lookSensitivity;

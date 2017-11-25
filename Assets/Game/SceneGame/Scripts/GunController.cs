@@ -206,7 +206,7 @@ public class GunController : NetworkBehaviour {
                 pc.damage = damage;
                 pc.firingGun = gunChoice;
                 NetworkServer.Spawn(instance);
-                RpcUpdateProjectileData(instance.GetComponent<NetworkIdentity>().netId, team, playerID, damage, pc.projectileLifetime, playerName);
+                RpcUpdateProjectileData(instance.GetComponent<NetworkIdentity>().netId, team, playerID, damage, gunChoice, pc.projectileLifetime, playerName);
             }
         }
         else
@@ -218,23 +218,24 @@ public class GunController : NetworkBehaviour {
             pc.firingPlayer = playerName;
             pc.damage = damage;
             pc.firingGun = gunChoice;
-            if (gunChoice == 3)
+            if (gunChoice == 3 || gunChoice == 4)
             {
                 pc.projectileLifetime = 4f;
             }
             NetworkServer.Spawn(instance);
-            RpcUpdateProjectileData(instance.GetComponent<NetworkIdentity>().netId, team, playerID, damage, pc.projectileLifetime, playerName);
+            RpcUpdateProjectileData(instance.GetComponent<NetworkIdentity>().netId, team, playerID, damage, gunChoice, pc.projectileLifetime, playerName);
         }
     }
 
     [ClientRpc]
-    public void RpcUpdateProjectileData(NetworkInstanceId nid, int team, int playerID, float damage, float projectileLifetime, string playerName)
+    public void RpcUpdateProjectileData(NetworkInstanceId nid, int team, int playerID, float damage, int gunChoice, float projectileLifetime, string playerName)
     {
         GameObject projectile = ClientScene.FindLocalObject(nid);
         ProjectileController pc = projectile.GetComponent<ProjectileController>();
         pc.firingTeam = team;
         pc.firingPlayer = playerName;
         pc.damage = damage;
+        pc.firingGun = gunChoice;
         pc.projectileLifetime = projectileLifetime;
     }
 

@@ -4,13 +4,15 @@ using UnityEngine.UI;
 
 public class UIManager : NetworkBehaviour {
 
-    private Text txtLoadedAmmo;
-    private Text txtReserveAmmo;
-    private Text txtPlayerHealth;
+    public Text txtLoadedAmmo;
+    public Text txtReserveAmmo;
+    public Text txtPlayerHealth;
+    public Text txtPlayerFatigue;
 
-    private GunController gunController;
-    private Target playerTarget;
-    private RectTransform healthbar;
+    public GunController gunController;
+    public Target playerTarget;
+    public RectTransform healthbar;
+    public RectTransform fatiguebar;
 
     // Use this for initialization
     void Start () {
@@ -26,9 +28,13 @@ public class UIManager : NetworkBehaviour {
         txtReserveAmmo = GameObject.Find("UIWIReserveAmmo").GetComponent<Text>();
         playerTarget = GetComponent<Target>();
         playerTarget.onHealthChanged += HealthChanged;
+        playerTarget.onFatigueChanged += FatigueChanged;
         txtPlayerHealth = GameObject.Find("UIPHBText").GetComponent<Text>();
+        txtPlayerFatigue = GameObject.Find("UIPFBText").GetComponent<Text>();
         healthbar = GameObject.Find("UIPHBValue").GetComponent<RectTransform>();
+        fatiguebar = GameObject.Find("UIPFBValue").GetComponent<RectTransform>();
         txtPlayerHealth.text = string.Format("{0:N0}", playerTarget.currentHealth) + " | " + string.Format("{0:N0}", playerTarget.startingHealth);
+        txtPlayerFatigue.text = string.Format("{0:N0}", playerTarget.currentFatigue) + " | " + string.Format("{0:N0}", playerTarget.startingFatigue);
     }
 
     private void HealthChanged(float prevVal, float newVal)
@@ -39,6 +45,17 @@ public class UIManager : NetworkBehaviour {
             Debug.Log("Healthbar UI Changed. Was: " + string.Format("{0:N2}", prevVal) + "; Now: " + string.Format("{0:N2}", prevVal));
             healthbar.sizeDelta = new Vector2(newVal * 5, healthbar.sizeDelta.y);
             txtPlayerHealth.text = string.Format("{0:N0}", playerTarget.currentHealth) + " | " + string.Format("{0:N0}", playerTarget.startingHealth);
+        }
+    }
+
+    private void FatigueChanged(float prevVal, float newVal)
+    {
+        Debug.Log("UIManager Fatigue Changed");
+        if (fatiguebar != null)
+        {
+            Debug.Log("Fatiguebar UI Changed. Was: " + string.Format("{0:N2}", prevVal) + "; Now: " + string.Format("{0:N2}", prevVal));
+            fatiguebar.sizeDelta = new Vector2(newVal * 5, fatiguebar.sizeDelta.y);
+            txtPlayerFatigue.text = string.Format("{0:N0}", playerTarget.currentFatigue) + " | " + string.Format("{0:N0}", playerTarget.startingFatigue);
         }
     }
 
