@@ -109,20 +109,43 @@ public class GunController : NetworkBehaviour {
                 {
                     rb.AddForce(-fpsCamera.transform.forward * 35, ForceMode.Impulse);
                 }
+                if (currentAmmoInReserve > 0 && currentAmmoInMag == 0)
+                {
+                    StartCoroutine(ReloadDelayer());
+                }
             }
 
-            if (currentAmmoInReserve >= maxAmmoInMag - currentAmmoInMag && Input.GetKeyDown(KeyCode.R))
+            if (currentAmmoInReserve > 0 && Input.GetKeyDown(KeyCode.R))
             {
-                currentAmmoInReserve -= (maxAmmoInMag - currentAmmoInMag);
-                currentAmmoInMag = maxAmmoInMag;
-
-            }
-            else if (currentAmmoInReserve < maxAmmoInMag - currentAmmoInMag && Input.GetKeyDown(KeyCode.R))
-            {
-                currentAmmoInMag += currentAmmoInReserve;
-                currentAmmoInReserve = 0;
+                StartCoroutine(ReloadDelayer());
             }
         }
+    }
+
+    public IEnumerator ReloadDelayer()
+    {
+        locked = true;
+        float remainingTime = 2f;
+
+        while (remainingTime > 0)
+        {
+            yield return null;
+
+            remainingTime -= Time.deltaTime;
+
+        }
+        if (currentAmmoInReserve >= maxAmmoInMag - currentAmmoInMag)
+        {
+            currentAmmoInReserve -= (maxAmmoInMag - currentAmmoInMag);
+            currentAmmoInMag = maxAmmoInMag;
+
+        }
+        else if (currentAmmoInReserve < maxAmmoInMag - currentAmmoInMag)
+        {
+            currentAmmoInMag += currentAmmoInReserve;
+            currentAmmoInReserve = 0;
+        }
+        locked = false;
     }
 
     void Shoot() {
