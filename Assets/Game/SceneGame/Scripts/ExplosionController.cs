@@ -9,6 +9,7 @@ public class ExplosionController : NetworkBehaviour {
     public CapsuleCollider cc;
     public ParticleSystem smokePS;
     public GameObject explosion;
+    public AudioSource explosionSound;
 
     // Use this for initialization
     void Start () {
@@ -43,6 +44,7 @@ public class ExplosionController : NetworkBehaviour {
         GameObject tempExp = rocket.transform.GetChild(0).gameObject;
         tempExp.SetActive(true);
         tempExp.GetComponent<ParticleSystem>().Emit(50);
+        explosionSound.Play();
     }
 
     public IEnumerator Delayer()

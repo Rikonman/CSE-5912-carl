@@ -37,14 +37,23 @@ public class GunController : NetworkBehaviour {
     GameObject rocketPrefab;
     [SerializeField]
     Transform barrellExit;
-    public AudioSource gunshot;
     public PlayerTeam team;
     public bool locked;
     Rigidbody rb;
     public PlayerLobbyInfo pli;
 
+    public AudioSource pistolShot;
+    public AudioSource assaultOneShot;
+    public AudioSource assaultTwoShot;
+    public AudioSource assaultThreeShot;
+    public AudioSource shotgunShot;
+    public AudioSource sniperShot;
+    public AudioSource rocketShot;
+    public AudioSource minigunShot;
+    public int assaultCounter;
     void Start()
     {
+        assaultCounter = 0;
         locked = false;
         ResetAmmo(true);
         //gun = transform.GetChild(0).GetChild(0).gameObject;
@@ -98,6 +107,10 @@ public class GunController : NetworkBehaviour {
         if (!isLocalPlayer)
             return;
 
+        if (minigun && (!Input.GetButton("Fire1") || currentAmmoInMag == 0) && minigunShot.isPlaying)
+        {
+            CmdStopMinigun();
+        }
         if (!locked)
         {
             if (((automatic || minigun) && Input.GetButton("Fire1") || !(automatic || minigun) && Input.GetButtonDown("Fire1")) && Time.time >= fireDelay)
@@ -108,6 +121,11 @@ public class GunController : NetworkBehaviour {
                 if (minigun)
                 {
                     rb.AddForce(-fpsCamera.transform.forward * 35, ForceMode.Impulse);
+                    if (!minigunShot.isPlaying)
+                    {
+                        CmdStartMinigun();
+                    }
+                    
                 }
                 if (currentAmmoInReserve > 0 && currentAmmoInMag == 0)
                 {
@@ -148,12 +166,86 @@ public class GunController : NetworkBehaviour {
         locked = false;
     }
 
+    [Command]
+    public void CmdStartMinigun()
+    {
+        RpcStartMinigun();
+    }
+
+    [ClientRpc]
+    public void RpcStartMinigun()
+    {
+        minigunShot.Play();
+        
+    }
+
+    
+    [Command]
+    public void CmdStopMinigun()
+    {
+        RpcStopMinigun();
+    }
+
+    [ClientRpc]
+    public void RpcStopMinigun()
+    {
+        minigunShot.Stop();
+    }
+
+    [Command]
+    public void CmdPlayGunshot(int gunChoice)
+    {
+        RpcPlayGunshot(gunChoice);
+    }
+
+    [ClientRpc]
+    public void RpcPlayGunshot(int gunChoice)
+    {
+        if (gunChoice == 0)
+        {
+            pistolShot.Play();
+        }
+        else if (gunChoice == 1)
+        {
+            if (assaultCounter == 0)
+            {
+                assaultOneShot.Play();
+                assaultCounter++;
+            }
+            else if (assaultCounter == 1)
+            {
+                assaultTwoShot.Play();
+                assaultCounter++;
+            }
+            else
+            {
+                assaultThreeShot.Play();
+                assaultCounter = 0;
+            }
+        }
+        else if (gunChoice == 2)
+        {
+            shotgunShot.Play();
+        }
+        else if (gunChoice == 3)
+        {
+            sniperShot.Play();
+        }
+        else if (gunChoice == 4)
+        {
+            rocketShot.Play();
+        }
+    }
+
     void Shoot() {
         if (currentAmmoInMag > 0)
         {
             flash.Play();
-            gunshot.Play();
-            gunshot.loop = false;
+            if (currentGun != 5)
+            {
+                CmdPlayGunshot(currentGun);
+            }
+            
             CmdSpawnProjectile(team.team, team.playerID, damage, currentGun, range, pli.playerName, barrellExit.position, 
                 fpsCamera.transform.rotation, fpsCamera.transform.forward);
             currentAmmoInMag--;

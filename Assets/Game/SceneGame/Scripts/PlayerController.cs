@@ -34,7 +34,6 @@ public class PlayerController : NetworkBehaviour
     Vector3 tpCameraOffset;
     Vector3 fpCameraOffset;
 
-    public AudioSource walking;
 
     //[SerializeField]
     //private Image crosshair; 
@@ -128,14 +127,17 @@ public class PlayerController : NetworkBehaviour
             transform.Translate(direction);
             if (direction.magnitude > 0)
             {
-                if (!walking.isPlaying)
+                if (!target.walking.isPlaying)
                 {
-                    walking.Play();
+                    target.CmdPlayWalkingSound();
                 }
             }
             else
             {
-                walking.Stop();
+                if (target.walking.isPlaying)
+                {
+                    target.CmdStopWalkingSound();
+                }
             }
             Ray jumpRay = new Ray(transform.position, -Vector3.up);
             RaycastHit jumpRayhit;

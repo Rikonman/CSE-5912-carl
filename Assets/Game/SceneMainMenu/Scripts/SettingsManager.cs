@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.Audio;
 
 public class SettingsManager : MonoBehaviour
 {
@@ -14,14 +15,16 @@ public class SettingsManager : MonoBehaviour
 	private AudioSource musicAudioSource;
 	private AudioSource sfxAudioSource;
 
-	private Resolution[] resolutions;
+    public AudioMixer musicMixer;
+
+    private Resolution[] resolutions;
 
 	void OnEnable()
     {
         // Get a reference to the audio sources so we can change them upon moving the volume sliders
         musicAudioSource = GameObject.Find("MusicAudioSource").GetComponent<AudioSource>();
         sfxAudioSource = GameObject.Find("SfxAudioSource").GetComponent<AudioSource>();
-
+        
         // Load the current settings into the settings controls
         antiAliasingDropdown.value = GameSettings.AntiAliasing;
 		qualityDropdown.value = GameSettings.Quality;
@@ -71,12 +74,32 @@ public class SettingsManager : MonoBehaviour
 	}
 
 	public void OnMusicVolumeChange()
-	{
-		musicAudioSource.volume = GameSettings.MusicVolume = musicVolumeSlider.value;
-	}
+    {
+        if (musicVolumeSlider.value == 0)
+        {
+            musicMixer.SetFloat("BuildPhaseVolume", -80f);
+            musicMixer.SetFloat("CombatPhaseVolume", -80f);
+            musicMixer.SetFloat("MenuVolume", -80f);
+        }
+        else
+        {
+            musicMixer.SetFloat("BuildPhaseVolume", musicVolumeSlider.value * 40f - 30f);
+            musicMixer.SetFloat("CombatPhaseVolume", musicVolumeSlider.value * 40f - 30f);
+            musicMixer.SetFloat("MenuVolume", musicVolumeSlider.value * 40f - 30f);
+        }
+        GameSettings.MusicVolume = musicVolumeSlider.value;
+    }
 
 	public void OnSfxVolumeChange()
-	{
-        sfxAudioSource.volume = GameSettings.SfxVolume = sfxVolumeSlider.value;
-	}
+    {
+        if (sfxVolumeSlider.value == 0)
+        {
+            musicMixer.SetFloat("SFXVolume", -80f);
+        }
+        else
+        {
+            musicMixer.SetFloat("SFXVolume", sfxVolumeSlider.value * 40f - 30f);
+        }
+        GameSettings.SfxVolume = sfxVolumeSlider.value;
+    }
 }

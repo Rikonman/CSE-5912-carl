@@ -28,7 +28,8 @@ public class Target : NetworkBehaviour {
     }
     MeshRenderer renderer;
 	MeshFilter tempMesh; 
-	MeshFilter mesh; 
+	MeshFilter mesh;
+    public AudioSource walking;
     //Renderer rend;
     CapsuleCollider col;
     Rigidbody rb;
@@ -99,6 +100,31 @@ public class Target : NetworkBehaviour {
         }
     }
 
+    [Command]
+    public void CmdPlayWalkingSound()
+    {
+        RpcPlayWalkingSound();
+    }
+
+    [ClientRpc]
+    public void RpcPlayWalkingSound()
+    {
+        walking.Play();
+
+    }
+
+    [Command]
+    public void CmdStopWalkingSound()
+    {
+        RpcStopWalkingSound();
+    }
+
+    [ClientRpc]
+    public void RpcStopWalkingSound()
+    {
+        walking.Stop();
+
+    }
 
     [Command]
     public void CmdUpdateSpawnObject(int team)

@@ -6320,7 +6320,7 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Type: Metal
 
-    Cost: 100'
+    Cost: 150'
 --- !u!222 &921170641
 CanvasRenderer:
   m_ObjectHideFlags: 0

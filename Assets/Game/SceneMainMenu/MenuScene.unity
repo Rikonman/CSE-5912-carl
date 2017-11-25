@@ -8643,6 +8643,7 @@ MonoBehaviour:
   antiAliasingDropdown: {fileID: 2142899770}
   musicVolumeSlider: {fileID: 2104056702}
   sfxVolumeSlider: {fileID: 70314383}
+  musicMixer: {fileID: 24100000, guid: 3e507193637aec24696d88ff2cd67de8, type: 2}
 --- !u!1 &1729098764
 GameObject:
   m_ObjectHideFlags: 0

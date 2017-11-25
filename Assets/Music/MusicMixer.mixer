@@ -17,7 +17,17 @@ AudioMixerController:
   m_SuspendThreshold: -80
   m_EnableSuspend: 1
   m_UpdateMode: 0
-  m_ExposedParameters: []
+  m_ExposedParameters:
+  - guid: 278febd83c4a5964dbea160d7d70f296
+    name: BuildPhaseVolume
+  - guid: ce0677009d8f2b24084902579e845c9e
+    name: CombatPhaseVolume
+  - guid: 99ca96a3783a3a34cb5b99034c20f0cd
+    name: MasterVolume
+  - guid: 98aef89ac69ee2841831ff88428460af
+    name: MenuVolume
+  - guid: b9424ac78e4e74c4b935a28cb6758a04
+    name: SFXVolume
   m_AudioMixerGroupViews:
   - guids:
     - c46d0411d257e6142b8cc33387f75aba
@@ -27,7 +37,7 @@ AudioMixerController:
     - 585b9143c179e9d488cc7ef2ca661c84
     name: View
   m_CurrentViewIndex: 0
-  m_TargetSnapshot: {fileID: 245614383437787250}
+  m_TargetSnapshot: {fileID: 245490519558694016}
 --- !u!243 &24300002
 AudioMixerGroupController:
   m_ObjectHideFlags: 0

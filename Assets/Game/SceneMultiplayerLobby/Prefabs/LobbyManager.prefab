@@ -3284,8 +3284,11 @@ MonoBehaviour:
   countdownPanel: {fileID: 11413810}
   addPlayerButton: {fileID: 144256}
   backButton: {fileID: 11477488}
+  exitButton: {fileID: 0}
   statusInfo: {fileID: 11403930}
   hostInfo: {fileID: 11415712}
+  redPlayers: 0
+  bluePlayers: 0
   _playerNumber: 0
   _isMatchmaking: 0
   mainMenuObj: {fileID: 148054}
