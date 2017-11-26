@@ -125,6 +125,7 @@ public class PlayerController : NetworkBehaviour
 
             Vector3 direction = new Vector3(Input.GetAxis("Horizontal") * Time.deltaTime * speed, 0, Input.GetAxis("Vertical") * Time.deltaTime * speed);
             transform.Translate(direction);
+            rb.MovePosition(direction);
             if (direction.magnitude > 0)
             {
                 if (!target.walking.isPlaying)
