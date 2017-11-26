@@ -60,6 +60,7 @@ public class ProjectileController : NetworkBehaviour {
         {
             return;
         }
+        BuildIdentifier collisionBID = collision.gameObject.GetComponent<BuildIdentifier>();
 
         // the projectile is going to explode and is no longer live
         isLive = false;
@@ -96,7 +97,7 @@ public class ProjectileController : NetworkBehaviour {
         if (!canKill || collisionTarget == null)
             return;
 
-        DamageTarget(collisionTarget, collisionTeam == null, collision.gameObject.tag, hasParent, 1f);
+        DamageTarget(collisionTarget, collisionTeam == null, collision.gameObject.tag, hasParent, 1f, collisionBID != null && collisionBID.team == firingTeam);
 
     }
     
@@ -120,13 +121,13 @@ public class ProjectileController : NetworkBehaviour {
         killManager.GetComponent<KillManager>().AddKill(killerPlayer, killerTeam, victimName, victimTeam, firingGun);
     }
 
-    public void DamageTarget(Target collisionTarget, bool isBuilding, string collisionTag, bool hasParent, float damageModifier)
+    public void DamageTarget(Target collisionTarget, bool isBuilding, string collisionTag, bool hasParent, float damageModifier, bool isFriendlyFire)
     {
         Vector3 position = collisionTarget.transform.position;
         Quaternion rotation = collisionTarget.transform.localRotation;
 
         // have the target take damage
-        bool died = collisionTarget.TakeDamage(damage / damageModifier);
+        bool died = collisionTarget.TakeDamage(damage / damageModifier / (isFriendlyFire ? 4f : 1f));
         if (died && !isBuilding)
         {
 

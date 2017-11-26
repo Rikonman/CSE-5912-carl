@@ -112,7 +112,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4522955415842840}
   - component: {fileID: 82599228442952140}
-  - component: {fileID: 114308189784738968}
   m_Layer: 0
   m_Name: ShotgunAudio
   m_TagString: Untagged
@@ -384,7 +383,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4664085127157192}
   - component: {fileID: 82759509741126208}
-  - component: {fileID: 114461552092065146}
   m_Layer: 0
   m_Name: MinigunAudio
   m_TagString: Untagged
@@ -623,7 +621,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4663330110204154}
   - component: {fileID: 82423702372794326}
-  - component: {fileID: 114428906959376874}
   m_Layer: 0
   m_Name: AssaultOneAudio
   m_TagString: Untagged
@@ -1010,7 +1007,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4793016682478798}
   - component: {fileID: 82470366323661904}
-  - component: {fileID: 114838308264910130}
   m_Layer: 0
   m_Name: RocketAudio
   m_TagString: Untagged
@@ -1072,7 +1068,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4132102665976890}
   - component: {fileID: 82435905823611192}
-  - component: {fileID: 114812469116137826}
   m_Layer: 0
   m_Name: AssaultThreeAudio
   m_TagString: Untagged
@@ -1232,7 +1227,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4682586412539496}
   - component: {fileID: 82406938388168988}
-  - component: {fileID: 114118250171258974}
   m_Layer: 0
   m_Name: GunshotAudio
   m_TagString: Untagged
@@ -1662,7 +1656,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4830726875137284}
   - component: {fileID: 82554588699033544}
-  - component: {fileID: 114047407066508734}
   m_Layer: 0
   m_Name: WalkingAudio
   m_TagString: Untagged
@@ -1758,7 +1751,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4477098041050622}
   - component: {fileID: 82385570374337154}
-  - component: {fileID: 114462622372383054}
   m_Layer: 0
   m_Name: SniperAudio
   m_TagString: Untagged
@@ -1824,7 +1816,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4492401914963268}
   - component: {fileID: 82501985894931052}
-  - component: {fileID: 114999124447091024}
   m_Layer: 0
   m_Name: AssaultTwoAudio
   m_TagString: Untagged
@@ -5759,70 +5750,6 @@ MonoBehaviour:
   nm: {fileID: 0}
   playerName: 
   team: {fileID: 0}
---- !u!114 &114047407066508734
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1872836231158860}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SceneId:
-    m_Value: 0
-  m_AssetId:
-    i0: 223
-    i1: 80
-    i2: 232
-    i3: 61
-    i4: 233
-    i5: 224
-    i6: 158
-    i7: 132
-    i8: 74
-    i9: 63
-    i10: 52
-    i11: 214
-    i12: 134
-    i13: 255
-    i14: 170
-    i15: 224
-  m_ServerOnly: 0
-  m_LocalPlayerAuthority: 0
---- !u!114 &114118250171258974
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1682226157298170}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SceneId:
-    m_Value: 0
-  m_AssetId:
-    i0: 223
-    i1: 80
-    i2: 232
-    i3: 61
-    i4: 233
-    i5: 224
-    i6: 158
-    i7: 132
-    i8: 74
-    i9: 63
-    i10: 52
-    i11: 214
-    i12: 134
-    i13: 255
-    i14: 170
-    i15: 224
-  m_ServerOnly: 0
-  m_LocalPlayerAuthority: 0
 --- !u!114 &114204714156624540
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5870,38 +5797,6 @@ MonoBehaviour:
   gunScript: {fileID: 0}
   SpawnObject: {fileID: 0}
   lookText: {fileID: 0}
---- !u!114 &114308189784738968
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1043781761711192}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SceneId:
-    m_Value: 0
-  m_AssetId:
-    i0: 223
-    i1: 80
-    i2: 232
-    i3: 61
-    i4: 233
-    i5: 224
-    i6: 158
-    i7: 132
-    i8: 74
-    i9: 63
-    i10: 52
-    i11: 214
-    i12: 134
-    i13: 255
-    i14: 170
-    i15: 224
-  m_ServerOnly: 0
-  m_LocalPlayerAuthority: 0
 --- !u!114 &114344024519532110
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5982,102 +5877,6 @@ MonoBehaviour:
   lookText: {fileID: 0}
   locked: 0
   isLooking: 0
---- !u!114 &114428906959376874
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1337136732645256}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SceneId:
-    m_Value: 0
-  m_AssetId:
-    i0: 223
-    i1: 80
-    i2: 232
-    i3: 61
-    i4: 233
-    i5: 224
-    i6: 158
-    i7: 132
-    i8: 74
-    i9: 63
-    i10: 52
-    i11: 214
-    i12: 134
-    i13: 255
-    i14: 170
-    i15: 224
-  m_ServerOnly: 0
-  m_LocalPlayerAuthority: 0
---- !u!114 &114461552092065146
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1187263940996358}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SceneId:
-    m_Value: 0
-  m_AssetId:
-    i0: 223
-    i1: 80
-    i2: 232
-    i3: 61
-    i4: 233
-    i5: 224
-    i6: 158
-    i7: 132
-    i8: 74
-    i9: 63
-    i10: 52
-    i11: 214
-    i12: 134
-    i13: 255
-    i14: 170
-    i15: 224
-  m_ServerOnly: 0
-  m_LocalPlayerAuthority: 0
---- !u!114 &114462622372383054
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1938457086913756}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SceneId:
-    m_Value: 0
-  m_AssetId:
-    i0: 223
-    i1: 80
-    i2: 232
-    i3: 61
-    i4: 233
-    i5: 224
-    i6: 158
-    i7: 132
-    i8: 74
-    i9: 63
-    i10: 52
-    i11: 214
-    i12: 134
-    i13: 255
-    i14: 170
-    i15: 224
-  m_ServerOnly: 0
-  m_LocalPlayerAuthority: 0
 --- !u!114 &114495435776536394
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6183,6 +5982,7 @@ MonoBehaviour:
   sniperShot: {fileID: 82385570374337154}
   rocketShot: {fileID: 82470366323661904}
   minigunShot: {fileID: 82759509741126208}
+  assaultCounter: 0
 --- !u!114 &114543766237166692
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6301,38 +6101,6 @@ MonoBehaviour:
   playerID: 0
   resourceText: {fileID: 0}
   baseObject: {fileID: 0}
---- !u!114 &114812469116137826
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1593612576761216}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SceneId:
-    m_Value: 0
-  m_AssetId:
-    i0: 223
-    i1: 80
-    i2: 232
-    i3: 61
-    i4: 233
-    i5: 224
-    i6: 158
-    i7: 132
-    i8: 74
-    i9: 63
-    i10: 52
-    i11: 214
-    i12: 134
-    i13: 255
-    i14: 170
-    i15: 224
-  m_ServerOnly: 0
-  m_LocalPlayerAuthority: 0
 --- !u!114 &114829687356601784
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6365,38 +6133,6 @@ MonoBehaviour:
   team: {fileID: 0}
   buyManager: {fileID: 0}
   locked: 0
---- !u!114 &114838308264910130
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1536103410569072}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SceneId:
-    m_Value: 0
-  m_AssetId:
-    i0: 223
-    i1: 80
-    i2: 232
-    i3: 61
-    i4: 233
-    i5: 224
-    i6: 158
-    i7: 132
-    i8: 74
-    i9: 63
-    i10: 52
-    i11: 214
-    i12: 134
-    i13: 255
-    i14: 170
-    i15: 224
-  m_ServerOnly: 0
-  m_LocalPlayerAuthority: 0
 --- !u!114 &114951380066682690
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6410,38 +6146,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   componentsToDisable:
   - {fileID: 20633808804300862}
---- !u!114 &114999124447091024
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1990063914530084}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SceneId:
-    m_Value: 0
-  m_AssetId:
-    i0: 223
-    i1: 80
-    i2: 232
-    i3: 61
-    i4: 233
-    i5: 224
-    i6: 158
-    i7: 132
-    i8: 74
-    i9: 63
-    i10: 52
-    i11: 214
-    i12: 134
-    i13: 255
-    i14: 170
-    i15: 224
-  m_ServerOnly: 0
-  m_LocalPlayerAuthority: 0
 --- !u!124 &124451328719334342
 Behaviour:
   m_ObjectHideFlags: 1

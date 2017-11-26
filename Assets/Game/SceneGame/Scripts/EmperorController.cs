@@ -407,20 +407,20 @@ public class EmperorController : NetworkBehaviour
         //emperorOutput.enabled = false;
     }
 
-    [ClientRpc]
-    public void RpcAddRedFavor(int Amount)
+    [Command]
+    public void CmdAddRedFavor(int Amount)
     {
         redFavor += Amount;
     }
 
-    [ClientRpc]
-    public void RpcAddBlueFavor(int Amount)
+    [Command]
+    public void CmdAddBlueFavor(int Amount)
     {
         blueFavor += Amount;
     }
-
-    [ClientRpc]
-    public void RpcAddEntertainment(int Amount)
+    
+    [Command]
+    public void CmdAddEntertainment(int Amount)
     {
         entertainment += Amount;
     }

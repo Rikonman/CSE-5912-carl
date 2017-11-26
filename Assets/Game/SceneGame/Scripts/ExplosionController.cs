@@ -87,6 +87,8 @@ public class ExplosionController : NetworkBehaviour {
             return;
         }
 
+        BuildIdentifier collisionBID = other.gameObject.GetComponent<BuildIdentifier>();
+
         if (!isServer)
             return;
 
@@ -95,7 +97,7 @@ public class ExplosionController : NetworkBehaviour {
             return;
         }
 
-        pc.DamageTarget(collisionTarget, collisionTeam == null, other.gameObject.tag, hasParent, hasParent ? 3f : 1f);
+        pc.DamageTarget(collisionTarget, collisionTeam == null, other.gameObject.tag, hasParent, hasParent ? 3f : 1f, collisionBID != null && collisionBID.team == pc.firingTeam);
     }
 
     // Update is called once per frame

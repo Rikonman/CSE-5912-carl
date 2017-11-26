@@ -64,6 +64,7 @@ public class PlayerController : NetworkBehaviour
         // if this player is not the local player...
         if (!isLocalPlayer)
         {
+            mainCamera.GetComponent<AudioListener>().enabled = false;
             // then remove this script. By removing this script all the rest of the code will not run.
             Destroy(this);
             return;
@@ -75,7 +76,6 @@ public class PlayerController : NetworkBehaviour
         //clientHUD.transform.localPosition = new Vector3(0, 0, 0);
         //clientHUD.GetComponent<RectTransform>().offsetMin = new Vector2(0, 0);
         //clientHUD.GetComponent<RectTransform>().offsetMax = new Vector2(0, 0);
-
         Billboard.CameraToFocusOn = GetComponentInChildren<Camera>();
         //crosshair.enabled = true;
         rb = GetComponent<Rigidbody>();
@@ -86,6 +86,7 @@ public class PlayerController : NetworkBehaviour
         target = GetComponent<Target>();
         //mainCamera = transform.GetChild(0);
         //MoveCamera();
+        //GameObject.FindObjectOfType<AudioListener>().transform.position;
     }
 
     // Update is called once per frame

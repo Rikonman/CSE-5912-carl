@@ -94,7 +94,7 @@ public class PlayerTeam : NetworkBehaviour {
 
     public IEnumerator SpawnDelayer()
     {
-        float remainingTime = 1f;
+        float remainingTime = 1.5f;
 
         while (remainingTime > 0)
         {

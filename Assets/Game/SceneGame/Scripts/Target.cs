@@ -103,6 +103,7 @@ public class Target : NetworkBehaviour {
     [Command]
     public void CmdPlayWalkingSound()
     {
+        walking.Play();
         RpcPlayWalkingSound();
     }
 
@@ -116,6 +117,7 @@ public class Target : NetworkBehaviour {
     [Command]
     public void CmdStopWalkingSound()
     {
+        walking.Stop();
         RpcStopWalkingSound();
     }
 
@@ -273,15 +275,15 @@ public class Target : NetworkBehaviour {
             {
                 if (priorHealth > startingHealth * 3 / 4 && currentHealth <= startingHealth * 3 / 4)
                 {
-                    emperor.GetComponent<EmperorController>().RpcAddEntertainment(1);
+                    emperor.GetComponent<EmperorController>().CmdAddEntertainment(1);
                 }
                 else if (priorHealth > startingHealth * 2 / 4 && currentHealth <= startingHealth * 2 / 4)
                 {
-                    emperor.GetComponent<EmperorController>().RpcAddEntertainment(1);
+                    emperor.GetComponent<EmperorController>().CmdAddEntertainment(1);
                 }
                 else if (priorHealth > startingHealth / 4 && currentHealth <= startingHealth / 4)
                 {
-                    emperor.GetComponent<EmperorController>().RpcAddEntertainment(1);
+                    emperor.GetComponent<EmperorController>().CmdAddEntertainment(1);
                 }
             }
             else
@@ -369,36 +371,49 @@ public class Target : NetworkBehaviour {
         currentFatigue += amount;
     }
 
+    [Command]
+    public void CmdDie()
+    {
+        RpcDie();
+    }
+
+    [ClientRpc]
+    public void RpcDie()
+    {
+        Die();
+    }
+
     public void Die()
     {
         if (team != null)
         {
-            emperor.GetComponent<EmperorController>().RpcAddEntertainment(5);
+            emperor.GetComponent<EmperorController>().CmdAddEntertainment(5);
             if (team.team == 0)
             {
-                emperor.GetComponent<EmperorController>().RpcAddBlueFavor(5);
+                emperor.GetComponent<EmperorController>().CmdAddBlueFavor(5);
             }
             else
             {
-                emperor.GetComponent<EmperorController>().RpcAddRedFavor(5);
+                emperor.GetComponent<EmperorController>().CmdAddRedFavor(5);
             }
         }
         else if (bid != null)
         {
-            emperor.GetComponent<EmperorController>().RpcAddEntertainment(3);
+            emperor.GetComponent<EmperorController>().CmdAddEntertainment(3);
             if (bid.team == 0)
             {
-                emperor.GetComponent<EmperorController>().RpcAddBlueFavor(3);
+                emperor.GetComponent<EmperorController>().CmdAddBlueFavor(3);
             }
             else
             {
-                emperor.GetComponent<EmperorController>().RpcAddRedFavor(3);
+                emperor.GetComponent<EmperorController>().CmdAddRedFavor(3);
             }
         }
         else
         {
-            emperor.GetComponent<EmperorController>().RpcAddEntertainment(30);
+            emperor.GetComponent<EmperorController>().CmdAddEntertainment(30);
         }
+        
         
 		tempMesh = mesh;
         isDead = true;

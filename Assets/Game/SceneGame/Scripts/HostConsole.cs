@@ -369,7 +369,7 @@ public class HostConsole : NetworkBehaviour
                                 nm.NewNotification(NotificationManager.GetBlueString(playerName) + " committed suicide", false);
                             else
                                 nm.NewNotification(NotificationManager.GetRedString(playerName) + " committed suicide", false);
-                            playerTarget.Die();
+                            playerTarget.CmdDie();
                             input.text = "";
                             input.ActivateInputField();
                         }

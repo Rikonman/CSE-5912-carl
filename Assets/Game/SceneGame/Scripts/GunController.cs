@@ -169,6 +169,7 @@ public class GunController : NetworkBehaviour {
     [Command]
     public void CmdStartMinigun()
     {
+        minigunShot.Play();
         RpcStartMinigun();
     }
 
@@ -176,13 +177,13 @@ public class GunController : NetworkBehaviour {
     public void RpcStartMinigun()
     {
         minigunShot.Play();
-        
     }
 
     
     [Command]
     public void CmdStopMinigun()
     {
+        minigunShot.Stop();
         RpcStopMinigun();
     }
 
@@ -195,11 +196,17 @@ public class GunController : NetworkBehaviour {
     [Command]
     public void CmdPlayGunshot(int gunChoice)
     {
+        PlayGunshot(gunChoice);
         RpcPlayGunshot(gunChoice);
     }
 
     [ClientRpc]
     public void RpcPlayGunshot(int gunChoice)
+    {
+        PlayGunshot(gunChoice);
+    }
+
+    public void PlayGunshot(int gunChoice)
     {
         if (gunChoice == 0)
         {
