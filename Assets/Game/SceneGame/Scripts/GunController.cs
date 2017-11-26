@@ -133,7 +133,7 @@ public class GunController : NetworkBehaviour {
                 }
             }
 
-            if (currentAmmoInReserve > 0 && Input.GetKeyDown(KeyCode.R))
+            if (currentAmmoInReserve > 0 && currentAmmoInMag != maxAmmoInMag && Input.GetKeyDown(KeyCode.R))
             {
                 StartCoroutine(ReloadDelayer());
             }
