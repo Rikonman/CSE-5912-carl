@@ -40,6 +40,7 @@ public class ExplosionController : NetworkBehaviour {
     public void RpcStartExplosion(NetworkInstanceId nid)
     {
         GameObject rocket = ClientScene.FindLocalObject(nid);
+        rocket.GetComponent<MeshRenderer>().enabled = false;
         rocket.GetComponent<ParticleSystem>().Stop(true);
         GameObject tempExp = rocket.transform.GetChild(0).gameObject;
         tempExp.SetActive(true);
