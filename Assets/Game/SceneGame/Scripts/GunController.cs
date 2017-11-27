@@ -63,6 +63,13 @@ public class GunController : NetworkBehaviour {
         CmdSwitch(0);
     }
 
+    [Command]
+    public void CmdResetAmmo(bool refillMag)
+    {
+        ResetAmmo(refillMag);
+        RpcResetAmmo(refillMag);
+    }
+
     [ClientRpc]
     public void RpcResetAmmo(bool refillMag)
     {

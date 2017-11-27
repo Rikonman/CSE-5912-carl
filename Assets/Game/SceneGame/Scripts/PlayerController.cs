@@ -90,7 +90,7 @@ public class PlayerController : NetworkBehaviour
     }
 
     // Update is called once per frame
-    void LateUpdate()
+    void FixedUpdate()
     {
         if (!locked)
         {
@@ -174,9 +174,16 @@ public class PlayerController : NetworkBehaviour
             {
                 isSniping = !isSniping;
             }
+
+        }
+    }
+
+    public void LateUpdate()
+    {
+        if (!locked)
+        {
             // Update the camera's position/rotation
             MoveCamera();
-
         }
     }
 

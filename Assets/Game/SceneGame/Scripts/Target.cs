@@ -385,34 +385,6 @@ public class Target : NetworkBehaviour {
 
     public void Die()
     {
-        if (team != null)
-        {
-            emperor.GetComponent<EmperorController>().CmdAddEntertainment(5);
-            if (team.team == 0)
-            {
-                emperor.GetComponent<EmperorController>().CmdAddBlueFavor(5);
-            }
-            else
-            {
-                emperor.GetComponent<EmperorController>().CmdAddRedFavor(5);
-            }
-        }
-        else if (bid != null)
-        {
-            emperor.GetComponent<EmperorController>().CmdAddEntertainment(3);
-            if (bid.team == 0)
-            {
-                emperor.GetComponent<EmperorController>().CmdAddBlueFavor(3);
-            }
-            else
-            {
-                emperor.GetComponent<EmperorController>().CmdAddRedFavor(3);
-            }
-        }
-        else
-        {
-            emperor.GetComponent<EmperorController>().CmdAddEntertainment(30);
-        }
         
         
 		tempMesh = mesh;
@@ -421,6 +393,7 @@ public class Target : NetworkBehaviour {
         {
             col.enabled = false;
             rb.useGravity = false;
+            RpcChangeDeadStatus(false);
 
         }
         else if (bid != null)
@@ -442,13 +415,65 @@ public class Target : NetworkBehaviour {
         {
             Destroy(gameObject);
         }
+        if (isServer)
+        {
+            if (team != null)
+            {
+                emperor.GetComponent<EmperorController>().CmdAddEntertainment(5);
+                if (team.team == 0)
+                {
+                    emperor.GetComponent<EmperorController>().CmdAddBlueFavor(5);
+                }
+                else
+                {
+                    emperor.GetComponent<EmperorController>().CmdAddRedFavor(5);
+                }
+            }
+            else if (bid != null)
+            {
+                emperor.GetComponent<EmperorController>().CmdAddEntertainment(3);
+                if (bid.team == 0)
+                {
+                    emperor.GetComponent<EmperorController>().CmdAddBlueFavor(3);
+                }
+                else
+                {
+                    emperor.GetComponent<EmperorController>().CmdAddRedFavor(3);
+                }
+            }
+            else
+            {
+                emperor.GetComponent<EmperorController>().CmdAddEntertainment(30);
+            }
+        }
+        
         //rend.enabled = false;
     }
 
+    [Command]
+    public void CmdChangeUseGravity(bool value)
+    {
+        RpcChangeDeadStatus(value);
+    }
+
+    [ClientRpc]
+    public void RpcChangeDeadStatus(bool value)
+    {
+        col.enabled = value;
+        rb.useGravity = value;
+    }
     public void Respawn()
     {
 		mesh = tempMesh;
         isDead = false;
+        
+        //rend.enabled = true;
+        col.enabled = true;
+        currentHealth = startingHealth;
+        currentFatigue = startingFatigue;
+        isDead = false;
+        rb.useGravity = true;
+        RpcChangeDeadStatus(true);
         if (isServer)
         {
             team.RpcChangeLocation(LobbyManager.s_Singleton.GetSpawnLocation(team.team));
@@ -459,13 +484,6 @@ public class Target : NetworkBehaviour {
         {
             gameObject.GetComponent<PlayerController>().isSniping = false;
         }
-        
-        //rend.enabled = true;
-        col.enabled = true;
-        rb.useGravity = true;
-        currentHealth = startingHealth;
-        currentFatigue = startingFatigue;
-        isDead = false;
     }
     
 }
