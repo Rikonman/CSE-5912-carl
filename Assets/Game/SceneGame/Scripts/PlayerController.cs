@@ -124,9 +124,16 @@ public class PlayerController : NetworkBehaviour
             yRotation += Input.GetAxis("Mouse X") * lookSensitivity;
             transform.rotation = Quaternion.Euler(0, yRotation, 0);
 
-            Vector3 direction = new Vector3(Input.GetAxis("Horizontal") * Time.deltaTime * speed, 0, Input.GetAxis("Vertical") * Time.deltaTime * speed);
-            transform.Translate(direction);
-            //rb.MovePosition(direction); //This bugs spawning. 
+
+            //Vector3 direction = new Vector3(Input.GetAxis("Horizontal") * Time.deltaTime * speed, 0, Input.GetAxis("Vertical") * Time.deltaTime * speed);
+            //transform.Translate(direction); //Old movement  <--- + ^^^
+
+            Vector3 direction = (transform.right * Input.GetAxis("Horizontal") * Time.deltaTime * speed) + (transform.forward * Input.GetAxis("Vertical") * Time.deltaTime * speed);
+            rb.MovePosition(rb.position + direction); 
+            Debug.Log(rb.rotation);
+            Debug.Log(direction);
+
+
             if (direction.magnitude > 0)
             {
                 if (!target.walking.isPlaying)
