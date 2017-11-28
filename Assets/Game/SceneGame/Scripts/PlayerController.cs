@@ -212,13 +212,13 @@ public class PlayerController : NetworkBehaviour
                 }
                 camera.fieldOfView = 70;
             }
-            mainCamera.transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
+            //mainCamera.transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
         }
         else
         {
             tpCameraOffset = new Vector3(0f, tpCameraY, -tpCameraDistance);
-            mainCamera.transform.Translate(tpCameraOffset);
-            mainCamera.transform.LookAt(transform);
+            //mainCamera.transform.Translate(tpCameraOffset);
+            //mainCamera.transform.LookAt(transform);
         }
     }
 
