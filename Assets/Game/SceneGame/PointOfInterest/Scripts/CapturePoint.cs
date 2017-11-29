@@ -60,7 +60,7 @@ public class CapturePoint : NetworkBehaviour
                     currentOwner = "No One";
                     uiObject.GetComponent<Image>().color = new Color(1f, 1f, 1f, 100f / 256);
                     uiObject.transform.GetChild(1).GetComponent<Text>().text = string.Format("{0:F0}", localTeam == 0 ? value : -value);
-					zone.GetComponent<Renderer>().material.color = new Color(0.76f, 0.86f, 0.16f, 0.8f);
+					zone.GetComponent<Renderer>().material.color = new Color(1f, 1f, 1f, 0.8f);
 			   }
                 ownership = value;
             }

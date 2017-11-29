@@ -117,7 +117,7 @@ Transform:
   m_GameObject: {fileID: 1063983106835466}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0}
-  m_LocalScale: {x: 10, y: 1, z: 10}
+  m_LocalScale: {x: 12, y: 6, z: 12}
   m_Children: []
   m_Father: {fileID: 4038201955754532}
   m_RootOrder: 3
@@ -331,7 +331,7 @@ MonoBehaviour:
   ownership: 0
   resourceTimer: 0
   currentOwner: 
-  uiObject: {fileID: 1330608851572878, guid: 852614a35c44e314f8c3d8c80f18986b, type: 2}
+  uiObject: {fileID: 0}
   zone: {fileID: 1063983106835466}
   localTeam: 0
 --- !u!136 &136356999555671918
