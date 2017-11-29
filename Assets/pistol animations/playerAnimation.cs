@@ -14,6 +14,7 @@ public class playerAnimation : NetworkBehaviour {
     float aimOffset;
     float aim;
     bool isDead;
+    bool sprint;
     public Transform head;
     public Animator anim;
     Camera mainCamera;
@@ -43,9 +44,13 @@ public class playerAnimation : NetworkBehaviour {
             xRotation = -80f;
         }
 
-        if (Input.GetKeyDown("1"))
+        if (Input.GetKeyDown(KeyCode.LeftShift)||Input.GetKey(KeyCode.LeftShift))
         {
-            anim.Play("HM_Aim_Revolver_Walk");
+            sprint = true;
+        }
+        else
+        {
+            sprint = false;
         }
 
         //Debug.Log(xRotation);
@@ -60,6 +65,7 @@ public class playerAnimation : NetworkBehaviour {
         anim.SetFloat("inputV", inputV);
         anim.SetFloat("xRotation", -xRotation);
         anim.SetBool("isDead", isDead);
+        anim.SetBool("sprinting", sprint);
 
     }
     
