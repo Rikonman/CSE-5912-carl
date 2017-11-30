@@ -433,7 +433,7 @@ public class GunController : NetworkBehaviour {
             maxAmmoInMag = 4;
             startingReserveAmmo = 20;
             fireRate = 1f;
-            range = 1000f;
+            range = 2000f;
             currentAmmoInMag = maxAmmoInMag;
             currentAmmoInReserve = startingReserveAmmo;
         }
@@ -443,7 +443,7 @@ public class GunController : NetworkBehaviour {
             maxAmmoInMag = 60;
             startingReserveAmmo = 180;
             fireRate = .05f;
-            range = 2000f;
+            range = 3000f;
             currentAmmoInMag = maxAmmoInMag;
             currentAmmoInReserve = startingReserveAmmo;
         }

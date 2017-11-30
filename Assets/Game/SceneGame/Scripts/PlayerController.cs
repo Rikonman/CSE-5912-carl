@@ -43,7 +43,7 @@ public class PlayerController : NetworkBehaviour
     float xRotationV;
     float yRotationV;
     float lookSmoothDamp = 0.1f;
-    float speed;
+    public float speed;
     float walkingSpeed = 6f;
     float sprintSpeed = 10f;
     Vector3 flatTransform;

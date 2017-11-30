@@ -325,7 +325,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe3106a7a3e87d24393a1d7da8f89879, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingHealth: 100
+  startingHealth: 300
   currentHealth: 0
   startingFatigue: 100
   currentFatigue: 0
@@ -333,6 +333,7 @@ MonoBehaviour:
   startingPos: {x: 0, y: 0, z: 0}
   respawnTime: 5
   timer: 0
+  walking: {fileID: 0}
   team: {fileID: 0}
   bid: {fileID: 0}
   emperor: {fileID: 0}

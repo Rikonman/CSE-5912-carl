@@ -1568,7 +1568,7 @@ MonoBehaviour:
   UIEmperorPanel: {fileID: 0}
   UIEmperorText: {fileID: 0}
   popupDelay: 3
-  boredomCooldown: 1
+  boredomCooldown: 1.5
   giftTimer: 0
   timeoutMultiplier: 4
   moodChangeCost: 10
@@ -16301,7 +16301,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stone: 500
   wood: 500
-  metal: 250
+  metal: 300
 --- !u!114 &1438932084
 MonoBehaviour:
   m_ObjectHideFlags: 0
