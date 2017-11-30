@@ -17,6 +17,7 @@ public class playerAnimation : NetworkBehaviour {
     bool sprint;
     public Transform head;
     public Animator anim;
+    public Target target;
     Camera mainCamera;
 
     // Use this for initialization
@@ -28,6 +29,7 @@ public class playerAnimation : NetworkBehaviour {
         //mainCamera = Camera.main;
         //mainCamera.transform.position = head.position;
         isDead = false;
+        target = GetComponent<Target>();
     }
 
     // Update is called once per frame
@@ -44,7 +46,7 @@ public class playerAnimation : NetworkBehaviour {
             xRotation = -80f;
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftShift)||Input.GetKey(KeyCode.LeftShift))
+        if ((Input.GetKeyDown(KeyCode.LeftShift)||Input.GetKey(KeyCode.LeftShift)) && target.currentFatigue != 0.00)
         {
             sprint = true;
         }
