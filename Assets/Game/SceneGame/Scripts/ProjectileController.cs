@@ -9,6 +9,7 @@ public class ProjectileController : NetworkBehaviour {
     [SerializeField]
     bool canKill = false;
     public GameObject hitEffect;
+    public Quaternion originalRotation;
 
     bool isLive = true;
     float age;
@@ -27,6 +28,7 @@ public class ProjectileController : NetworkBehaviour {
         rb = GetComponent<Rigidbody>();
         NetworkIdentity tempTB = triangleBreak.GetComponent<NetworkIdentity>();
         killManager = GameObject.Find("KillsPanel").GetComponent<KillManager>();
+        originalRotation = transform.rotation;
         //triangleBreak = Resources.Load()
     }
 	
@@ -34,6 +36,8 @@ public class ProjectileController : NetworkBehaviour {
     [ServerCallback]
 	void Update ()
     {
+        transform.rotation = originalRotation;
+        rb.angularVelocity = Vector3.zero;
         // if the projectile has been alive too long
         age += Time.deltaTime;
         if (age > projectileLifetime)
