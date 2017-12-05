@@ -61,26 +61,6 @@ public class GunController : NetworkBehaviour {
         rb = GetComponent<Rigidbody>();
         pli = GetComponent<PlayerLobbyInfo>();
         CmdSwitch(0);
-        StartCoroutine(Delayer());
-    }
-
-    public IEnumerator Delayer()
-    {
-        float remainingTime = 1f;
-
-        while (remainingTime > 0)
-        {
-            yield return null;
-
-            remainingTime -= Time.deltaTime;
-
-        }
-
-        gun.transform.GetChild(1).gameObject.SetActive(false);
-        gun.transform.GetChild(2).gameObject.SetActive(false);
-        gun.transform.GetChild(3).gameObject.SetActive(false);
-        gun.transform.GetChild(4).gameObject.SetActive(false);
-        gun.transform.GetChild(5).gameObject.SetActive(false);
     }
 
     [Command]
