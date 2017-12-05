@@ -795,6 +795,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 114067719341474564, guid: a310030ab28fe65468020232a6c5a435,
+        type: 2}
+      propertyPath: startingHealth
+      value: 800
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a310030ab28fe65468020232a6c5a435, type: 2}
   m_IsPrefabParent: 0
@@ -1011,6 +1016,11 @@ Prefab:
     - target: {fileID: 4430595995102542, guid: 68182a6c082156d48a70881b77909140, type: 2}
       propertyPath: m_RootOrder
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114655452596010110, guid: 68182a6c082156d48a70881b77909140,
+        type: 2}
+      propertyPath: startingHealth
+      value: 800
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 68182a6c082156d48a70881b77909140, type: 2}
@@ -5285,6 +5295,8 @@ Transform:
   - {fileID: 1564605092}
   - {fileID: 1795164705}
   - {fileID: 1600285497}
+  - {fileID: 1516780318}
+  - {fileID: 1853044561}
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5845,7 +5857,7 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Type: Stone
 
-    Cost: 100'
+    Cost: 50'
 --- !u!222 &889841868
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6540,7 +6552,7 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Type: Wood
 
-    Cost: 75'
+    Cost: 50'
 --- !u!222 &944185232
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7106,7 +7118,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4766838861309058, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -103.45
+      value: -56
       objectReference: {fileID: 0}
     - target: {fileID: 4766838861309058, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
       propertyPath: m_LocalPosition.y
@@ -7114,7 +7126,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4766838861309058, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 38
       objectReference: {fileID: 0}
     - target: {fileID: 4766838861309058, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
       propertyPath: m_LocalRotation.x
@@ -7122,7 +7134,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4766838861309058, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 0.38268343
       objectReference: {fileID: 0}
     - target: {fileID: 4766838861309058, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
       propertyPath: m_LocalRotation.z
@@ -7130,7 +7142,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4766838861309058, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.92387956
       objectReference: {fileID: 0}
     - target: {fileID: 4766838861309058, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
       propertyPath: m_RootOrder
@@ -7138,7 +7150,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4766838861309058, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 45
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
@@ -12134,7 +12146,7 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Type: Stone
 
-    Cost: 50'
+    Cost: 25'
 --- !u!222 &1297499181
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -15848,7 +15860,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4766838861309058, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 103.45
+      value: 56
       objectReference: {fileID: 0}
     - target: {fileID: 4766838861309058, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
       propertyPath: m_LocalPosition.y
@@ -15856,7 +15868,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4766838861309058, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 38
       objectReference: {fileID: 0}
     - target: {fileID: 4766838861309058, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
       propertyPath: m_LocalRotation.x
@@ -15864,15 +15876,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4766838861309058, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
       propertyPath: m_LocalRotation.y
-      value: -1
+      value: 0.3826836
       objectReference: {fileID: 0}
     - target: {fileID: 4766838861309058, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4766838861309058, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
       propertyPath: m_LocalRotation.w
-      value: 0
+      value: -0.92387944
       objectReference: {fileID: 0}
     - target: {fileID: 4766838861309058, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
       propertyPath: m_RootOrder
@@ -15881,6 +15893,10 @@ Prefab:
     - target: {fileID: 1669543865733534, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
       propertyPath: m_Name
       value: AmmoHealthStash (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4766838861309058, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 315
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
@@ -16603,6 +16619,69 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1516763703}
+--- !u!1001 &1516780317
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 750176479}
+    m_Modifications:
+    - target: {fileID: 4766838861309058, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -56
+      objectReference: {fileID: 0}
+    - target: {fileID: 4766838861309058, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -9.99
+      objectReference: {fileID: 0}
+    - target: {fileID: 4766838861309058, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -38
+      objectReference: {fileID: 0}
+    - target: {fileID: 4766838861309058, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4766838861309058, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0.92387956
+      objectReference: {fileID: 0}
+    - target: {fileID: 4766838861309058, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4766838861309058, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 0.38268343
+      objectReference: {fileID: 0}
+    - target: {fileID: 4766838861309058, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
+      propertyPath: m_RootOrder
+      value: 23
+      objectReference: {fileID: 0}
+    - target: {fileID: 4766838861309058, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 135
+      objectReference: {fileID: 0}
+    - target: {fileID: 4766838861309058, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4766838861309058, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1669543865733534, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
+      propertyPath: m_Name
+      value: AmmoHealthStash (6)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
+  m_IsPrefabParent: 0
+--- !u!4 &1516780318 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4766838861309058, guid: f351b376d06d2ae4291a27adb3216bf1,
+    type: 2}
+  m_PrefabInternal: {fileID: 1516780317}
 --- !u!1 &1518670851
 GameObject:
   m_ObjectHideFlags: 0
@@ -21084,7 +21163,7 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Type: Wood
 
-    Cost: 75'
+    Cost: 50'
 --- !u!222 &1647604771
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -28710,6 +28789,69 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1829837001}
+--- !u!1001 &1853044560
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 750176479}
+    m_Modifications:
+    - target: {fileID: 4766838861309058, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 56
+      objectReference: {fileID: 0}
+    - target: {fileID: 4766838861309058, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -9.99
+      objectReference: {fileID: 0}
+    - target: {fileID: 4766838861309058, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -38
+      objectReference: {fileID: 0}
+    - target: {fileID: 4766838861309058, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4766838861309058, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0.9238796
+      objectReference: {fileID: 0}
+    - target: {fileID: 4766838861309058, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4766838861309058, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: -0.38268325
+      objectReference: {fileID: 0}
+    - target: {fileID: 4766838861309058, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
+      propertyPath: m_RootOrder
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 1669543865733534, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
+      propertyPath: m_Name
+      value: AmmoHealthStash (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4766838861309058, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 225
+      objectReference: {fileID: 0}
+    - target: {fileID: 4766838861309058, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 0.9999999
+      objectReference: {fileID: 0}
+    - target: {fileID: 4766838861309058, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
+      propertyPath: m_LocalScale.z
+      value: 0.9999999
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: f351b376d06d2ae4291a27adb3216bf1, type: 2}
+  m_IsPrefabParent: 0
+--- !u!4 &1853044561 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4766838861309058, guid: f351b376d06d2ae4291a27adb3216bf1,
+    type: 2}
+  m_PrefabInternal: {fileID: 1853044560}
 --- !u!1 &1875752830
 GameObject:
   m_ObjectHideFlags: 0

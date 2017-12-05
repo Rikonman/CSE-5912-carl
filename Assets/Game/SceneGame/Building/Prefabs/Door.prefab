@@ -340,6 +340,7 @@ MonoBehaviour:
   gunScript: {fileID: 0}
   SpawnObject: {fileID: 0}
   lookText: {fileID: 0}
+  locked: 0
 --- !u!114 &114351462938558914
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -357,7 +358,7 @@ MonoBehaviour:
   parentMountBool: 6
   isStone: 1
   woodCost: 0
-  stoneCost: 50
+  stoneCost: 25
   metalCost: 0
 --- !u!114 &114528993235499156
 MonoBehaviour:

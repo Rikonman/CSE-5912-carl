@@ -327,7 +327,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   radius: 10
   captureTime: 10
-  resourcePerSecond: 3
+  resourcePerSecond: 2
   ownership: 0
   resourceTimer: 0
   currentOwner: 

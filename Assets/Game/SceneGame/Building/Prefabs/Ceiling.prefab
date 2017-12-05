@@ -151,11 +151,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   team: 0
-  id: 7
-  parentMountPoint: 6
+  id: 3
+  parentMountPoint: 2
   parentMountBool: 2
   isStone: 0
-  woodCost: 75
+  woodCost: 50
   stoneCost: 0
   metalCost: 0
 --- !u!114 &114628479760992848
@@ -184,6 +184,7 @@ MonoBehaviour:
   gunScript: {fileID: 0}
   SpawnObject: {fileID: 0}
   lookText: {fileID: 0}
+  locked: 0
 --- !u!114 &114688317901816470
 MonoBehaviour:
   m_ObjectHideFlags: 1
