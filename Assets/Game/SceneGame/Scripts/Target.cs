@@ -39,6 +39,7 @@ public class Target : NetworkBehaviour {
     public GunController gunScript;
     public GameObject SpawnObject;
     public GameObject lookText;
+    public bool locked;
 
     public delegate void OnHealthChanged(float prevValue, float newValue);
     public OnHealthChanged onHealthChanged;
@@ -184,8 +185,9 @@ public class Target : NetworkBehaviour {
         LockPlayer(locked);
     }
 
-    public void LockPlayer(bool locked)
+    public void LockPlayer(bool isLocked)
     {
+        locked = isLocked;
         GunController gc = gameObject.GetComponent<GunController>();
         if (gc != null)
         {

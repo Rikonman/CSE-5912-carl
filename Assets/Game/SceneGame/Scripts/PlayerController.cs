@@ -92,6 +92,7 @@ public class PlayerController : NetworkBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        bool playWalk = false;
         if (!locked)
         {
             xRotation -= Input.GetAxis("Mouse Y") * lookSensitivity;
@@ -133,21 +134,8 @@ public class PlayerController : NetworkBehaviour
             Debug.Log(rb.rotation);
             Debug.Log(direction);
 
-
-            if (direction.magnitude > 0)
-            {
-                if (!target.walking.isPlaying)
-                {
-                    target.CmdPlayWalkingSound();
-                }
-            }
-            else
-            {
-                if (target.walking.isPlaying)
-                {
-                    target.CmdStopWalkingSound();
-                }
-            }
+            playWalk = direction.magnitude > 0;
+            
             Ray jumpRay = new Ray(transform.position, -Vector3.up);
             RaycastHit jumpRayhit;
 
@@ -175,6 +163,28 @@ public class PlayerController : NetworkBehaviour
                 isSniping = !isSniping;
             }
 
+        }
+        else
+        {
+            if (target != null && target.currentFatigue < 100)
+            {
+                target.CmdChangeFatigue(Time.deltaTime * 25);
+            }
+            rb.angularVelocity = new Vector3(0f, 0f, 0f);
+        }
+        if (playWalk)
+        {
+            if (!target.walking.isPlaying)
+            {
+                target.CmdPlayWalkingSound();
+            }
+        }
+        else
+        {
+            if (target.walking.isPlaying)
+            {
+                target.CmdStopWalkingSound();
+            }
         }
     }
 

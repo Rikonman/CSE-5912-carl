@@ -75,11 +75,11 @@ public class RoundManager : NetworkBehaviour
             int blueCounter = 0;
             foreach (GameObject tempPlayer in tempPlayers)
             {
-                if (!redLives && tempPlayer.GetComponent<PlayerTeam>().team == 0 && tempPlayer.GetComponent<BuildScript>().locked == false)
+                if (!redLives && tempPlayer.GetComponent<PlayerTeam>().team == 0 && tempPlayer.GetComponent<Target>().locked == false)
                 {
                     redLives = true;
                 }
-                else if (!blueLives && tempPlayer.GetComponent<PlayerTeam>().team == 1 && tempPlayer.GetComponent<BuildScript>().locked == false)
+                else if (!blueLives && tempPlayer.GetComponent<PlayerTeam>().team == 1 && tempPlayer.GetComponent<Target>().locked == false)
                 {
                     blueLives = true;
                 }

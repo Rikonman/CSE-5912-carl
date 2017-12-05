@@ -96,14 +96,20 @@ public class HostConsole : NetworkBehaviour
                 SetNotificationCenterBackVisible(open);
                 if (open)
                 {
-                    player.GetComponent<PlayerController>().enabled = false;
-                    player.GetComponent<BuildScript>().enabled = false;
+                    player.GetComponent<PlayerController>().locked = true;
+                    player.GetComponent<BuildScript>().locked = true;
+                    player.GetComponent<EManager>().locked = true;
+                    player.GetComponent<BuyManager>().locked = true;
+                    player.GetComponent<GunController>().locked = true;
                     input.ActivateInputField();
                 }
                 else
                 {
-                    player.GetComponent<PlayerController>().enabled = true;
-                    player.GetComponent<BuildScript>().enabled = true;
+                    player.GetComponent<PlayerController>().locked = false;
+                    player.GetComponent<BuildScript>().locked = false;
+                    player.GetComponent<EManager>().locked = false;
+                    player.GetComponent<BuyManager>().locked = false;
+                    player.GetComponent<GunController>().locked = false;
                     input.text = "";
                 }
             }
