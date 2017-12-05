@@ -131,8 +131,8 @@ public class PlayerController : NetworkBehaviour
 
             Vector3 direction = (transform.right * Input.GetAxis("Horizontal") * Time.deltaTime * speed) + (transform.forward * Input.GetAxis("Vertical") * Time.deltaTime * speed);
             rb.MovePosition(rb.position + direction); 
-            Debug.Log(rb.rotation);
-            Debug.Log(direction);
+            //Debug.Log(rb.rotation);
+            //Debug.Log(direction);
 
             playWalk = direction.magnitude > 0;
             

@@ -28368,6 +28368,7 @@ MonoBehaviour:
   endedOnce: 0
   lookText: {fileID: 1516763703}
   players: []
+  playerNames: []
 --- !u!114 &1786984861
 MonoBehaviour:
   m_ObjectHideFlags: 0
