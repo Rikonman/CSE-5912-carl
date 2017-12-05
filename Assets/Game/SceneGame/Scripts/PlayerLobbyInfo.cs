@@ -12,14 +12,21 @@ public class PlayerLobbyInfo : NetworkBehaviour {
     //public Text playerNameIndicator;
 
     MeshRenderer[] rends;
+    SkinnedMeshRenderer[] skinRends;
 
 	// Use this for initialization
 	void Start ()
     {
+        // 
         rends = GetComponentsInChildren<MeshRenderer>();
         for (int i = 0; i < rends.Length; i++)
         {
             rends[i].material.color = playerColor;
+        }
+        skinRends = GetComponentsInChildren<SkinnedMeshRenderer>();
+        for (int i = 0; i < skinRends.Length; i++)
+        {
+            skinRends[i].material.color = playerColor;
         }
         //playerNameIndicator.text = playerName;
         Debug.Log("Player Color: " + playerColor.ToString());
@@ -31,6 +38,10 @@ public class PlayerLobbyInfo : NetworkBehaviour {
         for (int i = 0; i < rends.Length; i++)
         {
             rends[i].material.color = Color.clear;
+        }
+        for (int i = 0; i < skinRends.Length; i++)
+        {
+            skinRends[i].material.color = Color.clear;
         }
     }
 }
