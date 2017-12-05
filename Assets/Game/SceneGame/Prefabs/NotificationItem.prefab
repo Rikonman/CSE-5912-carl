@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 114887083528543164}
   - component: {fileID: 114842802242071390}
   - component: {fileID: 114014420875030744}
+  - component: {fileID: 114277586179425752}
   m_Layer: 5
   m_Name: NotificationItem
   m_TagString: Untagged
@@ -40,6 +41,7 @@ GameObject:
   - component: {fileID: 224204603708774190}
   - component: {fileID: 222280202224410844}
   - component: {fileID: 114979911431294280}
+  - component: {fileID: 114568314645178378}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -59,6 +61,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   notificationMsg: {fileID: 114979911431294280}
+--- !u!114 &114277586179425752
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1138049204824272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9afeda34b7706d44890d1e6febd2782d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114568314645178378
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1453176506452106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1741964061, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
 --- !u!114 &114842802242071390
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -126,20 +152,18 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 20
+    m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 2
     m_MaxSize: 40
-    m_Alignment: 3
+    m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: '<color=#FF0000>Player 1</color> killed <color=#0099FF>Player 2</color>
-
-'
+  m_Text: 
 --- !u!222 &222280202224410844
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -166,10 +190,10 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 5, y: 0}
-  m_SizeDelta: {x: -10, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 520, y: 0}
+  m_Pivot: {x: 0, y: 0}
 --- !u!224 &224477035445042852
 RectTransform:
   m_ObjectHideFlags: 1
@@ -186,6 +210,6 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: -56.3}
-  m_SizeDelta: {x: 520, y: 40}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 520, y: 30}
+  m_Pivot: {x: 0, y: 0}
