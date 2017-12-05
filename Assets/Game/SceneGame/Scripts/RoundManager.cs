@@ -28,6 +28,9 @@ public class RoundManager : NetworkBehaviour
     public GameObject lookText;
     GameObject audioObject;
     MusicScript music;
+    NotificationManager nm;
+    public GameObject[] players;
+    public string[] playerNames;
     // Use this for initialization
     void Start () {
         endedOnce = false;
@@ -56,6 +59,8 @@ public class RoundManager : NetworkBehaviour
         }
 
         emperor = GameObject.FindGameObjectWithTag("Emperor").GetComponent<EmperorController>();
+        nm = GameObject.Find("UINotifications").GetComponent<NotificationManager>();
+        
 
     }
 
@@ -104,7 +109,31 @@ public class RoundManager : NetworkBehaviour
                 CmdRestartRound();
                 RpcChangeSongState(MusicScript.SongStates.Build);
             }
-            
+            if (players != null)
+            {
+                if (players.Length != tempPlayers.Length)
+                {
+                    int oldCounter = 0;
+                    foreach (GameObject tempPriorPlayer in players)
+                    {
+                        if (tempPriorPlayer == null)
+                        {
+                            RpcSendMessage("Player " + playerNames[oldCounter] + " disconnected.");
+                        }
+                        oldCounter++;
+                    }
+                    
+                }
+            }
+            players = tempPlayers;
+            playerNames = new string[tempPlayers.Length];
+            int playerCounter = 0;
+            foreach (GameObject tempPlayer in players)
+            {
+                playerNames[playerCounter] = tempPlayer.GetComponent<PlayerLobbyInfo>().playerName;
+                playerCounter++;
+
+            }
         }
     }
 
@@ -121,6 +150,12 @@ public class RoundManager : NetworkBehaviour
         UIRoundDetailsPanel.SetActive(true);
         //txtRoundManager.gameObject.SetActive(true);
         endedOnce = true;
+    }
+
+    [ClientRpc]
+    public void RpcSendMessage(string message)
+    {
+        nm.NewNotification(message, true);
     }
 
     [ClientRpc]

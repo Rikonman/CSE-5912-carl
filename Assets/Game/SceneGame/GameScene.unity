@@ -795,11 +795,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 5
       objectReference: {fileID: 0}
-    - target: {fileID: 114067719341474564, guid: a310030ab28fe65468020232a6c5a435,
-        type: 2}
-      propertyPath: startingHealth
-      value: 800
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a310030ab28fe65468020232a6c5a435, type: 2}
   m_IsPrefabParent: 0
@@ -1016,11 +1011,6 @@ Prefab:
     - target: {fileID: 4430595995102542, guid: 68182a6c082156d48a70881b77909140, type: 2}
       propertyPath: m_RootOrder
       value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 114655452596010110, guid: 68182a6c082156d48a70881b77909140,
-        type: 2}
-      propertyPath: startingHealth
-      value: 800
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 68182a6c082156d48a70881b77909140, type: 2}
@@ -28377,6 +28367,7 @@ MonoBehaviour:
   emperor: {fileID: 0}
   endedOnce: 0
   lookText: {fileID: 1516763703}
+  players: []
 --- !u!114 &1786984861
 MonoBehaviour:
   m_ObjectHideFlags: 0
