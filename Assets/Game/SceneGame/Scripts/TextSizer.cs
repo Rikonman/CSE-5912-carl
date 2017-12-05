@@ -12,7 +12,7 @@ public class TextSizer : MonoBehaviour {
     {
         RectTransform textRect = transform.GetChild(0).gameObject.GetComponent<RectTransform>();
         Text text = transform.GetChild(0).gameObject.GetComponent<Text>();
-        if (textRect != null && text != null && textRect.sizeDelta.y >= 30 && text.text != "")
+        if (textRect != null && text != null && textRect.sizeDelta.y >= 20 && text.text != "")
         {
             gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(520f, textRect.sizeDelta.y);
             Destroy(this);
