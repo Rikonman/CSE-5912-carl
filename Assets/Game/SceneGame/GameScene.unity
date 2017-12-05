@@ -4055,6 +4055,7 @@ MonoBehaviour:
   gunScript: {fileID: 0}
   SpawnObject: {fileID: 0}
   lookText: {fileID: 0}
+  locked: 0
 --- !u!23 &628262659
 MeshRenderer:
   m_ObjectHideFlags: 0

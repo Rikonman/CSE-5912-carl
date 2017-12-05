@@ -162,7 +162,10 @@ public class PlayerController : NetworkBehaviour
             {
                 isSniping = !isSniping;
             }
-
+            if (gc != null && !gc.sniper && isSniping)
+            {
+                isSniping = !isSniping;
+            }
         }
         else
         {

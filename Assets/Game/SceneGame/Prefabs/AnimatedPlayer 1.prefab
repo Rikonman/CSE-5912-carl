@@ -291,7 +291,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1140429605365456
 GameObject:
   m_ObjectHideFlags: 1
@@ -456,7 +456,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1213894173121528
 GameObject:
   m_ObjectHideFlags: 1
@@ -549,7 +549,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1296452893502714
 GameObject:
   m_ObjectHideFlags: 1
@@ -808,7 +808,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1443194541426586
 GameObject:
   m_ObjectHideFlags: 1
@@ -1537,7 +1537,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1837163354113804
 GameObject:
   m_ObjectHideFlags: 1
@@ -5797,6 +5797,7 @@ MonoBehaviour:
   gunScript: {fileID: 0}
   SpawnObject: {fileID: 0}
   lookText: {fileID: 0}
+  locked: 0
 --- !u!114 &114344024519532110
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5848,6 +5849,7 @@ MonoBehaviour:
   tpCameraDistance: 6
   tpCameraY: 7
   isFirstPerson: 1
+  speed: 0
   mainCamera: {fileID: 1649324387332556}
   isSniping: 0
   gc: {fileID: 0}
@@ -6034,6 +6036,7 @@ MonoBehaviour:
   lookSensitivity: 5
   head: {fileID: 0}
   anim: {fileID: 0}
+  target: {fileID: 0}
 --- !u!114 &114654657558317780
 MonoBehaviour:
   m_ObjectHideFlags: 1
