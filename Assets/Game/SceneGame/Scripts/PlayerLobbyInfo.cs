@@ -18,8 +18,8 @@ public class PlayerLobbyInfo : NetworkBehaviour {
 	void Start ()
     {
         // 
-        /*rends = GetComponentsInChildren<MeshRenderer>();
-        for (int i = 0; i < rends.Length; i++)
+        rends = GetComponentsInChildren<MeshRenderer>();
+        /*for (int i = 0; i < rends.Length; i++)
         {
             rends[i].material.color = playerColor;
         }*/
