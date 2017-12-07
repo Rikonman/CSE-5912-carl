@@ -112,7 +112,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_TransformSyncMode: 3
-  m_SendInterval: 0.033333335
+  m_SendInterval: 0.1
   m_SyncRotationAxis: 0
   m_RotationSyncCompression: 2
   m_SyncSpin: 0
@@ -167,6 +167,7 @@ MonoBehaviour:
   projectileLifetime: 2
   canKill: 1
   hitEffect: {fileID: 1065484811972784, guid: bea493569da8b1d4c9087b08c090ae4b, type: 2}
+  originalRotation: {x: 0, y: 0, z: 0, w: 0}
   firingTeam: 0
   firingPlayer: 0
   firingGun: 0

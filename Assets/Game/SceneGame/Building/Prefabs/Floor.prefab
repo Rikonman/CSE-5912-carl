@@ -109,7 +109,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_TransformSyncMode: 1
-  m_SendInterval: 0.055555556
+  m_SendInterval: 0.5
   m_SyncRotationAxis: 7
   m_RotationSyncCompression: 0
   m_SyncSpin: 0
@@ -181,10 +181,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 324c45d60abaaae49a9bf6082f223d4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  team: 0
-  id: 3
-  parentMountPoint: 0
-  parentMountBool: 10
+  team: 1
+  id: 48
+  parentMountPoint: -1
+  parentMountBool: -1
   isStone: 0
   woodCost: 50
   stoneCost: 0
