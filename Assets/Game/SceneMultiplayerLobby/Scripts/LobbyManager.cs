@@ -87,6 +87,7 @@ namespace Prototype.NetworkLobby
             redSpawns = new List<Vector3>();
             blueSpawns = new List<Vector3>();
             var config = new ConnectionConfig();
+            config.MaxSentMessageQueueSize = 200;
             config.AddChannel(QosType.ReliableSequenced);
             config.AddChannel(QosType.Unreliable);
             NetworkServer.Configure(config, 12);
