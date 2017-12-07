@@ -479,7 +479,6 @@ public class BuildScript : NetworkBehaviour
             CmdSpawnBuildingPart(objects[currentObject].ToString(), currentObject, poPosition,
                 poRotation, mountIndex, team.team, snapMountIndex, snapBoolIndex);
             BuildIdentifier bid = objects[currentObject].GetComponent<BuildIdentifier>();
-            ResourceBank rba = team.baseObject.GetComponent<ResourceBank>();
             CmdChangeResources(-bid.woodCost, -bid.stoneCost, -bid.metalCost, team.team);
             previewObject = null;
             meshRend = null;
