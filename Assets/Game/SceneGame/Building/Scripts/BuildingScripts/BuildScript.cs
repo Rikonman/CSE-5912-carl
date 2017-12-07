@@ -480,12 +480,27 @@ public class BuildScript : NetworkBehaviour
                 poRotation, mountIndex, team.team, snapMountIndex, snapBoolIndex);
             BuildIdentifier bid = objects[currentObject].GetComponent<BuildIdentifier>();
             ResourceBank rba = team.baseObject.GetComponent<ResourceBank>();
-            rba.Add("Wood", -bid.woodCost);
-            rba.Add("Stone", -bid.stoneCost);
-            rba.Add("Metal", -bid.metalCost);
+            CmdChangeResources(-bid.woodCost, -bid.stoneCost, -bid.metalCost, team.team);
             previewObject = null;
             meshRend = null;
         }
+    }
+
+    [Command]
+    public void CmdChangeResources(int woodCost, int stoneCost, int metalCost, int team)
+    {
+        ResourceBank rba;
+        if (team == 0)
+        {
+            rba = GameObject.Find("Base1Center").GetComponent<ResourceBank>();
+        }
+        else
+        {
+            rba = GameObject.Find("Base2Center").GetComponent<ResourceBank>();
+        }
+        rba.Add("Wood", woodCost);
+        rba.Add("Stone", stoneCost);
+        rba.Add("Metal", metalCost);
     }
 
     void SaveMaterials()
