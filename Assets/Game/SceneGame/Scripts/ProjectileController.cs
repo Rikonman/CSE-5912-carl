@@ -33,7 +33,6 @@ public class ProjectileController : NetworkBehaviour {
     }
 	
 	// Projectiles are updated by the server
-    [ServerCallback]
 	void Update ()
     {
         transform.rotation = originalRotation;
@@ -43,7 +42,7 @@ public class ProjectileController : NetworkBehaviour {
         if (age > projectileLifetime)
         {
             // destroy it on the network
-            NetworkServer.Destroy(gameObject);
+            Destroy(gameObject);
         }
 	}
     
