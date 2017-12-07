@@ -87,6 +87,8 @@ namespace Prototype.NetworkLobby
             redSpawns = new List<Vector3>();
             blueSpawns = new List<Vector3>();
             var config = new ConnectionConfig();
+            config.NetworkDropThreshold = 45;
+            config.OverflowDropThreshold = 45;
             config.MaxSentMessageQueueSize = 200;
             config.AddChannel(QosType.ReliableSequenced);
             config.AddChannel(QosType.Unreliable);
