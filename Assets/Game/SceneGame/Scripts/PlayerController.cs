@@ -208,23 +208,27 @@ public class PlayerController : NetworkBehaviour
         {
             //fpCameraOffset = new Vector3(fpCameraX, fpCameraY, fpCameraZ);
             //mainCamera.Translate(fpCameraOffset);
-            if (isSniping && camera.fieldOfView == 70)
+            if (camera != null)
             {
-                foreach (GameObject tempSnipe in snipeObjects)
+                if (isSniping && camera.fieldOfView == 70)
                 {
+                    foreach (GameObject tempSnipe in snipeObjects)
+                    {
 
-                    tempSnipe.SetActive(false);
+                        tempSnipe.SetActive(false);
+                    }
+                    camera.fieldOfView = 20;
                 }
-                camera.fieldOfView = 20;
-            }
-            else if (!isSniping && camera.fieldOfView == 20)
-            {
-                foreach (GameObject tempSnipe in snipeObjects)
+                else if (!isSniping && camera.fieldOfView == 20)
                 {
-                    tempSnipe.SetActive(true);
+                    foreach (GameObject tempSnipe in snipeObjects)
+                    {
+                        tempSnipe.SetActive(true);
+                    }
+                    camera.fieldOfView = 70;
                 }
-                camera.fieldOfView = 70;
             }
+            
             //mainCamera.transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
         }
         else
