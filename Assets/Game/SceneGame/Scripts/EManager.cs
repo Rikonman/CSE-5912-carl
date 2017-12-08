@@ -75,7 +75,11 @@ public class EManager : NetworkBehaviour {
                         lookText.enabled = true;
                         isLooking = true;
                     }
-                    
+                    else
+                    {
+                        lookText.enabled = false;
+                        CanAfford = false;
+                    }
                 }
                 if (Input.GetKey(KeyCode.E) && CanAfford)
                 {
