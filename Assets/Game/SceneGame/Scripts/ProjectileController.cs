@@ -217,15 +217,19 @@ public class ProjectileController : NetworkBehaviour {
     {
 
         GameObject triangleBreak = ClientScene.FindLocalObject(triangleBreakID);
-        GameObject instance = (GameObject)Instantiate(triangleBreak, position, rotation);
-        TriangleExplosion tempTriangleExplosion = instance.GetComponent<TriangleExplosion>();
-        tempTriangleExplosion.verts = verts;
-        tempTriangleExplosion.normals = normals;
-        tempTriangleExplosion.uvs = uvs;
+        if (triangleBreak != null)
+        {
+            GameObject instance = (GameObject)Instantiate(triangleBreak, position, rotation);
+            TriangleExplosion tempTriangleExplosion = instance.GetComponent<TriangleExplosion>();
+            tempTriangleExplosion.verts = verts;
+            tempTriangleExplosion.normals = normals;
+            tempTriangleExplosion.uvs = uvs;
 
-        tempTriangleExplosion.indices = indices;
-        tempTriangleExplosion.isStone = isStone;
-        tempTriangleExplosion.isCore = isCore;
-        StartCoroutine(instance.GetComponent<TriangleExplosion>().SplitMesh(true));
+            tempTriangleExplosion.indices = indices;
+            tempTriangleExplosion.isStone = isStone;
+            tempTriangleExplosion.isCore = isCore;
+            StartCoroutine(instance.GetComponent<TriangleExplosion>().SplitMesh(true));
+        }
+        
     }
 }
