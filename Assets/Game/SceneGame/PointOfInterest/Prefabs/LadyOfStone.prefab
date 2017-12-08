@@ -42,7 +42,6 @@ GameObject:
   - component: {fileID: 23501954808016204}
   - component: {fileID: 65671832895524342}
   - component: {fileID: 114570606667872132}
-  - component: {fileID: 114483450188259920}
   m_Layer: 0
   m_Name: StonePickUp (1)
   m_TagString: Pick Up (Stone)
@@ -77,7 +76,6 @@ GameObject:
   - component: {fileID: 23970181798027678}
   - component: {fileID: 65207918711745352}
   - component: {fileID: 114568335797244016}
-  - component: {fileID: 114395131263919728}
   m_Layer: 0
   m_Name: StonePickUp (3)
   m_TagString: Pick Up (Stone)
@@ -97,7 +95,6 @@ GameObject:
   - component: {fileID: 23076920867553684}
   - component: {fileID: 65994524049589156}
   - component: {fileID: 114357412349476584}
-  - component: {fileID: 114395026163830766}
   m_Layer: 0
   m_Name: StonePickUp (2)
   m_TagString: Pick Up (Stone)
@@ -147,7 +144,6 @@ GameObject:
   - component: {fileID: 23084892996599914}
   - component: {fileID: 65049268151599866}
   - component: {fileID: 114264522924544994}
-  - component: {fileID: 114007691050945498}
   m_Layer: 0
   m_Name: StonePickUp
   m_TagString: Pick Up (Stone)
@@ -593,38 +589,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.68614715, y: 0.32582545, z: 0.47329885}
   m_Center: {x: 0, y: 0.1629127, z: -0.000000014901161}
---- !u!114 &114007691050945498
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1872829755998658}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SceneId:
-    m_Value: 0
-  m_AssetId:
-    i0: 37
-    i1: 74
-    i2: 52
-    i3: 203
-    i4: 48
-    i5: 217
-    i6: 55
-    i7: 52
-    i8: 9
-    i9: 222
-    i10: 20
-    i11: 45
-    i12: 8
-    i13: 10
-    i14: 115
-    i15: 85
-  m_ServerOnly: 0
-  m_LocalPlayerAuthority: 0
 --- !u!114 &114264522924544994
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -653,102 +617,6 @@ MonoBehaviour:
   speed: 20
   respawnTime: 20
   amount: 100
---- !u!114 &114395026163830766
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1536443827486064}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SceneId:
-    m_Value: 0
-  m_AssetId:
-    i0: 37
-    i1: 74
-    i2: 52
-    i3: 203
-    i4: 48
-    i5: 217
-    i6: 55
-    i7: 52
-    i8: 9
-    i9: 222
-    i10: 20
-    i11: 45
-    i12: 8
-    i13: 10
-    i14: 115
-    i15: 85
-  m_ServerOnly: 0
-  m_LocalPlayerAuthority: 0
---- !u!114 &114395131263919728
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1448967472348214}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SceneId:
-    m_Value: 0
-  m_AssetId:
-    i0: 37
-    i1: 74
-    i2: 52
-    i3: 203
-    i4: 48
-    i5: 217
-    i6: 55
-    i7: 52
-    i8: 9
-    i9: 222
-    i10: 20
-    i11: 45
-    i12: 8
-    i13: 10
-    i14: 115
-    i15: 85
-  m_ServerOnly: 0
-  m_LocalPlayerAuthority: 0
---- !u!114 &114483450188259920
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1271812279325410}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SceneId:
-    m_Value: 0
-  m_AssetId:
-    i0: 37
-    i1: 74
-    i2: 52
-    i3: 203
-    i4: 48
-    i5: 217
-    i6: 55
-    i7: 52
-    i8: 9
-    i9: 222
-    i10: 20
-    i11: 45
-    i12: 8
-    i13: 10
-    i14: 115
-    i15: 85
-  m_ServerOnly: 0
-  m_LocalPlayerAuthority: 0
 --- !u!114 &114568335797244016
 MonoBehaviour:
   m_ObjectHideFlags: 1

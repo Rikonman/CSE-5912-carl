@@ -42,7 +42,6 @@ GameObject:
   - component: {fileID: 23452577045973634}
   - component: {fileID: 65048447382900798}
   - component: {fileID: 114623025070268822}
-  - component: {fileID: 114967570182660080}
   m_Layer: 0
   m_Name: WoodPickUp
   m_TagString: Pick Up (Wood)
@@ -77,7 +76,6 @@ GameObject:
   - component: {fileID: 23114417843967986}
   - component: {fileID: 65223360815669170}
   - component: {fileID: 114966543361030304}
-  - component: {fileID: 114502300748037994}
   m_Layer: 0
   m_Name: WoodPickUp (3)
   m_TagString: Pick Up (Wood)
@@ -97,7 +95,6 @@ GameObject:
   - component: {fileID: 23897494882704376}
   - component: {fileID: 65106930021106966}
   - component: {fileID: 114333997787367156}
-  - component: {fileID: 114201560546107534}
   m_Layer: 0
   m_Name: WoodPickUp (2)
   m_TagString: Pick Up (Wood)
@@ -132,7 +129,6 @@ GameObject:
   - component: {fileID: 23662795444695380}
   - component: {fileID: 65664356785915828}
   - component: {fileID: 114783549219242672}
-  - component: {fileID: 114667660105672366}
   m_Layer: 0
   m_Name: WoodPickUp (1)
   m_TagString: Pick Up (Wood)
@@ -593,38 +589,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2.5739453, y: 0.87477124, z: 0.78919065}
   m_Center: {x: 0, y: 0.43738562, z: -0.0000006109476}
---- !u!114 &114201560546107534
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1389652758835494}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SceneId:
-    m_Value: 0
-  m_AssetId:
-    i0: 106
-    i1: 55
-    i2: 196
-    i3: 199
-    i4: 5
-    i5: 146
-    i6: 169
-    i7: 52
-    i8: 219
-    i9: 128
-    i10: 106
-    i11: 186
-    i12: 95
-    i13: 235
-    i14: 176
-    i15: 81
-  m_ServerOnly: 0
-  m_LocalPlayerAuthority: 0
 --- !u!114 &114333997787367156
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -639,38 +603,6 @@ MonoBehaviour:
   speed: 20
   respawnTime: 20
   amount: 100
---- !u!114 &114502300748037994
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1201069403184410}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SceneId:
-    m_Value: 0
-  m_AssetId:
-    i0: 106
-    i1: 55
-    i2: 196
-    i3: 199
-    i4: 5
-    i5: 146
-    i6: 169
-    i7: 52
-    i8: 219
-    i9: 128
-    i10: 106
-    i11: 186
-    i12: 95
-    i13: 235
-    i14: 176
-    i15: 81
-  m_ServerOnly: 0
-  m_LocalPlayerAuthority: 0
 --- !u!114 &114623025070268822
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -685,38 +617,6 @@ MonoBehaviour:
   speed: 20
   respawnTime: 20
   amount: 100
---- !u!114 &114667660105672366
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1548451769499646}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SceneId:
-    m_Value: 0
-  m_AssetId:
-    i0: 106
-    i1: 55
-    i2: 196
-    i3: 199
-    i4: 5
-    i5: 146
-    i6: 169
-    i7: 52
-    i8: 219
-    i9: 128
-    i10: 106
-    i11: 186
-    i12: 95
-    i13: 235
-    i14: 176
-    i15: 81
-  m_ServerOnly: 0
-  m_LocalPlayerAuthority: 0
 --- !u!114 &114783549219242672
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -745,38 +645,6 @@ MonoBehaviour:
   speed: 20
   respawnTime: 20
   amount: 100
---- !u!114 &114967570182660080
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1015514416846886}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SceneId:
-    m_Value: 0
-  m_AssetId:
-    i0: 106
-    i1: 55
-    i2: 196
-    i3: 199
-    i4: 5
-    i5: 146
-    i6: 169
-    i7: 52
-    i8: 219
-    i9: 128
-    i10: 106
-    i11: 186
-    i12: 95
-    i13: 235
-    i14: 176
-    i15: 81
-  m_ServerOnly: 0
-  m_LocalPlayerAuthority: 0
 --- !u!205 &205553495657017932
 LODGroup:
   m_ObjectHideFlags: 1
