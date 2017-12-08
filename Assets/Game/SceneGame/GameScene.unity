@@ -28350,7 +28350,7 @@ MonoBehaviour:
   UIRoundDetailsPanel: {fileID: 1746743701}
   txtRoundManager: {fileID: 799389423}
   goBarriers: {fileID: 1236260178}
-  buildRoundSeconds: 10
+  buildRoundSeconds: 180
   buildRoundSecondsLeft: 0
   RedSpawnCore: {fileID: 1693145307769742, guid: a310030ab28fe65468020232a6c5a435,
     type: 2}
