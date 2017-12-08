@@ -53,7 +53,6 @@ public class PlayerController : NetworkBehaviour
     public Camera camera;
     public GameObject[] snipeObjects;
     public Target target;
-    public float jumpCooldown;
 
     private Rigidbody rb;
     //private GameObject clientHUD;
@@ -62,7 +61,6 @@ public class PlayerController : NetworkBehaviour
     void Start()
     {
         locked = false;
-        jumpCooldown = 0f;
         // if this player is not the local player...
         if (!isLocalPlayer)
         {
@@ -138,25 +136,17 @@ public class PlayerController : NetworkBehaviour
 
             playWalk = direction.magnitude > 0;
             
-            if (jumpCooldown > 0f)
-            {
-                jumpCooldown += Time.deltaTime;
-                if (jumpCooldown >= 1f)
-                {
-                    jumpCooldown = 0f;
-                }
-            }
             Ray jumpRay = new Ray(transform.position, -Vector3.up);
             RaycastHit jumpRayhit;
 
             Vector3 jumpForce = Vector3.zero;
             if (Physics.Raycast(jumpRay, out jumpRayhit, 0.5f))
             {
-                if (Input.GetButtonDown("Jump") && jumpCooldown == 0f)
+                if (Input.GetButtonDown("Jump"))
                 {
                     jumpForce = Vector3.up * jumpSensitivity;
                     rb.AddForce(jumpForce);
-                    jumpCooldown += Time.deltaTime;
+
                     //rb.AddForce(jumpForce, ForceMode.Acceleration);
                 }
             }
@@ -166,6 +156,7 @@ public class PlayerController : NetworkBehaviour
                 {
                     rb.AddForce(Physics.gravity, ForceMode.Acceleration);
                 }
+                
             }
             if (gc != null && gc.sniper && Input.GetButtonUp("Fire2"))
             {
