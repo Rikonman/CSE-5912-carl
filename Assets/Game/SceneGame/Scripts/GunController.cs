@@ -41,6 +41,7 @@ public class GunController : NetworkBehaviour {
     public bool locked;
     Rigidbody rb;
     public PlayerLobbyInfo pli;
+    public Target playerTarget;
 
     public AudioSource pistolShot;
     public AudioSource assaultOneShot;
@@ -60,6 +61,7 @@ public class GunController : NetworkBehaviour {
         team = GetComponent<PlayerTeam>();
         rb = GetComponent<Rigidbody>();
         pli = GetComponent<PlayerLobbyInfo>();
+        playerTarget = GetComponent<Target>();
         CmdSwitch(0);
     }
 
@@ -120,12 +122,12 @@ public class GunController : NetworkBehaviour {
         }
         if (!locked)
         {
-            if (((automatic || minigun) && Input.GetButton("Fire1") || !(automatic || minigun) && Input.GetButtonDown("Fire1")) && Time.time >= fireDelay)
+            if (((automatic || minigun) && Input.GetButton("Fire1") || !(automatic || minigun) && Input.GetButtonDown("Fire1")) && Time.time >= fireDelay && !playerTarget._isDead)
             {
                 fireDelay = Time.time + fireRate;
                 Debug.Log(fireDelay - Time.time);
                 Shoot();
-                if (minigun)
+                if (minigun && currentAmmoInMag > 0)
                 {
                     rb.AddForce(-fpsCamera.transform.forward * 35, ForceMode.Impulse);
                     if (!minigunShot.isPlaying)
