@@ -35,6 +35,7 @@ public class BuildScript : NetworkBehaviour
     public BuyManager buyManager;
     int snapMountIndex = -1;
     int snapBoolIndex = -1;
+    int previousObject = 0;
     public bool locked;
 
     void Start()
@@ -92,22 +93,27 @@ public class BuildScript : NetworkBehaviour
                 if (Input.GetKeyDown(KeyCode.Alpha1))
                 {
                     SetpreviewObjectObject(0);
+                    previousObject = 0;
                 }
                 if (Input.GetKeyDown(KeyCode.Alpha2))
                 {
                     SetpreviewObjectObject(1);
+                    previousObject = 1;
                 }
                 if (Input.GetKeyDown(KeyCode.Alpha3))
                 {
                     SetpreviewObjectObject(2);
+                    previousObject = 2;
                 }
                 if (Input.GetKeyDown(KeyCode.Alpha4))
                 {
                     SetpreviewObjectObject(3);
+                    previousObject = 3;
                 }
                 if (Input.GetKeyDown(KeyCode.Alpha5))
                 {
                     SetpreviewObjectObject(4);
+                    previousObject = 4;
                 }
                 if (previewObject != null)
                 {
@@ -116,6 +122,8 @@ public class BuildScript : NetworkBehaviour
                     if (Input.GetMouseButtonDown(0))
                     {
                         PlaceObject();
+                        SetpreviewObjectObject(previousObject);
+
                     }
                 }
             }
