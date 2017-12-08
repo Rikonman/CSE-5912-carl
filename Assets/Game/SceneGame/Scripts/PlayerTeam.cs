@@ -151,51 +151,56 @@ public class PlayerTeam : NetworkBehaviour {
             {
                 PickUpController TempController = other.gameObject.GetComponent<PickUpController>();
                 CmdAddToResources("Stone", TempController.amount, team);
-                TempController.StartRespawnTimer();
-                other.gameObject.GetComponent<MeshRenderer>().enabled = false;
-                other.gameObject.GetComponent<BoxCollider>().enabled = false;
+                CmdDisablePickup(other.gameObject.GetComponent<NetworkIdentity>().netId);
                 nm.NewNotification("Picked up <color=#00FF00>" + TempController.amount.ToString() + "</color> stone", false);
             }
             else if (other.gameObject.CompareTag("Pick Up (Wood)"))
             {
                 PickUpController TempController = other.gameObject.GetComponent<PickUpController>();
                 CmdAddToResources("Wood", TempController.amount, team);
-                TempController.StartRespawnTimer();
-                other.gameObject.GetComponent<MeshRenderer>().enabled = false;
-                other.gameObject.GetComponent<BoxCollider>().enabled = false;
+                CmdDisablePickup(other.gameObject.GetComponent<NetworkIdentity>().netId);
                 nm.NewNotification("Picked up <color=#00FF00>" + TempController.amount.ToString() + "</color> wood", false);
             }
             else if (other.gameObject.CompareTag("Pick Up (Metal)"))
             {
                 PickUpController TempController = other.gameObject.GetComponent<PickUpController>();
                 CmdAddToResources("Metal", TempController.amount, team);
-                TempController.StartRespawnTimer();
-                other.gameObject.GetComponent<MeshRenderer>().enabled = false;
-                other.gameObject.GetComponent<BoxCollider>().enabled = false;
+                CmdDisablePickup(other.gameObject.GetComponent<NetworkIdentity>().netId);
                 nm.NewNotification("Picked up <color=#00FF00>" + TempController.amount.ToString() + "</color> metal", false);
             }
             else if (other.gameObject.CompareTag("Pick Up (Ammo)"))
             {
                 GunController gc = GetComponent<GunController>();
                 gc.ResetAmmo(false);
-                PickUpController TempController = other.gameObject.GetComponent<PickUpController>();
-                TempController.StartRespawnTimer();
-                other.gameObject.GetComponent<MeshRenderer>().enabled = false;
-                other.gameObject.GetComponent<BoxCollider>().enabled = false;
+                CmdDisablePickup(other.gameObject.GetComponent<NetworkIdentity>().netId);
                 nm.NewNotification("Picked up ammo", false);
             }
             else if (other.gameObject.CompareTag("Pick Up (Health)"))
             {
                 Target target = gameObject.GetComponent<Target>();
                 target.SetHealth(target.startingHealth);
-                PickUpController TempController = other.gameObject.GetComponent<PickUpController>();
-                TempController.StartRespawnTimer();
-                other.gameObject.GetComponent<MeshRenderer>().enabled = false;
-                other.gameObject.GetComponent<BoxCollider>().enabled = false;
+                CmdDisablePickup(other.gameObject.GetComponent<NetworkIdentity>().netId);
                 nm.NewNotification("Picked up health", false);
             }
         }
-        
+
+
+    }
+
+    [Command]
+    public void CmdDisablePickup(NetworkInstanceId nid)
+    {
+        RpcDisablePickup(nid);
+    }
+
+    [ClientRpc]
+    public void RpcDisablePickup(NetworkInstanceId nid)
+    {
+        GameObject pickupObject = ClientScene.FindLocalObject(nid);
+        PickUpController TempController = pickupObject.GetComponent<PickUpController>();
+        TempController.StartRespawnTimer();
+        pickupObject.GetComponent<MeshRenderer>().enabled = false;
+        pickupObject.GetComponent<BoxCollider>().enabled = false;
 
     }
 
