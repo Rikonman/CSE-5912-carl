@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 23969127789315876}
   - component: {fileID: 65108944612299106}
   - component: {fileID: 114749644931629048}
+  - component: {fileID: 114541232308773178}
   m_Layer: 0
   m_Name: StonePickUp (1)
   m_TagString: Pick Up (Stone)
@@ -57,6 +58,7 @@ GameObject:
   - component: {fileID: 23577081587218576}
   - component: {fileID: 65480448812647786}
   - component: {fileID: 114770005767242796}
+  - component: {fileID: 114143814861461636}
   m_Layer: 0
   m_Name: StonePickUp
   m_TagString: Pick Up (Stone)
@@ -76,6 +78,7 @@ GameObject:
   - component: {fileID: 23726642463036186}
   - component: {fileID: 65356182801269746}
   - component: {fileID: 114287904203660750}
+  - component: {fileID: 114256339937233256}
   m_Layer: 0
   m_Name: WoodPickUp
   m_TagString: Pick Up (Wood)
@@ -129,6 +132,7 @@ GameObject:
   - component: {fileID: 23953813778336910}
   - component: {fileID: 65626914339963212}
   - component: {fileID: 114068304383653272}
+  - component: {fileID: 114620574414629696}
   m_Layer: 0
   m_Name: WoodPickUp (1)
   m_TagString: Pick Up (Wood)
@@ -200,15 +204,15 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1110796710974066}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: 0, y: -11.5, z: 100}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4436736902043498}
   - {fileID: 4314767748716344}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!4 &4270105234214882
 Transform:
   m_ObjectHideFlags: 1
@@ -603,6 +607,70 @@ MonoBehaviour:
   speed: 20
   respawnTime: 10
   amount: 100
+--- !u!114 &114143814861461636
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1426802270089084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 51
+    i1: 211
+    i2: 82
+    i3: 74
+    i4: 247
+    i5: 135
+    i6: 227
+    i7: 228
+    i8: 120
+    i9: 243
+    i10: 78
+    i11: 32
+    i12: 118
+    i13: 22
+    i14: 152
+    i15: 11
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
+--- !u!114 &114256339937233256
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1581522033050412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 51
+    i1: 211
+    i2: 82
+    i3: 74
+    i4: 247
+    i5: 135
+    i6: 227
+    i7: 228
+    i8: 120
+    i9: 243
+    i10: 78
+    i11: 32
+    i12: 118
+    i13: 22
+    i14: 152
+    i15: 11
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
 --- !u!114 &114287904203660750
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -617,6 +685,70 @@ MonoBehaviour:
   speed: 20
   respawnTime: 10
   amount: 100
+--- !u!114 &114541232308773178
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1057974365900412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 51
+    i1: 211
+    i2: 82
+    i3: 74
+    i4: 247
+    i5: 135
+    i6: 227
+    i7: 228
+    i8: 120
+    i9: 243
+    i10: 78
+    i11: 32
+    i12: 118
+    i13: 22
+    i14: 152
+    i15: 11
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
+--- !u!114 &114620574414629696
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1834632412795446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 51
+    i1: 211
+    i2: 82
+    i3: 74
+    i4: 247
+    i5: 135
+    i6: 227
+    i7: 228
+    i8: 120
+    i9: 243
+    i10: 78
+    i11: 32
+    i12: 118
+    i13: 22
+    i14: 152
+    i15: 11
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
 --- !u!114 &114749644931629048
 MonoBehaviour:
   m_ObjectHideFlags: 1

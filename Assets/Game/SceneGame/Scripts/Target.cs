@@ -38,8 +38,10 @@ public class Target : NetworkBehaviour {
     public GameObject emperor;
     public GunController gunScript;
     public GameObject SpawnObject;
-    public GameObject lookText;
+    public GameObject lookTextBox;
+    public Text lookText;
     public bool locked;
+    IEnumerator damageRoutine;
 
     public delegate void OnHealthChanged(float prevValue, float newValue);
     public OnHealthChanged onHealthChanged;
@@ -99,6 +101,8 @@ public class Target : NetworkBehaviour {
                 SpawnObject = GameObject.FindGameObjectWithTag("BlueSpawnCore");
             }
         }
+        lookTextBox = GameObject.Find("LookText");
+        lookText = lookTextBox.GetComponent<Text>();
     }
 
     [Command]
@@ -291,6 +295,17 @@ public class Target : NetworkBehaviour {
             else
             {
                 UpdateLifeColor();
+                if (bid == null)
+                {
+                    if (gameObject.tag == "RedSpawnCore")
+                    {
+                        CmdSendSpawnDamageAlert(0);
+                    }
+                    else if (gameObject.tag == "BlueSpawnCore")
+                    {
+                        CmdSendSpawnDamageAlert(1);
+                    }
+                }
             }
             if (currentHealth <= 0)
             {
@@ -304,6 +319,41 @@ public class Target : NetworkBehaviour {
             Debug.Log("This object is invulnerable");
         }
         return false;
+    }
+
+    [Command]
+    public void CmdSendSpawnDamageAlert(int team)
+    {
+        RpcSendSpawnDamageAlert(team);
+    }
+
+    [ClientRpc]
+    public void RpcSendSpawnDamageAlert(int team)
+    {
+        if (damageRoutine != null)
+        {
+            StopCoroutine(damageRoutine);
+        }
+        lookText.text = (team == 0 ? "Red" : "Blue") + " team's Spawn Core is under attack!";
+        lookText.enabled = true;
+        damageRoutine = TextDelayer();
+        StartCoroutine(damageRoutine);
+    }
+
+    public IEnumerator TextDelayer()
+    {
+        float remainingTime = 3f;
+
+        while (remainingTime > 0)
+        {
+            yield return null;
+
+            remainingTime -= Time.deltaTime;
+
+        }
+
+        lookText.enabled = false;
+
     }
 
     [Command]

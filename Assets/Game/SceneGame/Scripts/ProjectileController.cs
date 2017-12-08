@@ -20,14 +20,12 @@ public class ProjectileController : NetworkBehaviour {
     public GameObject triangleBreak;
     public float damage;
     Rigidbody rb;
-    public KillManager killManager;
     // Use this for initialization
     void Start ()
     {
         projectileRenderer = GetComponent<MeshRenderer>();
         rb = GetComponent<Rigidbody>();
         NetworkIdentity tempTB = triangleBreak.GetComponent<NetworkIdentity>();
-        killManager = GameObject.Find("KillsPanel").GetComponent<KillManager>();
         originalRotation = transform.rotation;
         //triangleBreak = Resources.Load()
     }
@@ -121,7 +119,7 @@ public class ProjectileController : NetworkBehaviour {
     [ClientRpc]
     public void RpcAddKillMessage(string killerPlayer, int killerTeam, string victimName, int victimTeam, int firingGun)
     {
-        killManager.GetComponent<KillManager>().AddKill(killerPlayer, killerTeam, victimName, victimTeam, firingGun);
+        GameObject.Find("KillsPanel").GetComponent<KillManager>().AddKill(killerPlayer, killerTeam, victimName, victimTeam, firingGun);
     }
 
     public void DamageTarget(Target collisionTarget, bool isBuilding, string collisionTag, bool hasParent, float damageModifier, bool isFriendlyFire)
@@ -219,15 +217,19 @@ public class ProjectileController : NetworkBehaviour {
     {
 
         GameObject triangleBreak = ClientScene.FindLocalObject(triangleBreakID);
-        GameObject instance = (GameObject)Instantiate(triangleBreak, position, rotation);
-        TriangleExplosion tempTriangleExplosion = instance.GetComponent<TriangleExplosion>();
-        tempTriangleExplosion.verts = verts;
-        tempTriangleExplosion.normals = normals;
-        tempTriangleExplosion.uvs = uvs;
+        if (triangleBreak != null)
+        {
+            GameObject instance = (GameObject)Instantiate(triangleBreak, position, rotation);
+            TriangleExplosion tempTriangleExplosion = instance.GetComponent<TriangleExplosion>();
+            tempTriangleExplosion.verts = verts;
+            tempTriangleExplosion.normals = normals;
+            tempTriangleExplosion.uvs = uvs;
 
-        tempTriangleExplosion.indices = indices;
-        tempTriangleExplosion.isStone = isStone;
-        tempTriangleExplosion.isCore = isCore;
-        StartCoroutine(instance.GetComponent<TriangleExplosion>().SplitMesh(true));
+            tempTriangleExplosion.indices = indices;
+            tempTriangleExplosion.isStone = isStone;
+            tempTriangleExplosion.isCore = isCore;
+            StartCoroutine(instance.GetComponent<TriangleExplosion>().SplitMesh(true));
+        }
+        
     }
 }
