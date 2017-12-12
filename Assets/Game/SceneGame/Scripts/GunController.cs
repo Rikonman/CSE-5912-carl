@@ -19,6 +19,7 @@ public class GunController : NetworkBehaviour {
     public bool sniper = false;
     public bool rockets = false;
     public bool minigun = false;
+    public bool larpa = false;
     public float speedModifier = 1f;
 
     //=============================
@@ -36,10 +37,13 @@ public class GunController : NetworkBehaviour {
     [SerializeField]
     GameObject rocketPrefab;
     [SerializeField]
+    GameObject larpaPrefab;
+    [SerializeField]
     Transform barrellExit;
     public PlayerTeam team;
     public bool locked;
     Rigidbody rb;
+    CapsuleCollider cc;
     public PlayerLobbyInfo pli;
     public Target playerTarget;
 
@@ -60,6 +64,7 @@ public class GunController : NetworkBehaviour {
         //gun = transform.GetChild(0).GetChild(0).gameObject;
         team = GetComponent<PlayerTeam>();
         rb = GetComponent<Rigidbody>();
+        cc = GetComponent<CapsuleCollider>();
         pli = GetComponent<PlayerLobbyInfo>();
         playerTarget = GetComponent<Target>();
         CmdSwitch(0);
@@ -251,6 +256,10 @@ public class GunController : NetworkBehaviour {
         {
             rocketShot.Play();
         }
+        else if (gunChoice == 6)
+        {
+            rocketShot.Play();
+        }
     }
 
     void Shoot() {
@@ -261,8 +270,12 @@ public class GunController : NetworkBehaviour {
             {
                 CmdPlayGunshot(currentGun);
             }
-            
-            CmdSpawnProjectile(team.team, team.playerID, damage, currentGun, range, pli.playerName, barrellExit.position, 
+            Vector3 exit = barrellExit.position;
+            if (currentGun == 6)
+            {
+                exit = barrellExit.position + (fpsCamera.transform.forward.normalized * (barrellExit.position - transform.position).magnitude / 2f);
+            }
+            CmdSpawnProjectile(team.team, team.playerID, damage, currentGun, range, pli.playerName, exit, 
                 fpsCamera.transform.rotation, fpsCamera.transform.forward);
             currentAmmoInMag--;
         }
@@ -333,7 +346,8 @@ public class GunController : NetworkBehaviour {
 
                 ProjectileController pc = instance.GetComponent<ProjectileController>();
                 pc.firingTeam = team;
-                pc.firingPlayer = playerName;
+                pc.firingPlayer = playerID;
+                pc.firingPlayerName = playerName;
                 pc.damage = damage;
                 pc.firingGun = gunChoice;
                 NetworkServer.Spawn(instance);
@@ -342,16 +356,17 @@ public class GunController : NetworkBehaviour {
         }
         else
         {
-            GameObject instance = Instantiate(gunChoice == 4 ? rocketPrefab : projectilePrefab, position, rotation);
+            GameObject instance = Instantiate(gunChoice == 4 ? rocketPrefab : (gunChoice == 6 ? larpaPrefab : projectilePrefab), position, rotation);
             instance.GetComponent<Rigidbody>().AddForce(forward * rangeModifier);
             ProjectileController pc = instance.GetComponent<ProjectileController>();
             pc.firingTeam = team;
-            pc.firingPlayer = playerName;
+            pc.firingPlayer = playerID;
+            pc.firingPlayerName = playerName;
             pc.damage = damage;
             pc.firingGun = gunChoice;
-            if (gunChoice == 3 || gunChoice == 4)
+            if (gunChoice == 3 || gunChoice == 4 || gunChoice == 6)
             {
-                pc.projectileLifetime = 4f;
+                pc.projectileLifetime = 5f;
             }
             NetworkServer.Spawn(instance);
             RpcUpdateProjectileData(instance.GetComponent<NetworkIdentity>().netId, team, playerID, damage, gunChoice, pc.projectileLifetime, playerName);
@@ -362,12 +377,17 @@ public class GunController : NetworkBehaviour {
     public void RpcUpdateProjectileData(NetworkInstanceId nid, int team, int playerID, float damage, int gunChoice, float projectileLifetime, string playerName)
     {
         GameObject projectile = ClientScene.FindLocalObject(nid);
-        ProjectileController pc = projectile.GetComponent<ProjectileController>();
-        pc.firingTeam = team;
-        pc.firingPlayer = playerName;
-        pc.damage = damage;
-        pc.firingGun = gunChoice;
-        pc.projectileLifetime = projectileLifetime;
+        if  (projectile != null)
+        {
+            ProjectileController pc = projectile.GetComponent<ProjectileController>();
+            pc.firingTeam = team;
+            pc.firingPlayer = playerID;
+            pc.firingPlayerName = playerName;
+            pc.damage = damage;
+            pc.firingGun = gunChoice;
+            pc.projectileLifetime = projectileLifetime;
+        }
+        
     }
 
     [Command]
@@ -395,6 +415,7 @@ public class GunController : NetworkBehaviour {
         sniper = gunIndex == 3;
         rockets = gunIndex == 4;
         minigun = gunIndex == 5;
+        larpa = gunIndex == 6;
         currentGun = gunIndex;
         gun.transform.GetChild(currentGun).gameObject.SetActive(true);
         barrellExit = gun.transform.GetChild(currentGun).GetChild(0);
@@ -446,6 +467,16 @@ public class GunController : NetworkBehaviour {
             startingReserveAmmo = 180;
             fireRate = .05f;
             range = 3000f;
+            currentAmmoInMag = maxAmmoInMag;
+            currentAmmoInReserve = startingReserveAmmo;
+        }
+        else if (larpa)
+        {
+            damage = 20;
+            maxAmmoInMag = 2;
+            startingReserveAmmo = 10;
+            fireRate = 1f;
+            range = 600f;
             currentAmmoInMag = maxAmmoInMag;
             currentAmmoInReserve = startingReserveAmmo;
         }

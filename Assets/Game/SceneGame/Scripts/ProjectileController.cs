@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
 using System.Collections.Generic;
+using System.Collections;
 
 public class ProjectileController : NetworkBehaviour {
 
@@ -12,14 +13,19 @@ public class ProjectileController : NetworkBehaviour {
     public Quaternion originalRotation;
 
     bool isLive = true;
+    public bool isBouncy;
     float age;
     MeshRenderer projectileRenderer;
     public int firingTeam;
-    public string firingPlayer;
+    public int firingPlayer;
+    public string firingPlayerName;
     public int firingGun;
     public GameObject triangleBreak;
     public float damage;
     Rigidbody rb;
+    private Vector3 oldVelocity;
+    private Quaternion targetRotation;
+    bool firingIgnorer;
     // Use this for initialization
     void Start ()
     {
@@ -27,14 +33,35 @@ public class ProjectileController : NetworkBehaviour {
         rb = GetComponent<Rigidbody>();
         NetworkIdentity tempTB = triangleBreak.GetComponent<NetworkIdentity>();
         originalRotation = transform.rotation;
+        targetRotation = transform.rotation;
+        firingIgnorer = true;
+        StartCoroutine(Delayer());
         //triangleBreak = Resources.Load()
     }
-	
-	// Projectiles are updated by the server
-	void Update ()
+
+    public IEnumerator Delayer()
+    {
+        float remainingTime = .25f;
+
+        while (remainingTime > 0)
+        {
+            yield return null;
+
+            remainingTime -= Time.deltaTime;
+
+        }
+        firingIgnorer = false;
+    }
+
+    // Projectiles are updated by the server
+    void Update ()
     {
         transform.rotation = originalRotation;
         rb.angularVelocity = Vector3.zero;
+        if (originalRotation != targetRotation)
+        {
+            originalRotation = Quaternion.Lerp(originalRotation, targetRotation, .2f);
+        }
         // if the projectile has been alive too long
         age += Time.deltaTime;
         if (age > projectileLifetime)
@@ -45,6 +72,24 @@ public class ProjectileController : NetworkBehaviour {
 	}
     
 
+    private void FixedUpdate()
+    {
+        oldVelocity = rb.velocity;
+    }
+
+    [Command]
+    public void CmdChangeTargetRotation(Quaternion rotation)
+    {
+        targetRotation = rotation;
+        RpcChangeTargetRotation(rotation);
+    }
+
+    [ClientRpc]
+    public void RpcChangeTargetRotation(Quaternion rotation)
+    {
+        targetRotation = rotation;
+    }
+
     void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Projectile")
@@ -53,8 +98,25 @@ public class ProjectileController : NetworkBehaviour {
         if (!isLive)
             return;
 
-        // if the projectile was fired by your team, leave
         PlayerTeam collisionTeam = collision.gameObject.GetComponent<PlayerTeam>();
+
+        if (isBouncy)
+        {
+            Vector3 totalNormal = Vector3.zero;
+            foreach (ContactPoint tempContact in collision.contacts)
+            {
+                totalNormal += tempContact.normal;
+                Debug.DrawRay(tempContact.point, tempContact.normal, Color.white);
+            }
+            totalNormal = totalNormal.normalized;
+            Vector3 reflectVector = Vector3.Reflect(oldVelocity, totalNormal);
+            rb.velocity = reflectVector;
+
+            Quaternion rotation = Quaternion.FromToRotation(oldVelocity, reflectVector);
+            CmdChangeTargetRotation(rotation * targetRotation);
+            
+        }
+        // if the projectile was fired by your team, leave
         if (collisionTeam != null && collisionTeam.team == firingTeam ||
             collision.gameObject.tag == "RedSpawnCore" && firingTeam == 0 ||
             collision.gameObject.tag == "BlueSpawnCore" && firingTeam == 1)
@@ -63,11 +125,16 @@ public class ProjectileController : NetworkBehaviour {
         }
         BuildIdentifier collisionBID = collision.gameObject.GetComponent<BuildIdentifier>();
 
-        // the projectile is going to explode and is no longer live
-        isLive = false;
-        // hide the projectile body
-        projectileRenderer.enabled = false;
-        HideProj();
+
+        if (!isBouncy)
+        {
+            // the projectile is going to explode and is no longer live
+            isLive = false;
+            // hide the projectile body
+            projectileRenderer.enabled = false;
+            HideProj();
+        }
+
         ExplosionController tempExp = gameObject.GetComponent<ExplosionController>();
         if (tempExp != null)
         {
@@ -76,7 +143,6 @@ public class ProjectileController : NetworkBehaviour {
             tempExp.StartExplosion();
             return;
         }
-
         // show the explosion particle effect
         GameObject tempHitEffect = Instantiate(hitEffect, gameObject.transform.position, Quaternion.LookRotation(gameObject.transform.forward, Vector3.up));
         Destroy(tempHitEffect, 0.3f);
@@ -101,7 +167,7 @@ public class ProjectileController : NetworkBehaviour {
         DamageTarget(collisionTarget, collisionTeam == null, collision.gameObject.tag, hasParent, 1f, collisionBID != null && collisionBID.team == firingTeam);
 
     }
-    
+
     public void HideProj()
     {
         // the projectile is going to explode and is no longer live
@@ -132,7 +198,7 @@ public class ProjectileController : NetworkBehaviour {
         if (died && !isBuilding)
         {
 
-            CmdAddKillMessage(firingPlayer, firingTeam, collisionTarget.gameObject.GetComponent<PlayerLobbyInfo>().playerName,
+            CmdAddKillMessage(firingPlayerName, firingTeam, collisionTarget.gameObject.GetComponent<PlayerLobbyInfo>().playerName,
                 collisionTarget.gameObject.GetComponent<PlayerTeam>().team, firingGun);
         }
         else if (died && isBuilding)
@@ -145,7 +211,7 @@ public class ProjectileController : NetworkBehaviour {
             }
             else if (collisionTag == "RedSpawnCore" || collisionTag == "BlueSpawnCore")
             {
-                CmdAddKillMessage(firingPlayer, firingTeam, "Spawn Core", firingTeam == 0 ? 1 : 0, firingGun);
+                CmdAddKillMessage(firingPlayerName, firingTeam, "Spawn Core", firingTeam == 0 ? 1 : 0, firingGun);
                 isCore = true;
             }
             Mesh M = new Mesh();

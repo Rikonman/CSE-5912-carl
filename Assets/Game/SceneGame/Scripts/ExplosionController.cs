@@ -30,7 +30,10 @@ public class ExplosionController : NetworkBehaviour {
     [Command]
     public void CmdStartExplosion()
     {
-        smokePS.Stop(true);
+        if (smokePS != null)
+        {
+            smokePS.Stop(true);
+        }
         explosion.SetActive(true);
         explosion.GetComponent<ParticleSystem>().Emit(50);
         RpcStartExplosion(gameObject.GetComponent<NetworkIdentity>().netId);
@@ -41,7 +44,11 @@ public class ExplosionController : NetworkBehaviour {
     {
         GameObject rocket = ClientScene.FindLocalObject(nid);
         rocket.GetComponent<MeshRenderer>().enabled = false;
-        rocket.GetComponent<ParticleSystem>().Stop(true);
+        ParticleSystem tempPS = rocket.GetComponent<ParticleSystem>();
+        if (tempPS != null)
+        {
+            tempPS.Stop(true);
+        }
         GameObject tempExp = rocket.transform.GetChild(0).gameObject;
         tempExp.SetActive(true);
         tempExp.GetComponent<ParticleSystem>().Emit(50);
