@@ -20,6 +20,7 @@ public class GunController : NetworkBehaviour {
     public bool rockets = false;
     public bool minigun = false;
     public bool larpa = false;
+    public bool gauss = false;
     public float speedModifier = 1f;
 
     //=============================
@@ -39,6 +40,8 @@ public class GunController : NetworkBehaviour {
     [SerializeField]
     GameObject larpaPrefab;
     [SerializeField]
+    GameObject gaussPrefab;
+    [SerializeField]
     Transform barrellExit;
     public PlayerTeam team;
     public bool locked;
@@ -55,6 +58,8 @@ public class GunController : NetworkBehaviour {
     public AudioSource sniperShot;
     public AudioSource rocketShot;
     public AudioSource minigunShot;
+    public AudioSource larpaShot;
+    public AudioSource gaussShot;
     public int assaultCounter;
     void Start()
     {
@@ -131,15 +136,19 @@ public class GunController : NetworkBehaviour {
             {
                 fireDelay = Time.time + fireRate;
                 Debug.Log(fireDelay - Time.time);
+                bool ammoInMag = currentAmmoInMag > 0;
                 Shoot();
-                if (minigun && currentAmmoInMag > 0)
+                if (minigun && ammoInMag)
                 {
                     rb.AddForce(-fpsCamera.transform.forward * 35, ForceMode.Impulse);
                     if (!minigunShot.isPlaying)
                     {
                         CmdStartMinigun();
                     }
-                    
+                }
+                if (gauss && ammoInMag)
+                {
+                    rb.AddForce(-fpsCamera.transform.forward * 300, ForceMode.Impulse);
                 }
                 if (currentAmmoInReserve > 0 && currentAmmoInMag == 0)
                 {
@@ -258,7 +267,11 @@ public class GunController : NetworkBehaviour {
         }
         else if (gunChoice == 6)
         {
-            rocketShot.Play();
+            larpaShot.Play();
+        }
+        else if (gunChoice == 7)
+        {
+            gaussShot.Play();
         }
     }
 
@@ -356,7 +369,7 @@ public class GunController : NetworkBehaviour {
         }
         else
         {
-            GameObject instance = Instantiate(gunChoice == 4 ? rocketPrefab : (gunChoice == 6 ? larpaPrefab : projectilePrefab), position, rotation);
+            GameObject instance = Instantiate(gunChoice == 4 ? rocketPrefab : (gunChoice == 6 ? larpaPrefab : (gunChoice == 7 ? gaussPrefab : projectilePrefab)), position, rotation);
             instance.GetComponent<Rigidbody>().AddForce(forward * rangeModifier);
             ProjectileController pc = instance.GetComponent<ProjectileController>();
             pc.firingTeam = team;
@@ -364,9 +377,17 @@ public class GunController : NetworkBehaviour {
             pc.firingPlayerName = playerName;
             pc.damage = damage;
             pc.firingGun = gunChoice;
-            if (gunChoice == 3 || gunChoice == 4 || gunChoice == 6)
+            if (gunChoice == 3 || gunChoice == 6)
             {
                 pc.projectileLifetime = 5f;
+            }
+            else if (gunChoice == 4)
+            {
+                pc.projectileLifetime = 4f;
+            }
+            else if (gunChoice == 7)
+            {
+                pc.projectileLifetime = 3f;
             }
             NetworkServer.Spawn(instance);
             RpcUpdateProjectileData(instance.GetComponent<NetworkIdentity>().netId, team, playerID, damage, gunChoice, pc.projectileLifetime, playerName);
@@ -416,6 +437,7 @@ public class GunController : NetworkBehaviour {
         rockets = gunIndex == 4;
         minigun = gunIndex == 5;
         larpa = gunIndex == 6;
+        gauss = gunIndex == 7;
         currentGun = gunIndex;
         gun.transform.GetChild(currentGun).gameObject.SetActive(true);
         barrellExit = gun.transform.GetChild(currentGun).GetChild(0);
@@ -477,6 +499,16 @@ public class GunController : NetworkBehaviour {
             startingReserveAmmo = 10;
             fireRate = 1f;
             range = 600f;
+            currentAmmoInMag = maxAmmoInMag;
+            currentAmmoInReserve = startingReserveAmmo;
+        }
+        else if (gauss)
+        {
+            damage = 60;
+            maxAmmoInMag = 1;
+            startingReserveAmmo = 15;
+            fireRate = 1f;
+            range = 2000f;
             currentAmmoInMag = maxAmmoInMag;
             currentAmmoInReserve = startingReserveAmmo;
         }

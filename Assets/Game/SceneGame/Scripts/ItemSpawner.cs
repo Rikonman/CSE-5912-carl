@@ -31,7 +31,7 @@ public class ItemSpawner : NetworkBehaviour {
                 timer = 0;
                 Vector3 newPos = transform.position;
                 newPos = newPos - rb.velocity.normalized;
-                CmdSpawnProjectile(pc.firingTeam, pc.firingPlayer, 25, pc.firingGun, pc.firingPlayerName, newPos,
+                CmdSpawnProjectile(pc.firingTeam, pc.firingPlayer, pc.damage, pc.firingGun, pc.firingPlayerName, newPos,
                     transform.rotation, rb.velocity / 2f, isProjectile);
             }
         }

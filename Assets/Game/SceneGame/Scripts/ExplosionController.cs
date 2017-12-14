@@ -10,6 +10,7 @@ public class ExplosionController : NetworkBehaviour {
     public ParticleSystem smokePS;
     public GameObject explosion;
     public AudioSource explosionSound;
+    public int numEmitted;
 
     // Use this for initialization
     void Start () {
@@ -35,7 +36,7 @@ public class ExplosionController : NetworkBehaviour {
             smokePS.Stop(true);
         }
         explosion.SetActive(true);
-        explosion.GetComponent<ParticleSystem>().Emit(50);
+        explosion.GetComponent<ParticleSystem>().Emit(numEmitted);
         RpcStartExplosion(gameObject.GetComponent<NetworkIdentity>().netId);
     }
 
@@ -51,7 +52,7 @@ public class ExplosionController : NetworkBehaviour {
         }
         GameObject tempExp = rocket.transform.GetChild(0).gameObject;
         tempExp.SetActive(true);
-        tempExp.GetComponent<ParticleSystem>().Emit(50);
+        tempExp.GetComponent<ParticleSystem>().Emit(numEmitted);
         explosionSound.Play();
     }
 

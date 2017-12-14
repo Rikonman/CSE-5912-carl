@@ -167,11 +167,11 @@ public class PlayerController : NetworkBehaviour
                     rb.AddForce(Physics.gravity, ForceMode.Acceleration);
                 }
             }
-            if (gc != null && gc.sniper && Input.GetButtonUp("Fire2"))
+            if (gc != null && (gc.sniper || gc.gauss) && Input.GetButtonUp("Fire2"))
             {
                 isSniping = !isSniping;
             }
-            if (gc != null && !gc.sniper && isSniping)
+            if (gc != null && !gc.sniper && !gc.gauss && isSniping)
             {
                 isSniping = !isSniping;
             }

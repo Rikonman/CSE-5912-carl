@@ -29,7 +29,7 @@ GameObject:
   - component: {fileID: 114136526362890194}
   - component: {fileID: 114711251321222396}
   m_Layer: 0
-  m_Name: Grenade
+  m_Name: Gauss
   m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43,7 +43,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4475103217296230}
-  - component: {fileID: 82423038981993238}
+  - component: {fileID: 82869332013887156}
   m_Layer: 0
   m_Name: ExplosionAudio
   m_TagString: Untagged
@@ -76,7 +76,7 @@ Transform:
   m_GameObject: {fileID: 1803723717342644}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.25, y: 1.25, z: 1.25}
   m_Children: []
   m_Father: {fileID: 4931606052076134}
   m_RootOrder: 0
@@ -89,7 +89,7 @@ Transform:
   m_GameObject: {fileID: 1453305806971932}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 10, y: 10, z: 10}
   m_Children: []
   m_Father: {fileID: 4931606052076134}
   m_RootOrder: 1
@@ -102,7 +102,7 @@ Transform:
   m_GameObject: {fileID: 1266938302354856}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.2, y: 30.9, z: 14}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children:
   - {fileID: 4223777244935778}
   - {fileID: 4475103217296230}
@@ -122,7 +122,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 9952917b17613844b8581ba61f3066c5, type: 2}
+  - {fileID: 15303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -147,7 +147,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1266938302354856}
-  m_Mesh: {fileID: 4300004, guid: bc47d6d03a2cd0b4ab4297dfd2edfe5f, type: 3}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!54 &54405883212310168
 Rigidbody:
   m_ObjectHideFlags: 1
@@ -158,12 +158,12 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 100
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
---- !u!82 &82423038981993238
+--- !u!82 &82869332013887156
 AudioSource:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -173,7 +173,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 243574771316519454, guid: 3e507193637aec24696d88ff2cd67de8,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: 9a822b8a698869249a30c2cd6773f56d, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 005865585fe34aa4fb272a954a08f0f8, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -184,7 +184,7 @@ AudioSource:
   Priority: 64
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 40
+  MaxDistance: 60
   Pan2D: 0
   rolloffMode: 1
   BypassEffects: 0
@@ -279,22 +279,22 @@ MonoBehaviour:
   m_SceneId:
     m_Value: 0
   m_AssetId:
-    i0: 216
-    i1: 95
-    i2: 134
-    i3: 200
-    i4: 140
-    i5: 62
-    i6: 47
-    i7: 36
-    i8: 250
-    i9: 52
-    i10: 178
-    i11: 28
-    i12: 16
-    i13: 13
-    i14: 145
-    i15: 37
+    i0: 166
+    i1: 23
+    i2: 171
+    i3: 74
+    i4: 205
+    i5: 153
+    i6: 176
+    i7: 228
+    i8: 27
+    i9: 192
+    i10: 145
+    i11: 113
+    i12: 168
+    i13: 54
+    i14: 89
+    i15: 53
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
 --- !u!114 &114711251321222396
@@ -313,8 +313,8 @@ MonoBehaviour:
   cc: {fileID: 0}
   smokePS: {fileID: 0}
   explosion: {fileID: 1803723717342644}
-  explosionSound: {fileID: 82423038981993238}
-  numEmitted: 50
+  explosionSound: {fileID: 82869332013887156}
+  numEmitted: 200
 --- !u!114 &114982235168799820
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -326,7 +326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eef752ab99e147c4b9849f7b02da4f39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectileLifetime: 8
+  projectileLifetime: 2
   canKill: 1
   hitEffect: {fileID: 1065484811972784, guid: bea493569da8b1d4c9087b08c090ae4b, type: 2}
   originalRotation: {x: 0, y: 0, z: 0, w: 0}
@@ -348,7 +348,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 0
   serializedVersion: 2
-  m_Radius: 0.8
+  m_Radius: 20
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!136 &136265352284551036
 CapsuleCollider:
@@ -359,8 +359,8 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.05
-  m_Height: 0.05
+  m_Radius: 0.5
+  m_Height: 1
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!198 &198353841759506810
@@ -422,7 +422,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 296273033
+  randomSeed: -1485025354
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -574,8 +574,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 1.5
-      minScalar: 0.5
+      scalar: 2
+      minScalar: 1
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -1064,8 +1064,8 @@ ParticleSystem:
     m_BurstCount: 1
     m_Bursts:
     - time: 0
-      minCount: 50
-      maxCount: 50
+      minCount: 200
+      maxCount: 200
       cycleCount: 1
       repeatInterval: 0.01
   SizeModule:
@@ -3644,7 +3644,7 @@ ParticleSystemRenderer:
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
   m_Materials:
-  - {fileID: 2100000, guid: 77d08210df254d845885518314593544, type: 2}
+  - {fileID: 2100000, guid: 82c5585873ae0f74ea69b2105980dc66, type: 2}
   - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
