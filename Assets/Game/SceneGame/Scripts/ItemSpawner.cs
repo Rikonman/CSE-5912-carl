@@ -37,6 +37,19 @@ public class ItemSpawner : NetworkBehaviour {
         }
 	}
 
+    public void doBurst(int projCount)
+    {
+        for (int counter = 0; counter < projCount; counter++)
+        {
+            Vector3 direction = Quaternion.Euler(new Vector3(Random.Range(-75f, 75f), Random.Range(-180f, 180f), Random.Range(-75f, 75f))) * Vector3.up;
+            Vector3 newPos = transform.position;
+            newPos = newPos + direction.normalized;
+            CmdSpawnProjectile(pc.firingTeam, pc.firingPlayer, pc.damage, pc.firingGun, pc.firingPlayerName, newPos,
+                transform.rotation, Random.Range(2.5f, 7.5f) * direction.normalized, isProjectile);
+
+        }
+    }
+
     // This command is called from the localPlayer and run on the server. Note that Commands must begin with 'Cmd'
     [Command]
     void CmdSpawnProjectile(int team, int playerID, float damage, int gunChoice, string playerName, Vector3 position, Quaternion rotation, Vector3 startVelocity, bool isProj)

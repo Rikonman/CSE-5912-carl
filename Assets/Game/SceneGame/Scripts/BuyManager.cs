@@ -141,6 +141,17 @@ public class BuyManager : NetworkBehaviour {
                             BuyMenu.SetActive(false);
                         }
                     }
+                    else if (Input.GetKeyDown(KeyCode.Alpha8))
+                    {
+                        ResourceBank resources = team.baseObject.GetComponent<ResourceBank>();
+                        if (resources.metal >= 150 && gun.currentGun == 0)
+                        {
+                            gun.CmdSwitch(8);
+                            resources.Add("Metal", -150);
+                            buyMode = false;
+                            BuyMenu.SetActive(false);
+                        }
+                    }
                 }
                 else
                 {

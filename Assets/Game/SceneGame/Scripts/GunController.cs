@@ -21,6 +21,7 @@ public class GunController : NetworkBehaviour {
     public bool minigun = false;
     public bool larpa = false;
     public bool gauss = false;
+    public bool cluster = false;
     public float speedModifier = 1f;
 
     //=============================
@@ -42,6 +43,8 @@ public class GunController : NetworkBehaviour {
     [SerializeField]
     GameObject gaussPrefab;
     [SerializeField]
+    GameObject clusterPrefab;
+    [SerializeField]
     Transform barrellExit;
     public PlayerTeam team;
     public bool locked;
@@ -60,6 +63,7 @@ public class GunController : NetworkBehaviour {
     public AudioSource minigunShot;
     public AudioSource larpaShot;
     public AudioSource gaussShot;
+    public AudioSource clusterShot;
     public int assaultCounter;
     void Start()
     {
@@ -273,6 +277,10 @@ public class GunController : NetworkBehaviour {
         {
             gaussShot.Play();
         }
+        else if (gunChoice == 8)
+        {
+            clusterShot.Play();
+        }
     }
 
     void Shoot() {
@@ -369,7 +377,13 @@ public class GunController : NetworkBehaviour {
         }
         else
         {
-            GameObject instance = Instantiate(gunChoice == 4 ? rocketPrefab : (gunChoice == 6 ? larpaPrefab : (gunChoice == 7 ? gaussPrefab : projectilePrefab)), position, rotation);
+            Quaternion trueRot = rotation;
+            if (gunChoice == 8)
+            {
+                trueRot = trueRot * Quaternion.Euler(new Vector3(0f, -90f, 0f));
+            }
+            GameObject instance = Instantiate(gunChoice == 4 ? rocketPrefab : (gunChoice == 6 ? larpaPrefab : 
+                (gunChoice == 7 ? gaussPrefab : (gunChoice == 8 ? clusterPrefab : projectilePrefab))), position, trueRot);
             instance.GetComponent<Rigidbody>().AddForce(forward * rangeModifier);
             ProjectileController pc = instance.GetComponent<ProjectileController>();
             pc.firingTeam = team;
@@ -438,6 +452,7 @@ public class GunController : NetworkBehaviour {
         minigun = gunIndex == 5;
         larpa = gunIndex == 6;
         gauss = gunIndex == 7;
+        cluster = gunIndex == 8;
         currentGun = gunIndex;
         gun.transform.GetChild(currentGun).gameObject.SetActive(true);
         barrellExit = gun.transform.GetChild(currentGun).GetChild(0);
@@ -508,7 +523,17 @@ public class GunController : NetworkBehaviour {
             maxAmmoInMag = 1;
             startingReserveAmmo = 15;
             fireRate = 1f;
-            range = 2000f;
+            range = 2500f;
+            currentAmmoInMag = maxAmmoInMag;
+            currentAmmoInReserve = startingReserveAmmo;
+        }
+        else if (cluster)
+        {
+            damage = 20;
+            maxAmmoInMag = 3;
+            startingReserveAmmo = 15;
+            fireRate = 1f;
+            range = 1000f;
             currentAmmoInMag = maxAmmoInMag;
             currentAmmoInReserve = startingReserveAmmo;
         }

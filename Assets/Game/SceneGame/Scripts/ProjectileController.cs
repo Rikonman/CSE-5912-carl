@@ -138,9 +138,9 @@ public class ProjectileController : NetworkBehaviour {
         ExplosionController tempExp = gameObject.GetComponent<ExplosionController>();
         if (tempExp != null)
         {
+            tempExp.StartExplosion();
             rb.velocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
-            tempExp.StartExplosion();
             return;
         }
         // show the explosion particle effect

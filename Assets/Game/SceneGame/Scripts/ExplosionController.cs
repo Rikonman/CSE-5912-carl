@@ -8,15 +8,18 @@ public class ExplosionController : NetworkBehaviour {
     public SphereCollider sc;
     public CapsuleCollider cc;
     public ParticleSystem smokePS;
+    public ItemSpawner spawner;
     public GameObject explosion;
     public AudioSource explosionSound;
     public int numEmitted;
+    public bool grenadeEmit;
 
     // Use this for initialization
     void Start () {
         pc = gameObject.GetComponent<ProjectileController>();
         sc = gameObject.GetComponent<SphereCollider>();
         cc = gameObject.GetComponent<CapsuleCollider>();
+        spawner = gameObject.GetComponent<ItemSpawner>();
         smokePS = gameObject.GetComponentInChildren<ParticleSystem>();
     }
 
@@ -34,6 +37,10 @@ public class ExplosionController : NetworkBehaviour {
         if (smokePS != null)
         {
             smokePS.Stop(true);
+        }
+        if (grenadeEmit && spawner != null)
+        {
+            spawner.doBurst(6);
         }
         explosion.SetActive(true);
         explosion.GetComponent<ParticleSystem>().Emit(numEmitted);
