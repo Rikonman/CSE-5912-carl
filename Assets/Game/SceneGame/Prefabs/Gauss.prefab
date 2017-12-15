@@ -312,9 +312,11 @@ MonoBehaviour:
   sc: {fileID: 0}
   cc: {fileID: 0}
   smokePS: {fileID: 0}
+  spawner: {fileID: 0}
   explosion: {fileID: 1803723717342644}
   explosionSound: {fileID: 82869332013887156}
   numEmitted: 200
+  grenadeEmit: 0
 --- !u!114 &114982235168799820
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -348,7 +350,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 0
   serializedVersion: 2
-  m_Radius: 20
+  m_Radius: 26
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!136 &136265352284551036
 CapsuleCollider:

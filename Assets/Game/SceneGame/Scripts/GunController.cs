@@ -499,7 +499,7 @@ public class GunController : NetworkBehaviour {
         }
         else if (minigun)
         {
-            damage = 10;
+            damage = 15;
             maxAmmoInMag = 60;
             startingReserveAmmo = 180;
             fireRate = .05f;
@@ -509,7 +509,7 @@ public class GunController : NetworkBehaviour {
         }
         else if (larpa)
         {
-            damage = 20;
+            damage = 30;
             maxAmmoInMag = 2;
             startingReserveAmmo = 10;
             fireRate = 1f;
@@ -529,11 +529,11 @@ public class GunController : NetworkBehaviour {
         }
         else if (cluster)
         {
-            damage = 20;
+            damage = 30;
             maxAmmoInMag = 3;
             startingReserveAmmo = 15;
             fireRate = 1f;
-            range = 1000f;
+            range = 1200f;
             currentAmmoInMag = maxAmmoInMag;
             currentAmmoInReserve = startingReserveAmmo;
         }

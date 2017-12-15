@@ -316,7 +316,7 @@ MonoBehaviour:
   spawner: {fileID: 0}
   explosion: {fileID: 1803723717342644}
   explosionSound: {fileID: 82869332013887156}
-  numEmitted: 50
+  numEmitted: 100
   grenadeEmit: 1
 --- !u!114 &114725936081027740
 MonoBehaviour:
@@ -367,7 +367,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 0
   serializedVersion: 2
-  m_Radius: 1.6
+  m_Radius: 26
   m_Center: {x: -0.5, y: 0, z: 0}
 --- !u!136 &136265352284551036
 CapsuleCollider:

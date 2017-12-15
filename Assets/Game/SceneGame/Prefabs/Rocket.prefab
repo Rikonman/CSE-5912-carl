@@ -314,9 +314,11 @@ MonoBehaviour:
   sc: {fileID: 0}
   cc: {fileID: 0}
   smokePS: {fileID: 0}
+  spawner: {fileID: 0}
   explosion: {fileID: 1803723717342644}
   explosionSound: {fileID: 82869332013887156}
-  numEmitted: 50
+  numEmitted: 100
+  grenadeEmit: 0
 --- !u!114 &114982235168799820
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -350,7 +352,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 0
   serializedVersion: 2
-  m_Radius: 16
+  m_Radius: 26
   m_Center: {x: 0, y: 0, z: -4}
 --- !u!136 &136265352284551036
 CapsuleCollider:
@@ -424,7 +426,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 296273033
+  randomSeed: 1377533819
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -1066,8 +1068,8 @@ ParticleSystem:
     m_BurstCount: 1
     m_Bursts:
     - time: 0
-      minCount: 50
-      maxCount: 50
+      minCount: 100
+      maxCount: 100
       cycleCount: 1
       repeatInterval: 0.01
   SizeModule:
@@ -3691,7 +3693,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -1033634917
+  randomSeed: -833802650
   InitialModule:
     serializedVersion: 3
     enabled: 1
