@@ -53,7 +53,7 @@ public class BuyManager : NetworkBehaviour {
             if (isLocalPlayer)
             {
 
-                if (Input.GetKeyDown(KeyCode.V))
+                if (Input.GetKeyDown(KeyCode.V) && gun.CanBuy)
                 {
                     buyMode = !buyMode;
                 }
@@ -67,9 +67,9 @@ public class BuyManager : NetworkBehaviour {
                     if (Input.GetKeyDown(KeyCode.Alpha1))
                     {
                         ResourceBank resources = team.baseObject.GetComponent<ResourceBank>();
-                        if (resources.metal >= 50 && gun.currentGun == 0)
+                        if (resources.metal >= 50)
                         {
-                            gun.CmdSwitch(1);
+                            gun.Buy(1);
                             resources.Add("Metal", -50);
                             buyMode = false;
                             BuyMenu.SetActive(false);
@@ -78,9 +78,9 @@ public class BuyManager : NetworkBehaviour {
                     else if (Input.GetKeyDown(KeyCode.Alpha2))
                     {
                         ResourceBank resources = team.baseObject.GetComponent<ResourceBank>();
-                        if (resources.metal >= 50 && gun.currentGun == 0)
+                        if (resources.metal >= 50)
                         {
-                            gun.CmdSwitch(2);
+                            gun.Buy(2);
                             resources.Add("Metal", -50);
                             buyMode = false;
                             BuyMenu.SetActive(false);
@@ -89,9 +89,9 @@ public class BuyManager : NetworkBehaviour {
                     else if (Input.GetKeyDown(KeyCode.Alpha3))
                     {
                         ResourceBank resources = team.baseObject.GetComponent<ResourceBank>();
-                        if (resources.metal >= 50 && gun.currentGun == 0)
+                        if (resources.metal >= 50)
                         {
-                            gun.CmdSwitch(3);
+                            gun.Buy(3);
                             resources.Add("Metal", -50);
                             buyMode = false;
                             BuyMenu.SetActive(false);
@@ -100,9 +100,9 @@ public class BuyManager : NetworkBehaviour {
                     else if (Input.GetKeyDown(KeyCode.Alpha4))
                     {
                         ResourceBank resources = team.baseObject.GetComponent<ResourceBank>();
-                        if (resources.metal >= 150 && gun.currentGun == 0)
+                        if (resources.metal >= 150)
                         {
-                            gun.CmdSwitch(4);
+                            gun.Buy(4);
                             resources.Add("Metal", -150);
                             buyMode = false;
                             BuyMenu.SetActive(false);
@@ -111,9 +111,9 @@ public class BuyManager : NetworkBehaviour {
                     else if (Input.GetKeyDown(KeyCode.Alpha5))
                     {
                         ResourceBank resources = team.baseObject.GetComponent<ResourceBank>();
-                        if (resources.metal >= 150 && gun.currentGun == 0)
+                        if (resources.metal >= 150)
                         {
-                            gun.CmdSwitch(5);
+                            gun.Buy(5);
                             resources.Add("Metal", -150);
                             buyMode = false;
                             BuyMenu.SetActive(false);
@@ -122,9 +122,9 @@ public class BuyManager : NetworkBehaviour {
                     else if (Input.GetKeyDown(KeyCode.Alpha6))
                     {
                         ResourceBank resources = team.baseObject.GetComponent<ResourceBank>();
-                        if (resources.metal >= 150 && gun.currentGun == 0)
+                        if (resources.metal >= 150)
                         {
-                            gun.CmdSwitch(6);
+                            gun.Buy(6);
                             resources.Add("Metal", -150);
                             buyMode = false;
                             BuyMenu.SetActive(false);
@@ -133,9 +133,9 @@ public class BuyManager : NetworkBehaviour {
                     else if (Input.GetKeyDown(KeyCode.Alpha7))
                     {
                         ResourceBank resources = team.baseObject.GetComponent<ResourceBank>();
-                        if (resources.metal >= 150 && gun.currentGun == 0)
+                        if (resources.metal >= 150)
                         {
-                            gun.CmdSwitch(7);
+                            gun.Buy(7);
                             resources.Add("Metal", -150);
                             buyMode = false;
                             BuyMenu.SetActive(false);
@@ -144,9 +144,9 @@ public class BuyManager : NetworkBehaviour {
                     else if (Input.GetKeyDown(KeyCode.Alpha8))
                     {
                         ResourceBank resources = team.baseObject.GetComponent<ResourceBank>();
-                        if (resources.metal >= 150 && gun.currentGun == 0)
+                        if (resources.metal >= 150)
                         {
-                            gun.CmdSwitch(8);
+                            gun.Buy(8);
                             resources.Add("Metal", -150);
                             buyMode = false;
                             BuyMenu.SetActive(false);
@@ -159,7 +159,27 @@ public class BuyManager : NetworkBehaviour {
                     {
                         BuyMenu.SetActive(false);
                     }
-
+                    if (Input.GetKeyDown(KeyCode.Alpha1))
+                    {
+                        if (gun.guns[0].gunIndex != -1)
+                        {
+                            gun.Switch(0);
+                        }
+                    }
+                    else if (Input.GetKeyDown(KeyCode.Alpha2))
+                    {
+                        if (gun.guns[1].gunIndex != -1)
+                        {
+                            gun.Switch(1);
+                        }
+                    }
+                    else if (Input.GetKeyDown(KeyCode.Alpha3))
+                    {
+                        if (gun.guns[2].gunIndex != -1)
+                        {
+                            gun.Switch(2);
+                        }
+                    }
                 }
             }
         }

@@ -229,7 +229,7 @@ public class HostConsole : NetworkBehaviour
                                     return;
                                 }
                                 nm.NewNotification("Adding " + NotificationManager.GetColoredString(Color.green, Convert.ToInt32(tokens[2]).ToString()) + " to reserve ammo...", false);
-                                playerGun.currentAmmoInReserve += int.Parse(tokens[2]);
+                                playerGun.currentGun.currentAmmoInReserve += int.Parse(tokens[2]);
                                 toClose = true;
                             }
                             else
@@ -341,7 +341,7 @@ public class HostConsole : NetworkBehaviour
                                     return;
                                 }
                                 nm.NewNotification("Setting reserve ammo to " + NotificationManager.GetColoredString(Color.green, Convert.ToInt32(tokens[2]).ToString()), false);
-                                playerGun.currentAmmoInReserve = int.Parse(tokens[2]);
+                                playerGun.currentGun.currentAmmoInReserve = int.Parse(tokens[2]);
                                 input.text = "";
                                 input.ActivateInputField();
                             }

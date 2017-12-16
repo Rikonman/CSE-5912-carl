@@ -62,14 +62,14 @@ public class UIManager : NetworkBehaviour {
     // Update is called once per frame
     void Update () {
         // Only update the text if there is a reason to update it.
-        if (gunController.currentAmmoInMag.ToString() != txtLoadedAmmo.text)
+        if (gunController.currentGun.currentAmmoInMag.ToString() != txtLoadedAmmo.text)
         {
-            txtLoadedAmmo.text = gunController.currentAmmoInMag.ToString();
+            txtLoadedAmmo.text = gunController.currentGun.currentAmmoInMag.ToString();
         }
         // Only update the text if there is a reason to update it.
-        if (gunController.currentAmmoInReserve.ToString() != txtReserveAmmo.text)
+        if (gunController.currentGun.currentAmmoInReserve.ToString() != txtReserveAmmo.text)
         {
-            txtReserveAmmo.text = gunController.currentAmmoInReserve.ToString();
+            txtReserveAmmo.text = gunController.currentGun.currentAmmoInReserve.ToString();
         }
         // Only update the text if there is a reason to update it.
         //if (playerTarget.currentHealth.ToString() != txtPlayerHealth.text.Substring(txtPlayerHealth.text.IndexOf(":") + 2, txtPlayerHealth.text.IndexOf("/") - (txtPlayerHealth.text.IndexOf(":") + 2)))

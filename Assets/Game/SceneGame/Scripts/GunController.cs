@@ -4,15 +4,12 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 public class GunController : NetworkBehaviour {
-
-    public float damage = 1f;
-    public float range = 2000f;
+    
     public Camera fpsCamera;
     public ParticleSystem flash;
     public GameObject hitEffect;
     public GameObject gun;
     public float force = 60f;
-    public float fireRate = .1f;
     public float fireDelay = 0f;
     public bool automatic = false;
     public bool shotgun = false;
@@ -22,17 +19,7 @@ public class GunController : NetworkBehaviour {
     public bool larpa = false;
     public bool gauss = false;
     public bool cluster = false;
-    public float speedModifier = 1f;
-
-    //=============================
-    // Ammunition stuffs
-    //=============================
-    public int maxAmmoInMag = 20;
-    public int startingReserveAmmo = 50;
-    public int currentAmmoInMag;
-    public int currentAmmoInReserve;
-    public int currentGun=0;
-    public int numberOfGuns = 2;
+    
 
     [SerializeField]
     GameObject projectilePrefab;
@@ -54,6 +41,23 @@ public class GunController : NetworkBehaviour {
     public Target playerTarget;
     playerAnimation pa;
     public GameObject mainCamera;
+    public GunStats[] guns = { new GunStats(-1), new GunStats(-1), new GunStats(0) };
+    int selectedGun = 2;
+    public GunStats currentGun
+    {
+        get
+        {
+            return guns[selectedGun];
+        }
+    }
+
+    public bool CanBuy
+    {
+        get
+        {
+            return guns[1].gunIndex == -1;
+        }
+    }
 
     public AudioSource pistolShot;
     public AudioSource assaultOneShot;
@@ -71,7 +75,7 @@ public class GunController : NetworkBehaviour {
     {
         assaultCounter = 0;
         locked = false;
-        ResetAmmo(true);
+        currentGun.ResetAmmo(true);
         //gun = transform.GetChild(0).GetChild(0).gameObject;
         team = GetComponent<PlayerTeam>();
         rb = GetComponent<Rigidbody>();
@@ -79,43 +83,50 @@ public class GunController : NetworkBehaviour {
         pli = GetComponent<PlayerLobbyInfo>();
         playerTarget = GetComponent<Target>();
         pa = GetComponent<playerAnimation>();
-        CmdSwitch(0);
+        Switch(selectedGun);
+        ResetSlots();
     }
 
-    [Command]
-    public void CmdResetAmmo(bool refillMag)
+    [ClientRpc]
+    public void RpcResetAllAmmo(bool refillMag)
     {
-        ResetAmmo(refillMag);
-        RpcResetAmmo(refillMag);
+        guns[0].ResetAmmo(refillMag);
+        guns[1].ResetAmmo(refillMag);
+        guns[2].ResetAmmo(refillMag);
     }
 
     [ClientRpc]
     public void RpcResetAmmo(bool refillMag)
     {
-        ResetAmmo(refillMag);
+        currentGun.ResetAmmo(refillMag);
     }
 
-    public void ResetAmmo(bool refillMag)
+    [Command]
+    public void CmdResetGuns()
     {
-        currentAmmoInReserve = startingReserveAmmo;
-        if (currentAmmoInReserve >= maxAmmoInMag)
-        {
-            if (refillMag)
-            {
-                currentAmmoInMag = maxAmmoInMag;
-                currentAmmoInReserve -= maxAmmoInMag;
-            }
-            
-        }
-        else
-        {
-            if (refillMag)
-            {
-                currentAmmoInMag = currentAmmoInReserve;
-                currentAmmoInReserve = 0;
-            }
-        }
+        RpcResetGuns();
+    }
 
+    [ClientRpc]
+    public void RpcResetGuns()
+    {
+        Switch(2);
+        guns[0] = new GunStats(-1);
+        guns[1] = new GunStats(-1);
+        guns[2].ResetAmmo(true);
+        ResetSlots();
+    }
+
+    public void ResetSlots()
+    {
+        if (isLocalPlayer)
+        {
+            GameObject weaponDisplay = GameObject.Find("WeaponDisplay");
+            WeaponDisplay weaps = weaponDisplay.GetComponent<WeaponDisplay>();
+            weaps.ChangeSlot(0, -1);
+            weaps.ChangeSlot(1, -1);
+            weaps.ChangeSlot(2, 0);
+        }
     }
 
     // the reset method lets us run slow code (like "Find") in the editor where performance
@@ -133,7 +144,7 @@ public class GunController : NetworkBehaviour {
         if (!isLocalPlayer)
             return;
 
-        if (minigun && (!Input.GetButton("Fire1") || currentAmmoInMag == 0) && minigunShot.isPlaying)
+        if (minigun && (!Input.GetButton("Fire1") || currentGun.currentAmmoInMag == 0) && minigunShot.isPlaying)
         {
             CmdStopMinigun();
         }
@@ -141,9 +152,9 @@ public class GunController : NetworkBehaviour {
         {
             if (((automatic || minigun) && Input.GetButton("Fire1") || !(automatic || minigun) && Input.GetButtonDown("Fire1")) && Time.time >= fireDelay && !playerTarget._isDead)
             {
-                fireDelay = Time.time + fireRate;
+                fireDelay = Time.time + currentGun.fireRate;
                 Debug.Log(fireDelay - Time.time);
-                bool ammoInMag = currentAmmoInMag > 0;
+                bool ammoInMag = currentGun.currentAmmoInMag > 0;
                 Shoot();
                 if (minigun && ammoInMag)
                 {
@@ -157,18 +168,22 @@ public class GunController : NetworkBehaviour {
                 {
                     rb.AddForce(-fpsCamera.transform.forward * 300, ForceMode.Impulse);
                 }
-                if (currentAmmoInReserve > 0 && currentAmmoInMag == 0)
+                if (currentGun.currentAmmoInReserve > 0 && currentGun.currentAmmoInMag == 0)
                 {
-                    StartCoroutine(ReloadDelayer());
+                    reloadDelayer = ReloadDelayer();
+                    StartCoroutine(reloadDelayer);
                 }
             }
 
-            if (currentAmmoInReserve > 0 && currentAmmoInMag != maxAmmoInMag && Input.GetKeyDown(KeyCode.R))
+            if (currentGun.currentAmmoInReserve > 0 && currentGun.currentAmmoInMag != currentGun.maxAmmoInMag && Input.GetKeyDown(KeyCode.R))
             {
-                StartCoroutine(ReloadDelayer());
+                reloadDelayer = ReloadDelayer();
+                StartCoroutine(reloadDelayer);
             }
         }
     }
+
+    private IEnumerator reloadDelayer;
 
     public IEnumerator ReloadDelayer()
     {
@@ -182,16 +197,16 @@ public class GunController : NetworkBehaviour {
             remainingTime -= Time.deltaTime;
 
         }
-        if (currentAmmoInReserve >= maxAmmoInMag - currentAmmoInMag)
+        if (currentGun.currentAmmoInReserve >= currentGun.maxAmmoInMag - currentGun.currentAmmoInMag)
         {
-            currentAmmoInReserve -= (maxAmmoInMag - currentAmmoInMag);
-            currentAmmoInMag = maxAmmoInMag;
+            currentGun.currentAmmoInReserve -= (currentGun.maxAmmoInMag - currentGun.currentAmmoInMag);
+            currentGun.currentAmmoInMag = currentGun.maxAmmoInMag;
 
         }
-        else if (currentAmmoInReserve < maxAmmoInMag - currentAmmoInMag)
+        else if (currentGun.currentAmmoInReserve < currentGun.maxAmmoInMag - currentGun.currentAmmoInMag)
         {
-            currentAmmoInMag += currentAmmoInReserve;
-            currentAmmoInReserve = 0;
+            currentGun.currentAmmoInMag += currentGun.currentAmmoInReserve;
+            currentGun.currentAmmoInReserve = 0;
         }
         locked = false;
     }
@@ -287,37 +302,37 @@ public class GunController : NetworkBehaviour {
     }
 
     void Shoot() {
-        if (currentAmmoInMag > 0)
+        if (currentGun.currentAmmoInMag > 0)
         {
             flash.Play();
-            if (currentGun != 5)
+            if (currentGun.gunIndex != 5)
             {
-                CmdPlayGunshot(currentGun);
+                CmdPlayGunshot(currentGun.gunIndex);
             }
-            if (currentGun != 0 && currentGun != 1 && currentGun != 3)
+            if (currentGun.gunIndex != 0 && currentGun.gunIndex != 1 && currentGun.gunIndex != 3)
             {
                 Vector3 exit = barrellExit.position;
-                if (currentGun == 6)
+                if (currentGun.gunIndex == 6)
                 {
                     exit = barrellExit.position + (fpsCamera.transform.forward.normalized * (barrellExit.position - transform.position).magnitude / 2f);
                 }
                 Vector3 forward = fpsCamera.transform.forward;
-                if (currentGun == 5)
+                if (currentGun.gunIndex == 5)
                 {
                     forward = Quaternion.Euler(new Vector3(Random.Range(-2f, 2f), Random.Range(-2f, 2f), Random.Range(-2f, 2f))) * forward;
                 }
-                CmdSpawnProjectile(team.team, team.playerID, damage, currentGun, range, pli.playerName, exit,
+                CmdSpawnProjectile(team.team, team.playerID, currentGun.damage, currentGun.gunIndex, currentGun.range, pli.playerName, exit,
                     fpsCamera.transform.rotation, forward);
             }
             else
             {
                 RaycastHit hit;
                 Vector3 forward = fpsCamera.transform.forward;
-                if (currentGun == 0 || currentGun == 1)
+                if (currentGun.gunIndex == 0 || currentGun.gunIndex == 1)
                 {
                     forward = Quaternion.Euler(new Vector3(Random.Range(-2f, 2f), Random.Range(-2f, 2f), Random.Range(-2f, 2f))) * forward;
                 }
-                if (Physics.Raycast(fpsCamera.transform.position, forward, out hit, range))
+                if (Physics.Raycast(fpsCamera.transform.position, forward, out hit, currentGun.range))
                 {
                     Debug.Log(hit.transform.name);
 
@@ -328,7 +343,8 @@ public class GunController : NetworkBehaviour {
                             target.team == null && target.bid == null && 
                             (team.team == 0 && target.gameObject.tag == "BlueSpawnCore" || team.team == 1 && target.gameObject.tag == "RedSpawnCore"))
                         {
-                            CmdDoRaycastHit(target.gameObject.GetComponent<NetworkIdentity>().netId, pli.playerName, team.team, currentGun, damage, target.bid != null && target.bid.team == team.team);
+                            CmdDoRaycastHit(target.gameObject.GetComponent<NetworkIdentity>().netId, pli.playerName, team.team,
+                                currentGun.gunIndex, currentGun.damage, target.bid != null && target.bid.team == team.team);
                             if (hit.rigidbody != null)
                             {
                                 hit.rigidbody.AddForce(-hit.normal * force);
@@ -342,7 +358,7 @@ public class GunController : NetworkBehaviour {
                 }
 
             }
-            currentAmmoInMag--;
+            currentGun.currentAmmoInMag--;
         }
         else
         {
@@ -369,7 +385,7 @@ public class GunController : NetworkBehaviour {
     {
         GameObject hitObject = ClientScene.FindLocalObject(netid);
         Target target = hitObject.GetComponent<Target>();
-        target.DamageTarget(pli.playerName, team.team, currentGun, inDamage, 1f, isFriendlyFire);
+        target.DamageTarget(pli.playerName, team.team, currentGun.gunIndex, inDamage, 1f, isFriendlyFire);
     }
 
     // This command is called from the localPlayer and run on the server. Note that Commands must begin with 'Cmd'
@@ -432,7 +448,7 @@ public class GunController : NetworkBehaviour {
     public void RpcUpdateProjectileData(NetworkInstanceId nid, int team, int playerID, float damage, int gunChoice, float projectileLifetime, string playerName)
     {
         GameObject projectile = ClientScene.FindLocalObject(nid);
-        if  (projectile != null)
+        if (projectile != null)
         {
             ProjectileController pc = projectile.GetComponent<ProjectileController>();
             pc.firingTeam = team;
@@ -442,130 +458,70 @@ public class GunController : NetworkBehaviour {
             pc.firingGun = gunChoice;
             pc.projectileLifetime = projectileLifetime;
         }
-        
+
     }
 
+
     [Command]
-    public void CmdSwitch(int gunIndex)
+    public void CmdSwitch(int slotIndex)
     {
-
-        Switch(gunIndex);
-        RpcSwitch(gunIndex);
-
+        Switch(slotIndex);
+        RpcSwitch(slotIndex);
     }
 
     [ClientRpc]
-    void RpcSwitch(int gunIndex)
+    void RpcSwitch(int slotIndex)
     {
-
-        Switch(gunIndex);
-
+        Switch(slotIndex);
     }
 
-    void Switch(int gunIndex)
+    public void Switch(int slotIndex)
     {
-        gun.transform.GetChild(currentGun).gameObject.SetActive(false);
-        automatic = gunIndex == 1;
-        shotgun = gunIndex == 2;
-        sniper = gunIndex == 3;
-        rockets = gunIndex == 4;
-        minigun = gunIndex == 5;
-        larpa = gunIndex == 6;
-        gauss = gunIndex == 7;
-        cluster = gunIndex == 8;
-        currentGun = gunIndex;
-        gun.transform.GetChild(currentGun).gameObject.SetActive(true);
-        barrellExit = gun.transform.GetChild(currentGun).GetChild(0);
+        if (reloadDelayer != null)
+        {
+            StopCoroutine(reloadDelayer);
+            locked = false;
+        }
+        gun.transform.GetChild(currentGun.gunIndex).gameObject.SetActive(false);
+        selectedGun = slotIndex;
+        automatic = currentGun.gunIndex == 1;
+        shotgun = currentGun.gunIndex == 2;
+        sniper = currentGun.gunIndex == 3;
+        rockets = currentGun.gunIndex == 4;
+        minigun = currentGun.gunIndex == 5;
+        larpa = currentGun.gunIndex == 6;
+        gauss = currentGun.gunIndex == 7;
+        cluster = currentGun.gunIndex == 8;
+        gun.transform.GetChild(currentGun.gunIndex).gameObject.SetActive(true);
+        barrellExit = gun.transform.GetChild(currentGun.gunIndex).GetChild(0);
 
-        if (shotgun)
+    }
+    
+
+    public void Buy(int gunIndex)
+    {
+        if (guns[0].gunIndex == -1)
         {
-            damage = 15;
-            maxAmmoInMag = 5;
-            startingReserveAmmo = 30;
-            fireRate = 1f;
-            range = 3000f;
-            currentAmmoInMag = maxAmmoInMag;
-            currentAmmoInReserve = startingReserveAmmo;
-        }
-        else if (automatic)
-        {
-            damage = 10;
-            maxAmmoInMag = 30;
-            startingReserveAmmo = 150;
-            fireRate = .1f;
-            range = 2000f;
-            currentAmmoInMag = maxAmmoInMag;
-            currentAmmoInReserve = startingReserveAmmo;
-        }
-        else if (sniper)
-        {
-            damage = 60;
-            maxAmmoInMag = 1;
-            startingReserveAmmo = 15;
-            fireRate = 1f;
-            range = 3000f;
-            currentAmmoInMag = maxAmmoInMag;
-            currentAmmoInReserve = startingReserveAmmo;
-        }
-        else if (rockets)
-        {
-            damage = 60;
-            maxAmmoInMag = 4;
-            startingReserveAmmo = 20;
-            fireRate = 1f;
-            range = 2000f;
-            currentAmmoInMag = maxAmmoInMag;
-            currentAmmoInReserve = startingReserveAmmo;
-        }
-        else if (minigun)
-        {
-            damage = 10;
-            maxAmmoInMag = 60;
-            startingReserveAmmo = 180;
-            fireRate = .05f;
-            range = 8000f;
-            currentAmmoInMag = maxAmmoInMag;
-            currentAmmoInReserve = startingReserveAmmo;
-        }
-        else if (larpa)
-        {
-            damage = 30;
-            maxAmmoInMag = 2;
-            startingReserveAmmo = 10;
-            fireRate = 1f;
-            range = 600f;
-            currentAmmoInMag = maxAmmoInMag;
-            currentAmmoInReserve = startingReserveAmmo;
-        }
-        else if (gauss)
-        {
-            damage = 60;
-            maxAmmoInMag = 1;
-            startingReserveAmmo = 15;
-            fireRate = 1f;
-            range = 8000f;
-            currentAmmoInMag = maxAmmoInMag;
-            currentAmmoInReserve = startingReserveAmmo;
-        }
-        else if (cluster)
-        {
-            damage = 30;
-            maxAmmoInMag = 3;
-            startingReserveAmmo = 15;
-            fireRate = 1f;
-            range = 1200f;
-            currentAmmoInMag = maxAmmoInMag;
-            currentAmmoInReserve = startingReserveAmmo;
+            guns[0] = new GunStats(gunIndex);
+
+            if (isLocalPlayer)
+            {
+                GameObject weaponDisplay = GameObject.Find("WeaponDisplay");
+                WeaponDisplay weaps = weaponDisplay.GetComponent<WeaponDisplay>();
+                weaps.ChangeSlot(0, gunIndex);
+            }
+            Switch(0);
         }
         else
         {
-            damage = 20;
-            maxAmmoInMag = 20;
-            startingReserveAmmo = 50;
-            fireRate = .5f;
-            range = 2000f;
-            currentAmmoInMag = maxAmmoInMag;
-            currentAmmoInReserve = startingReserveAmmo;
+            guns[1] = new GunStats(gunIndex);
+            if (isLocalPlayer)
+            {
+                GameObject weaponDisplay = GameObject.Find("WeaponDisplay");
+                WeaponDisplay weaps = weaponDisplay.GetComponent<WeaponDisplay>();
+                weaps.ChangeSlot(1, gunIndex);
+            }
+            Switch(1);
         }
     }
 }

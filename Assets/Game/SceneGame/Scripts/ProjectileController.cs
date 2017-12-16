@@ -122,14 +122,6 @@ public class ProjectileController : NetworkBehaviour {
             CmdChangeTargetRotation(rotation * targetRotation);
 
         }
-        if (!isBouncy)
-        {
-            if (isServer)
-            {
-                CmdHideProj();
-            }
-            
-        }
         // if the projectile was fired by your team, leave
         if (collisionTeam != null && collisionTeam.team == firingTeam ||
             collision.gameObject.tag == "RedSpawnCore" && firingTeam == 0 ||
@@ -140,6 +132,14 @@ public class ProjectileController : NetworkBehaviour {
         BuildIdentifier collisionBID = collision.gameObject.GetComponent<BuildIdentifier>();
 
 
+        if (!isBouncy)
+        {
+            if (isServer)
+            {
+                CmdHideProj();
+            }
+
+        }
 
         ExplosionController tempExp = gameObject.GetComponent<ExplosionController>();
         if (tempExp != null)

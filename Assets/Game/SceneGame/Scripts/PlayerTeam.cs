@@ -171,7 +171,7 @@ public class PlayerTeam : NetworkBehaviour {
             else if (other.gameObject.CompareTag("Pick Up (Ammo)"))
             {
                 GunController gc = GetComponent<GunController>();
-                gc.ResetAmmo(false);
+                gc.RpcResetAllAmmo(false);
                 CmdDisablePickup(other.gameObject.GetComponent<NetworkIdentity>().netId);
                 nm.NewNotification("Picked up ammo", false);
             }
