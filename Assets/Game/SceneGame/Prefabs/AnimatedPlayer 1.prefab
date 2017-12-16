@@ -7170,6 +7170,8 @@ MonoBehaviour:
   lookTextBox: {fileID: 0}
   lookText: {fileID: 0}
   locked: 0
+  triangleBreak: {fileID: 1580310815819366, guid: bd4c0457de32dc740af8c282d7b6ddbd,
+    type: 2}
 --- !u!114 &114344024519532110
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7359,6 +7361,7 @@ MonoBehaviour:
   locked: 0
   pli: {fileID: 0}
   playerTarget: {fileID: 0}
+  mainCamera: {fileID: 1649324387332556}
   pistolShot: {fileID: 82406938388168988}
   assaultOneShot: {fileID: 82423702372794326}
   assaultTwoShot: {fileID: 82501985894931052}

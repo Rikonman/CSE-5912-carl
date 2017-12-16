@@ -315,6 +315,7 @@ MonoBehaviour:
   spawner: {fileID: 0}
   explosion: {fileID: 1803723717342644}
   explosionSound: {fileID: 82423038981993238}
+  damageExtensionRadius: 0.5
   numEmitted: 100
   grenadeEmit: 0
 --- !u!114 &114982235168799820

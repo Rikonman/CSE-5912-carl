@@ -32,11 +32,16 @@ public class playerAnimation : NetworkBehaviour {
         target = GetComponent<Target>();
     }
 
+    public void MoveXRotation(float amount)
+    {
+        xRotation -= amount;
+    }
+
     // Update is called once per frame
     void Update () {
         if (!isLocalPlayer)
             return;
-        xRotation -= Input.GetAxis("Mouse Y") * lookSensitivity;
+        MoveXRotation(Input.GetAxis("Mouse Y") * lookSensitivity);
         if (xRotation > 80f)
         {
             xRotation = 80f;

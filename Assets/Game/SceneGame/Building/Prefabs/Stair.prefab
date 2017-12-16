@@ -377,7 +377,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe3106a7a3e87d24393a1d7da8f89879, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingHealth: 200
+  startingHealth: 300
   currentHealth: 0
   startingFatigue: 100
   currentFatigue: 0
@@ -391,8 +391,11 @@ MonoBehaviour:
   emperor: {fileID: 0}
   gunScript: {fileID: 0}
   SpawnObject: {fileID: 0}
+  lookTextBox: {fileID: 0}
   lookText: {fileID: 0}
   locked: 0
+  triangleBreak: {fileID: 1580310815819366, guid: bd4c0457de32dc740af8c282d7b6ddbd,
+    type: 2}
 --- !u!114 &114782649635141454
 MonoBehaviour:
   m_ObjectHideFlags: 1

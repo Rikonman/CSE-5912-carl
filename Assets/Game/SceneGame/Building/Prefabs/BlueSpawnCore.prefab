@@ -185,8 +185,11 @@ MonoBehaviour:
   emperor: {fileID: 0}
   gunScript: {fileID: 0}
   SpawnObject: {fileID: 0}
+  lookTextBox: {fileID: 0}
   lookText: {fileID: 0}
   locked: 0
+  triangleBreak: {fileID: 1580310815819366, guid: bd4c0457de32dc740af8c282d7b6ddbd,
+    type: 2}
 --- !u!198 &198400392786268994
 ParticleSystem:
   m_ObjectHideFlags: 1

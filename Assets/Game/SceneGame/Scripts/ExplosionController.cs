@@ -11,6 +11,7 @@ public class ExplosionController : NetworkBehaviour {
     public ItemSpawner spawner;
     public GameObject explosion;
     public AudioSource explosionSound;
+    public float damageExtensionRadius;
     public int numEmitted;
     public bool grenadeEmit;
 
@@ -111,8 +112,20 @@ public class ExplosionController : NetworkBehaviour {
         {
             return;
         }
-
-        pc.DamageTarget(collisionTarget, collisionTeam == null, other.gameObject.tag, hasParent, hasParent ? 3f : 1f, collisionBID != null && collisionBID.team == pc.firingTeam);
+        float damage = pc.damage;
+        Vector3 closestPoint = other.ClosestPointOnBounds(sc.center * transform.localScale.x + transform.position);
+        float distance = Vector3.Distance(closestPoint, sc.center * transform.localScale.x + transform.position);
+        float modifier = 1.0f;
+        float percent = 1.0f - distance / (sc.radius * transform.localScale.x);
+        if (percent < 0f)
+        {
+            percent = 0f;
+        }
+        if (percent < damageExtensionRadius)
+        {
+            modifier = percent / damageExtensionRadius;
+        }
+        collisionTarget.DamageTarget(pc.firingPlayerName, pc.firingTeam, pc.firingGun, pc.damage * modifier, hasParent ? 3f : 1f, collisionBID != null && collisionBID.team == pc.firingTeam);
     }
 
     // Update is called once per frame

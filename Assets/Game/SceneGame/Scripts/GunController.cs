@@ -52,6 +52,8 @@ public class GunController : NetworkBehaviour {
     CapsuleCollider cc;
     public PlayerLobbyInfo pli;
     public Target playerTarget;
+    playerAnimation pa;
+    public GameObject mainCamera;
 
     public AudioSource pistolShot;
     public AudioSource assaultOneShot;
@@ -76,6 +78,7 @@ public class GunController : NetworkBehaviour {
         cc = GetComponent<CapsuleCollider>();
         pli = GetComponent<PlayerLobbyInfo>();
         playerTarget = GetComponent<Target>();
+        pa = GetComponent<playerAnimation>();
         CmdSwitch(0);
     }
 
@@ -291,13 +294,49 @@ public class GunController : NetworkBehaviour {
             {
                 CmdPlayGunshot(currentGun);
             }
-            Vector3 exit = barrellExit.position;
-            if (currentGun == 6)
+            if (currentGun != 0 && currentGun != 1 && currentGun != 3)
             {
-                exit = barrellExit.position + (fpsCamera.transform.forward.normalized * (barrellExit.position - transform.position).magnitude / 2f);
+                Vector3 exit = barrellExit.position;
+                if (currentGun == 6)
+                {
+                    exit = barrellExit.position + (fpsCamera.transform.forward.normalized * (barrellExit.position - transform.position).magnitude / 2f);
+                }
+                CmdSpawnProjectile(team.team, team.playerID, damage, currentGun, range, pli.playerName, exit,
+                    fpsCamera.transform.rotation, fpsCamera.transform.forward);
             }
-            CmdSpawnProjectile(team.team, team.playerID, damage, currentGun, range, pli.playerName, exit, 
-                fpsCamera.transform.rotation, fpsCamera.transform.forward);
+            else
+            {
+                RaycastHit hit;
+                Vector3 forward = fpsCamera.transform.forward;
+                if (currentGun == 0 || currentGun == 1)
+                {
+                    forward = Quaternion.Euler(new Vector3(Random.Range(-2f, 2f), Random.Range(-2f, 2f), Random.Range(-2f, 2f))) * forward;
+                }
+                if (Physics.Raycast(fpsCamera.transform.position, forward, out hit, range))
+                {
+                    Debug.Log(hit.transform.name);
+
+                    Target target = hit.transform.GetComponent<Target>();
+                    if (target != null)
+                    {
+                        if (target.team != null && target.team.team != team.team || target.bid != null || 
+                            target.team == null && target.bid == null && 
+                            (team.team == 0 && target.gameObject.tag == "BlueSpawnCore" || team.team == 1 && target.gameObject.tag == "RedSpawnCore"))
+                        {
+                            CmdDoRaycastHit(target.gameObject.GetComponent<NetworkIdentity>().netId, pli.playerName, team.team, currentGun, damage, target.bid != null && target.bid.team == team.team);
+                            if (hit.rigidbody != null)
+                            {
+                                hit.rigidbody.AddForce(-hit.normal * force);
+                            }
+                        }
+                    }
+                    StartCoroutine(FireDelayer(.1f));
+                    rb.AddForce(-fpsCamera.transform.forward * 5, ForceMode.Impulse);
+                    GameObject tempHitEffect = Instantiate(hitEffect, hit.point, Quaternion.LookRotation(hit.normal));
+                    Destroy(tempHitEffect, 0.3f);
+                }
+
+            }
             currentAmmoInMag--;
         }
         else
@@ -305,25 +344,27 @@ public class GunController : NetworkBehaviour {
             // Play empty mag sound here
         }
         
-        /*RaycastHit hit;
-        if (Physics.Raycast(fpsCamera.transform.position, fpsCamera.transform.forward, out hit, range))
+    }
+
+    public IEnumerator FireDelayer(float rate)
+    {
+        float remainingTime = rate;
+
+        while (remainingTime > 0)
         {
-            Debug.Log(hit.transform.name);
+            yield return null;
 
-            Target target = hit.transform.GetComponent<Target>();
-            if (target != null)
-            {
-                target.TakeDamage(damage);
-            }
+            remainingTime -= Time.deltaTime;
+            pa.MoveXRotation(remainingTime > .025f ? 3f / rate * Time.deltaTime : -3f / rate * Time.deltaTime);
+        }
+    }
 
-            if (hit.rigidbody != null)
-            {
-                hit.rigidbody.AddForce(-hit.normal * force);
-            }
-
-            GameObject tempHitEffect = Instantiate(hitEffect, hit.point, Quaternion.LookRotation(hit.normal));
-            Destroy(tempHitEffect, 0.3f);
-        }*/
+    [Command]
+    public void CmdDoRaycastHit(NetworkInstanceId netid, string playerName, int teamID, int gunChoice, float inDamage, bool isFriendlyFire)
+    {
+        GameObject hitObject = ClientScene.FindLocalObject(netid);
+        Target target = hitObject.GetComponent<Target>();
+        target.DamageTarget(pli.playerName, team.team, currentGun, inDamage, 1f, isFriendlyFire);
     }
 
     // This command is called from the localPlayer and run on the server. Note that Commands must begin with 'Cmd'
@@ -489,7 +530,7 @@ public class GunController : NetworkBehaviour {
         }
         else if (rockets)
         {
-            damage = 50;
+            damage = 60;
             maxAmmoInMag = 4;
             startingReserveAmmo = 20;
             fireRate = 1f;
@@ -542,7 +583,7 @@ public class GunController : NetworkBehaviour {
             damage = 20;
             maxAmmoInMag = 20;
             startingReserveAmmo = 50;
-            fireRate = .1f;
+            fireRate = .5f;
             range = 2000f;
             currentAmmoInMag = maxAmmoInMag;
             currentAmmoInReserve = startingReserveAmmo;

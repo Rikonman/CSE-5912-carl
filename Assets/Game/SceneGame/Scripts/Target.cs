@@ -42,6 +42,7 @@ public class Target : NetworkBehaviour {
     public Text lookText;
     public bool locked;
     IEnumerator damageRoutine;
+    public GameObject triangleBreak;
 
     public delegate void OnHealthChanged(float prevValue, float newValue);
     public OnHealthChanged onHealthChanged;
@@ -450,7 +451,6 @@ public class Target : NetworkBehaviour {
         }
         else if (bid != null)
         {
-            Destroy(gameObject);
             GameObject tempBase;
             if (bid.team == 0)
             {
@@ -462,10 +462,6 @@ public class Target : NetworkBehaviour {
             }
             BaseBuildings tempBuilding = tempBase.GetComponent<BaseBuildings>();
             tempBuilding.CmdDestroyMountPoint(bid.parentMountPoint, bid.parentMountBool, bid.id, bid.team);
-        }
-        else
-        {
-            Destroy(gameObject);
         }
         if (isServer)
         {
@@ -498,8 +494,131 @@ public class Target : NetworkBehaviour {
                 emperor.GetComponent<EmperorController>().CmdAddEntertainment(30);
             }
         }
-        
+
         //rend.enabled = false;
+    }
+
+    [Command]
+    public void CmdAddKillMessage(string killerPlayer, int killerTeam, string victimName, int victimTeam, int firingGun)
+    {
+        RpcAddKillMessage(killerPlayer, killerTeam, victimName, victimTeam, firingGun);
+    }
+
+    [ClientRpc]
+    public void RpcAddKillMessage(string killerPlayer, int killerTeam, string victimName, int victimTeam, int firingGun)
+    {
+        GameObject.Find("KillsPanel").GetComponent<KillManager>().AddKill(killerPlayer, killerTeam, victimName, victimTeam, firingGun);
+    }
+
+    public void DamageTarget(string firingPlayerName, int firingTeam, int firingGun, float damage, float damageModifier, bool isFriendlyFire)
+    {
+
+        // have the target take damage
+        bool died = TakeDamage(damage / damageModifier / (isFriendlyFire ? 4f : 1f));
+        if (died && team != null)
+        {
+
+            CmdAddKillMessage(firingPlayerName, firingTeam, gameObject.GetComponent<PlayerLobbyInfo>().playerName,
+                gameObject.GetComponent<PlayerTeam>().team, firingGun);
+        }
+        else if (died && team == null)
+        {
+            bool isStone = false;
+            bool isCore = false;
+            if (bid != null)
+            {
+                isStone = bid.isStone;
+            }
+            else if (gameObject.tag == "RedSpawnCore" || gameObject.tag == "BlueSpawnCore")
+            {
+                CmdAddKillMessage(firingPlayerName, firingTeam, "Spawn Core", firingTeam == 0 ? 1 : 0, firingGun);
+                isCore = true;
+            }
+            Mesh M = new Mesh();
+            MeshFilter tempFilter;
+            SkinnedMeshRenderer tempSkinnedRenderer;
+            MeshRenderer tempRenderer;
+            bool hasParent = gameObject.transform.childCount > 0;
+            if (hasParent)
+            {
+                tempFilter = GetComponentInChildren<MeshFilter>();
+                tempSkinnedRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
+                tempRenderer = GetComponentInChildren<MeshRenderer>();
+            }
+            else
+            {
+                tempFilter = GetComponent<MeshFilter>();
+                tempSkinnedRenderer = GetComponent<SkinnedMeshRenderer>();
+                tempRenderer = GetComponent<MeshRenderer>();
+            }
+
+            if (tempFilter != null)
+            {
+                M = tempFilter.mesh;
+            }
+            else if (tempSkinnedRenderer != null)
+            {
+                M = tempSkinnedRenderer.sharedMesh;
+            }
+
+
+            TriangleExplosion tempTriangleExplosion = triangleBreak.GetComponent<TriangleExplosion>();
+            tempTriangleExplosion.verts = M.vertices;
+            tempTriangleExplosion.normals = M.normals;
+            tempTriangleExplosion.uvs = M.uv;
+
+            tempTriangleExplosion.indices = M.GetTriangles(0);
+            tempTriangleExplosion.isStone = isStone;
+            tempTriangleExplosion.isCore = isCore;
+
+            //NetworkServer.Lo.SetLocalObject(tempTB.netId, triangleBreak);
+            CmdDoBreak(transform.position, transform.rotation, M.vertices, M.normals, M.uv, M.GetTriangles(0), isStone, isCore);
+
+        }
+    }
+
+    [Command]
+    public void CmdDoBreak(Vector3 position, Quaternion rotation,
+        Vector3[] verts, Vector3[] normals, Vector2[] uvs, int[] indices, bool isStone, bool isCore)
+    {
+
+        //GameObject triangleBreak = NetworkServer.FindLocalObject(triangleBreakID);
+        GameObject instance = (GameObject)Instantiate(triangleBreak, position, rotation);
+        NetworkServer.Spawn(instance);
+        TriangleExplosion tempTriangleExplosion = instance.GetComponent<TriangleExplosion>();
+        tempTriangleExplosion.verts = verts;
+        tempTriangleExplosion.normals = normals;
+        tempTriangleExplosion.uvs = uvs;
+
+        tempTriangleExplosion.indices = indices;
+        tempTriangleExplosion.isStone = isStone;
+        tempTriangleExplosion.isCore = isCore;
+        //StartCoroutine(instance.GetComponent<TriangleExplosion>().SplitMesh(true));
+        NetworkIdentity tempNetworkID = instance.GetComponent<NetworkIdentity>();
+        RpcDoBreak(tempNetworkID.netId, position, rotation, verts, normals, uvs, indices, isStone, isCore);
+    }
+
+    [ClientRpc]
+    public void RpcDoBreak(NetworkInstanceId triangleBreakID, Vector3 position, Quaternion rotation,
+        Vector3[] verts, Vector3[] normals, Vector2[] uvs, int[] indices, bool isStone, bool isCore)
+    {
+
+        GameObject triangleBreak = ClientScene.FindLocalObject(triangleBreakID);
+        if (triangleBreak != null)
+        {
+            GameObject instance = (GameObject)Instantiate(triangleBreak, position, rotation);
+            TriangleExplosion tempTriangleExplosion = instance.GetComponent<TriangleExplosion>();
+            tempTriangleExplosion.verts = verts;
+            tempTriangleExplosion.normals = normals;
+            tempTriangleExplosion.uvs = uvs;
+
+            tempTriangleExplosion.indices = indices;
+            tempTriangleExplosion.isStone = isStone;
+            tempTriangleExplosion.isCore = isCore;
+            StartCoroutine(instance.GetComponent<TriangleExplosion>().SplitMesh(true));
+        }
+        Destroy(gameObject);
+
     }
 
     [Command]
