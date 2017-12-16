@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.Networking;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -54,13 +55,14 @@ public class PlayerController : NetworkBehaviour
     public GameObject[] snipeObjects;
     public Target target;
     public float jumpCooldown;
-
+    bool viewChanged;
     private Rigidbody rb;
     //private GameObject clientHUD;
 
     // Use this for initialization
     void Start()
     {
+        viewChanged = false;
         locked = false;
         jumpCooldown = 0f;
         // if this player is not the local player...
@@ -167,13 +169,16 @@ public class PlayerController : NetworkBehaviour
                     rb.AddForce(Physics.gravity, ForceMode.Acceleration);
                 }
             }
-            if (gc != null && (gc.sniper || gc.gauss) && Input.GetButtonUp("Fire2"))
+            if (gc != null && (gc.sniper || gc.gauss) && Input.GetButtonDown("Fire2") && !viewChanged)
             {
                 isSniping = !isSniping;
+                viewChanged = true;
+                StartCoroutine(ViewDelayer());
             }
-            if (gc != null && !gc.sniper && !gc.gauss && isSniping)
+            else if (gc != null && !gc.sniper && !gc.gauss && isSniping)
             {
                 isSniping = !isSniping;
+                viewChanged = false;
             }
         }
         else
@@ -198,6 +203,20 @@ public class PlayerController : NetworkBehaviour
                 target.CmdStopWalkingSound();
             }
         }
+    }
+
+    public IEnumerator ViewDelayer()
+    {
+        float remainingTime = .25f;
+
+        while (remainingTime > 0)
+        {
+            yield return null;
+
+            remainingTime -= Time.deltaTime;
+
+        }
+        viewChanged = false;
     }
 
     public void LateUpdate()

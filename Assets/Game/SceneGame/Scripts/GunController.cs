@@ -380,36 +380,10 @@ public class GunController : NetworkBehaviour {
         {
             for (int counter = 0; counter < 8; counter++)
             {
-                Vector3 changeVector;
-                float val1 = Random.Range(.5f, 2f);
-                float val2 = Random.Range(.5f, 2f);
-                float variation = Random.Range(200f, 1000f);
-                int choice = Random.Range(0, 3);
-                if (choice == 0 && forward.z != 0f)
-                {
-                    float val3 = (-val1 * forward.x - val2 * forward.y) / forward.z;
-                    changeVector = new Vector3(val1, val2, val3);
-                    changeVector.Normalize();
-                }
-                else if ((choice == 1 || forward.z == 0f) && forward.y != 0f)
-                {
-                    float val3 = (-val1 * forward.x - val2 * forward.z) / forward.y;
-                    changeVector = new Vector3(val1, val3, val2);
-                    changeVector.Normalize();
-                }
-                else if ((choice == 1 || forward.z == 0f || forward.y == 0f) && forward.x != 0f)
-                {
-                    float val3 = (-val1 * forward.z - val2 * forward.y) / forward.x;
-                    changeVector = new Vector3(val3, val2, val1);
-                    changeVector.Normalize();
-                }
-                else
-                {
-                    changeVector = forward;
-                    changeVector.Normalize();
-                }
-                GameObject instance = Instantiate(projectilePrefab, position, rotation);
-                instance.GetComponent<Rigidbody>().AddForce(forward * rangeModifier + changeVector * variation);
+                Vector3 newForward = Quaternion.Euler(new Vector3(Random.Range(-20f, 20f), Random.Range(-20f, 20f), Random.Range(-20f, 20f))) * forward;
+
+                GameObject instance = Instantiate(projectilePrefab, position + newForward.normalized / 2f, rotation);
+                instance.GetComponent<Rigidbody>().AddForce(newForward * rangeModifier/* + changeVector * variation*/);
 
                 ProjectileController pc = instance.GetComponent<ProjectileController>();
                 pc.firingTeam = team;
@@ -444,6 +418,10 @@ public class GunController : NetworkBehaviour {
             else if (gunChoice == 4)
             {
                 pc.projectileLifetime = 4f;
+            }
+            else if (gunChoice == 7)
+            {
+                pc.projectileLifetime = 1.6f;
             }
             NetworkServer.Spawn(instance);
             RpcUpdateProjectileData(instance.GetComponent<NetworkIdentity>().netId, team, playerID, damage, gunChoice, pc.projectileLifetime, playerName);
@@ -505,7 +483,7 @@ public class GunController : NetworkBehaviour {
             maxAmmoInMag = 5;
             startingReserveAmmo = 30;
             fireRate = 1f;
-            range = 2000f;
+            range = 3000f;
             currentAmmoInMag = maxAmmoInMag;
             currentAmmoInReserve = startingReserveAmmo;
         }

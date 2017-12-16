@@ -66,8 +66,14 @@ public class ProjectileController : NetworkBehaviour {
         age += Time.deltaTime;
         if (age > projectileLifetime)
         {
+            if (isServer)
+            {
+                CmdHideProj();
+            }
+            
             // destroy it on the network
-            Destroy(gameObject);
+            Destroy(gameObject, 2f);
+            age = -2f;
         }
 	}
     
@@ -114,6 +120,14 @@ public class ProjectileController : NetworkBehaviour {
 
             Quaternion rotation = Quaternion.FromToRotation(oldVelocity, reflectVector);
             CmdChangeTargetRotation(rotation * targetRotation);
+
+        }
+        if (!isBouncy)
+        {
+            if (isServer)
+            {
+                CmdHideProj();
+            }
             
         }
         // if the projectile was fired by your team, leave
@@ -126,14 +140,6 @@ public class ProjectileController : NetworkBehaviour {
         BuildIdentifier collisionBID = collision.gameObject.GetComponent<BuildIdentifier>();
 
 
-        if (!isBouncy)
-        {
-            // the projectile is going to explode and is no longer live
-            isLive = false;
-            // hide the projectile body
-            projectileRenderer.enabled = false;
-            HideProj();
-        }
 
         ExplosionController tempExp = gameObject.GetComponent<ExplosionController>();
         if (tempExp != null)
@@ -168,12 +174,23 @@ public class ProjectileController : NetworkBehaviour {
 
     }
 
-    public void HideProj()
+    [Command]
+    public void CmdHideProj()
     {
         // the projectile is going to explode and is no longer live
         isLive = false;
         // hide the projectile body
-        projectileRenderer.enabled = false;
+        GetComponent<MeshRenderer>().enabled = false;
+        RpcHideProj();
+    }
+
+    [ClientRpc]
+    public void RpcHideProj()
+    {
+        // the projectile is going to explode and is no longer live
+        isLive = false;
+        // hide the projectile body
+        GetComponent<MeshRenderer>().enabled = false;
     }
 
     [Command]
