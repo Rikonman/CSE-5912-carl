@@ -301,8 +301,13 @@ public class GunController : NetworkBehaviour {
                 {
                     exit = barrellExit.position + (fpsCamera.transform.forward.normalized * (barrellExit.position - transform.position).magnitude / 2f);
                 }
+                Vector3 forward = fpsCamera.transform.forward;
+                if (currentGun == 5)
+                {
+                    forward = Quaternion.Euler(new Vector3(Random.Range(-2f, 2f), Random.Range(-2f, 2f), Random.Range(-2f, 2f))) * forward;
+                }
                 CmdSpawnProjectile(team.team, team.playerID, damage, currentGun, range, pli.playerName, exit,
-                    fpsCamera.transform.rotation, fpsCamera.transform.forward);
+                    fpsCamera.transform.rotation, forward);
             }
             else
             {
@@ -432,17 +437,13 @@ public class GunController : NetworkBehaviour {
             pc.firingPlayerName = playerName;
             pc.damage = damage;
             pc.firingGun = gunChoice;
-            if (gunChoice == 3 || gunChoice == 6)
+            if (gunChoice == 6)
             {
                 pc.projectileLifetime = 5f;
             }
             else if (gunChoice == 4)
             {
                 pc.projectileLifetime = 4f;
-            }
-            else if (gunChoice == 7)
-            {
-                pc.projectileLifetime = 3f;
             }
             NetworkServer.Spawn(instance);
             RpcUpdateProjectileData(instance.GetComponent<NetworkIdentity>().netId, team, playerID, damage, gunChoice, pc.projectileLifetime, playerName);
@@ -540,11 +541,11 @@ public class GunController : NetworkBehaviour {
         }
         else if (minigun)
         {
-            damage = 15;
+            damage = 10;
             maxAmmoInMag = 60;
             startingReserveAmmo = 180;
             fireRate = .05f;
-            range = 3000f;
+            range = 8000f;
             currentAmmoInMag = maxAmmoInMag;
             currentAmmoInReserve = startingReserveAmmo;
         }
@@ -564,7 +565,7 @@ public class GunController : NetworkBehaviour {
             maxAmmoInMag = 1;
             startingReserveAmmo = 15;
             fireRate = 1f;
-            range = 2500f;
+            range = 8000f;
             currentAmmoInMag = maxAmmoInMag;
             currentAmmoInReserve = startingReserveAmmo;
         }
