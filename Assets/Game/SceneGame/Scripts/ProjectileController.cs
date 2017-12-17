@@ -14,6 +14,9 @@ public class ProjectileController : NetworkBehaviour {
 
     bool isLive = true;
     public bool isBouncy;
+    public bool onlyHurtPlayer;
+    public bool persistent;
+    public bool positionLocked;
     float age;
     MeshRenderer projectileRenderer;
     public int firingTeam;
@@ -29,6 +32,7 @@ public class ProjectileController : NetworkBehaviour {
     // Use this for initialization
     void Start ()
     {
+        positionLocked = false;
         projectileRenderer = GetComponent<MeshRenderer>();
         rb = GetComponent<Rigidbody>();
         NetworkIdentity tempTB = triangleBreak.GetComponent<NetworkIdentity>();
@@ -62,19 +66,23 @@ public class ProjectileController : NetworkBehaviour {
         {
             originalRotation = Quaternion.Lerp(originalRotation, targetRotation, .2f);
         }
-        // if the projectile has been alive too long
-        age += Time.deltaTime;
-        if (age > projectileLifetime)
+        if (!persistent)
         {
-            if (isServer)
+            // if the projectile has been alive too long
+            age += Time.deltaTime;
+            if (age > projectileLifetime)
             {
-                CmdHideProj();
+                if (isServer)
+                {
+                    CmdHideProj();
+                }
+
+                // destroy it on the network
+                Destroy(gameObject, 2f);
+                age = -2f;
             }
-            
-            // destroy it on the network
-            Destroy(gameObject, 2f);
-            age = -2f;
         }
+        
 	}
     
 
@@ -98,8 +106,36 @@ public class ProjectileController : NetworkBehaviour {
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Projectile")
+        if (collision.gameObject.tag == "Projectile" && !persistent)
+        {
             return;
+        }
+        else if (collision.gameObject.tag == "Projectile" && collision.gameObject.GetComponent<ProjectileController>().persistent)
+        {
+            return;
+        }
+        else if (collision.gameObject.tag == "Projectile" && collision.gameObject.GetComponent<ProjectileController>().isLive)
+        {
+            if (isServer)
+            {
+                CmdHideProj();
+            }
+            return;
+        }
+        else if ((collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Building") && persistent && !positionLocked)
+        {
+            Ray lowerRay = new Ray(transform.position, -Vector3.up);
+            RaycastHit lowerRayhit;
+
+            if (Physics.Raycast(lowerRay, out lowerRayhit, 0.3f))
+            {
+                if (lowerRayhit.transform.gameObject.tag == "Ground" || lowerRayhit.transform.gameObject.tag == "Building")
+                {
+                    rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ;
+                    positionLocked = true;
+                }
+            }
+        }
         // if the projectile isn't live, leave (we only want to hit one thing and not go through objects)
         if (!isLive)
             return;
@@ -125,13 +161,14 @@ public class ProjectileController : NetworkBehaviour {
         // if the projectile was fired by your team, leave
         if (collisionTeam != null && collisionTeam.team == firingTeam ||
             collision.gameObject.tag == "RedSpawnCore" && firingTeam == 0 ||
-            collision.gameObject.tag == "BlueSpawnCore" && firingTeam == 1)
+            collision.gameObject.tag == "BlueSpawnCore" && firingTeam == 1 ||
+            onlyHurtPlayer && collisionTeam == null)
         {
             return;
         }
         BuildIdentifier collisionBID = collision.gameObject.GetComponent<BuildIdentifier>();
 
-
+        
         if (!isBouncy)
         {
             if (isServer)
@@ -182,6 +219,10 @@ public class ProjectileController : NetworkBehaviour {
         // hide the projectile body
         GetComponent<MeshRenderer>().enabled = false;
         RpcHideProj();
+        if (persistent)
+        {
+            Destroy(gameObject, .5f);
+        }
     }
 
     [ClientRpc]
@@ -191,6 +232,10 @@ public class ProjectileController : NetworkBehaviour {
         isLive = false;
         // hide the projectile body
         GetComponent<MeshRenderer>().enabled = false;
+        if (persistent)
+        {
+            Destroy(gameObject, .5f);
+        }
     }
 
     [Command]

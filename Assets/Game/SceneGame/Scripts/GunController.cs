@@ -19,7 +19,8 @@ public class GunController : NetworkBehaviour {
     public bool larpa = false;
     public bool gauss = false;
     public bool cluster = false;
-    
+    public bool spikes = false;
+
 
     [SerializeField]
     GameObject projectilePrefab;
@@ -31,6 +32,8 @@ public class GunController : NetworkBehaviour {
     GameObject gaussPrefab;
     [SerializeField]
     GameObject clusterPrefab;
+    [SerializeField]
+    GameObject spikePrefab;
     [SerializeField]
     Transform barrellExit;
     public PlayerTeam team;
@@ -70,6 +73,7 @@ public class GunController : NetworkBehaviour {
     public AudioSource larpaShot;
     public AudioSource gaussShot;
     public AudioSource clusterShot;
+    public AudioSource spikeShot;
     public int assaultCounter;
     void Start()
     {
@@ -299,6 +303,10 @@ public class GunController : NetworkBehaviour {
         {
             clusterShot.Play();
         }
+        else if (gunChoice == 9)
+        {
+            spikeShot.Play();
+        }
     }
 
     void Shoot() {
@@ -355,6 +363,10 @@ public class GunController : NetworkBehaviour {
                     rb.AddForce(-fpsCamera.transform.forward * 5, ForceMode.Impulse);
                     GameObject tempHitEffect = Instantiate(hitEffect, hit.point, Quaternion.LookRotation(hit.normal));
                     Destroy(tempHitEffect, 0.3f);
+                    if (hit.transform.gameObject.tag == "Projectile" && hit.transform.GetComponent<ProjectileController>().persistent)
+                    {
+                        CmdHideProj(hit.transform.GetComponent<NetworkIdentity>().netId);
+                    }
                 }
 
             }
@@ -365,6 +377,13 @@ public class GunController : NetworkBehaviour {
             // Play empty mag sound here
         }
         
+    }
+
+    [Command]
+    public void CmdHideProj(NetworkInstanceId nid)
+    {
+        GameObject projectile = ClientScene.FindLocalObject(nid);
+        projectile.GetComponent<ProjectileController>().CmdHideProj();
     }
 
     public IEnumerator FireDelayer(float rate)
@@ -392,15 +411,34 @@ public class GunController : NetworkBehaviour {
     [Command]
     void CmdSpawnProjectile(int team, int playerID, float damage, int gunChoice, float rangeModifier, string playerName, Vector3 position, Quaternion rotation, Vector3 forward)
     {
-        if (gunChoice == 2)
+        if (gunChoice == 2 || gunChoice == 9)
         {
             for (int counter = 0; counter < 8; counter++)
             {
-                Vector3 newForward = Quaternion.Euler(new Vector3(Random.Range(-20f, 20f), Random.Range(-20f, 20f), Random.Range(-20f, 20f))) * forward;
-
-                GameObject instance = Instantiate(projectilePrefab, position + newForward.normalized / 2f, rotation);
+                float spread = 20f;
+                if (gunChoice == 9)
+                {
+                    spread = 40f;
+                }
+                Vector3 newForward = Quaternion.Euler(new Vector3(Random.Range(-spread, spread), Random.Range(-spread, spread), Random.Range(-spread, spread))) * forward;
+                float a = (counter % 2 == 0 ? 1 : -1);
+                float b = (counter % 4 <= 1 ? 1 : -1);
+                float c = (forward.x * a + forward.y * b) / ((forward.z == 0f ? .01f : forward.z) * (counter < 4 ? 1 : -1));
+                Vector3 newPos = new Vector3(a, b, c);
+                GameObject instance = Instantiate(gunChoice == 2 ? projectilePrefab : spikePrefab, position + newPos.normalized / 5f , rotation);
                 instance.GetComponent<Rigidbody>().AddForce(newForward * rangeModifier/* + changeVector * variation*/);
-
+                if (gunChoice == 9)
+                {
+                    if (team == 0)
+                    {
+                        instance.GetComponent<Renderer>().material.color = new Color(1f, 0f, 0f);
+                    }
+                    else
+                    {
+                        instance.GetComponent<Renderer>().material.color = new Color(0f, 0f, 1f);
+                    }
+                }
+                
                 ProjectileController pc = instance.GetComponent<ProjectileController>();
                 pc.firingTeam = team;
                 pc.firingPlayer = playerID;
@@ -450,6 +488,17 @@ public class GunController : NetworkBehaviour {
         GameObject projectile = ClientScene.FindLocalObject(nid);
         if (projectile != null)
         {
+            if (gunChoice == 9)
+            {
+                if (team == 0)
+                {
+                    projectile.GetComponent<Renderer>().material.color = new Color(1f, 0f, 0f);
+                }
+                else
+                {
+                    projectile.GetComponent<Renderer>().material.color = new Color(0f, 0f, 1f);
+                }
+            }
             ProjectileController pc = projectile.GetComponent<ProjectileController>();
             pc.firingTeam = team;
             pc.firingPlayer = playerID;
@@ -492,6 +541,7 @@ public class GunController : NetworkBehaviour {
         larpa = currentGun.gunIndex == 6;
         gauss = currentGun.gunIndex == 7;
         cluster = currentGun.gunIndex == 8;
+        spikes = currentGun.gunIndex == 9;
         gun.transform.GetChild(currentGun.gunIndex).gameObject.SetActive(true);
         barrellExit = gun.transform.GetChild(currentGun.gunIndex).GetChild(0);
 

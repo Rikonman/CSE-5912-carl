@@ -15,6 +15,7 @@ public class KillManager : NetworkBehaviour {
     public Sprite larpa;
     public Sprite gauss;
     public Sprite cluster;
+    public Sprite spike;
     // Use this for initialization
     void Start () {
 		
@@ -30,7 +31,7 @@ public class KillManager : NetworkBehaviour {
 
         Image weaponImage = instance.transform.GetChild(1).GetComponent<Image>();
         weaponImage.sprite = gunChoice == 0 ? pistol : (gunChoice == 1 ? assault : (gunChoice == 2 ? shotgun : (gunChoice == 3 ? sniper :
-            (gunChoice == 4 ? rockets : (gunChoice == 5 ? minigun : (gunChoice == 6 ? larpa : (gunChoice == 7 ? gauss : cluster)))))));
+            (gunChoice == 4 ? rockets : (gunChoice == 5 ? minigun : (gunChoice == 6 ? larpa : (gunChoice == 7 ? gauss : (gunChoice == 8 ? cluster : spike))))))));
 
         Text victimText = instance.transform.GetChild(2).GetComponent<Text>();
         victimText.text = victimName;

@@ -15,23 +15,23 @@ public class GunStats {
     public GunStats(int gunChoice)
     {
         gunIndex = gunChoice;
-        if (gunIndex == 2)
-        {
-            damage = 15;
-            maxAmmoInMag = 5;
-            startingReserveAmmo = 30;
-            fireRate = 1f;
-            range = 3000f;
-            currentAmmoInMag = maxAmmoInMag;
-            currentAmmoInReserve = startingReserveAmmo;
-        }
-        else if (gunIndex == 1)
+        if (gunIndex == 1)
         {
             damage = 10;
             maxAmmoInMag = 30;
             startingReserveAmmo = 150;
             fireRate = .1f;
             range = 2000f;
+            currentAmmoInMag = maxAmmoInMag;
+            currentAmmoInReserve = startingReserveAmmo;
+        }
+        else if (gunIndex == 2)
+        {
+            damage = 15;
+            maxAmmoInMag = 5;
+            startingReserveAmmo = 30;
+            fireRate = 1f;
+            range = 3000f;
             currentAmmoInMag = maxAmmoInMag;
             currentAmmoInReserve = startingReserveAmmo;
         }
@@ -92,6 +92,16 @@ public class GunStats {
             startingReserveAmmo = 15;
             fireRate = 1f;
             range = 1200f;
+            currentAmmoInMag = maxAmmoInMag;
+            currentAmmoInReserve = startingReserveAmmo;
+        }
+        else if (gunIndex == 9)
+        {
+            damage = 15;
+            maxAmmoInMag = 5;
+            startingReserveAmmo = 30;
+            fireRate = 1f;
+            range = 600f;
             currentAmmoInMag = maxAmmoInMag;
             currentAmmoInReserve = startingReserveAmmo;
         }

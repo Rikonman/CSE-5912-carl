@@ -178,6 +178,16 @@ public class RoundManager : NetworkBehaviour
             Destroy(currentBlueCore);
         }
         CmdSpawnCores();
+        GameObject[] projectiles = GameObject.FindGameObjectsWithTag("Projectile");
+        for (int counter = projectiles.Length - 1; counter >= 0; counter--)
+        {
+            Destroy(projectiles[counter]);
+        }
+        GameObject[] tempBuildings = GameObject.FindGameObjectsWithTag("Building");
+        for (int counter = tempBuildings.Length - 1; counter >= 0; counter--)
+        {
+            Destroy(tempBuildings[counter]);
+        }
         GameObject[] tempPlayers = GameObject.FindGameObjectsWithTag("Player");
         foreach (GameObject tempPlayer in tempPlayers)
         {
@@ -186,11 +196,6 @@ public class RoundManager : NetworkBehaviour
             tempTarget.CmdLockPlayer(false);
             tempTarget.CmdUpdateSpawnObject(tempPlayer.GetComponent<PlayerTeam>().team);
             tempTarget.Respawn();
-        }
-        GameObject[] tempBuildings = GameObject.FindGameObjectsWithTag("Building");
-        for (int counter = tempBuildings.Length - 1; counter >= 0; counter--)
-        {
-            Destroy(tempBuildings[counter]);
         }
         GameObject[] tempCapPoints = GameObject.FindGameObjectsWithTag("CapturePoint");
         foreach (GameObject tempCapPoint in tempCapPoints)

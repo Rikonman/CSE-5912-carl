@@ -100,10 +100,10 @@ public class BuyManager : NetworkBehaviour {
                     else if (Input.GetKeyDown(KeyCode.Alpha4))
                     {
                         ResourceBank resources = team.baseObject.GetComponent<ResourceBank>();
-                        if (resources.metal >= 150)
+                        if (resources.metal >= 100)
                         {
                             gun.Buy(4);
-                            resources.Add("Metal", -150);
+                            resources.Add("Metal", -100);
                             buyMode = false;
                             BuyMenu.SetActive(false);
                         }
@@ -111,10 +111,10 @@ public class BuyManager : NetworkBehaviour {
                     else if (Input.GetKeyDown(KeyCode.Alpha5))
                     {
                         ResourceBank resources = team.baseObject.GetComponent<ResourceBank>();
-                        if (resources.metal >= 150)
+                        if (resources.metal >= 100)
                         {
                             gun.Buy(5);
-                            resources.Add("Metal", -150);
+                            resources.Add("Metal", -100);
                             buyMode = false;
                             BuyMenu.SetActive(false);
                         }
@@ -122,10 +122,10 @@ public class BuyManager : NetworkBehaviour {
                     else if (Input.GetKeyDown(KeyCode.Alpha6))
                     {
                         ResourceBank resources = team.baseObject.GetComponent<ResourceBank>();
-                        if (resources.metal >= 150)
+                        if (resources.metal >= 200)
                         {
                             gun.Buy(6);
-                            resources.Add("Metal", -150);
+                            resources.Add("Metal", -200);
                             buyMode = false;
                             BuyMenu.SetActive(false);
                         }
@@ -144,10 +144,21 @@ public class BuyManager : NetworkBehaviour {
                     else if (Input.GetKeyDown(KeyCode.Alpha8))
                     {
                         ResourceBank resources = team.baseObject.GetComponent<ResourceBank>();
-                        if (resources.metal >= 150)
+                        if (resources.metal >= 200)
                         {
                             gun.Buy(8);
-                            resources.Add("Metal", -150);
+                            resources.Add("Metal", -200);
+                            buyMode = false;
+                            BuyMenu.SetActive(false);
+                        }
+                    }
+                    else if (Input.GetKeyDown(KeyCode.Alpha9))
+                    {
+                        ResourceBank resources = team.baseObject.GetComponent<ResourceBank>();
+                        if (resources.metal >= 100)
+                        {
+                            gun.Buy(9);
+                            resources.Add("Metal", -100);
                             buyMode = false;
                             BuyMenu.SetActive(false);
                         }
