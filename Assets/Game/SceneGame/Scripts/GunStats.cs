@@ -105,6 +105,16 @@ public class GunStats {
             currentAmmoInMag = maxAmmoInMag;
             currentAmmoInReserve = startingReserveAmmo;
         }
+        else if (gunIndex == 10)
+        {
+            damage = 20;
+            maxAmmoInMag = 20;
+            startingReserveAmmo = 100;
+            fireRate = .2f;
+            range = 4000f;
+            currentAmmoInMag = maxAmmoInMag;
+            currentAmmoInReserve = startingReserveAmmo;
+        }
         else
         {
             damage = 20;

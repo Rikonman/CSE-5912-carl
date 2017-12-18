@@ -16,6 +16,7 @@ public class WeaponDisplay : MonoBehaviour
     public Sprite gauss;
     public Sprite cluster;
     public Sprite spike;
+    public Sprite doozi;
 
     public void ChangeSlot(int slotNum, int gunChoice)
     {
@@ -27,7 +28,7 @@ public class WeaponDisplay : MonoBehaviour
         {
             uiSlots[slotNum].transform.GetChild(1).GetComponent<Image>().sprite = gunChoice == 0 ? pistol : (gunChoice == 1 ? assault :
                 (gunChoice == 2 ? shotgun : (gunChoice == 3 ? sniper : (gunChoice == 4 ? rockets : (gunChoice == 5 ? minigun :
-                (gunChoice == 6 ? larpa : (gunChoice == 7 ? gauss : (gunChoice == 7 ? cluster : spike))))))));
+                (gunChoice == 6 ? larpa : (gunChoice == 7 ? gauss : (gunChoice == 8 ? cluster : (gunChoice == 9 ? spike : doozi)))))))));
             uiSlots[slotNum].SetActive(true);
         }
     }

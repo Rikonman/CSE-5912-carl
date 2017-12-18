@@ -20,6 +20,7 @@ public class GunController : NetworkBehaviour {
     public bool gauss = false;
     public bool cluster = false;
     public bool spikes = false;
+    public bool doozi = false;
 
 
     [SerializeField]
@@ -34,6 +35,8 @@ public class GunController : NetworkBehaviour {
     GameObject clusterPrefab;
     [SerializeField]
     GameObject spikePrefab;
+    [SerializeField]
+    GameObject dooziPrefab;
     [SerializeField]
     Transform barrellExit;
     public PlayerTeam team;
@@ -74,6 +77,9 @@ public class GunController : NetworkBehaviour {
     public AudioSource gaussShot;
     public AudioSource clusterShot;
     public AudioSource spikeShot;
+    public AudioSource dooziOneShot;
+    public AudioSource dooziTwoShot;
+    public AudioSource dooziThreeShot;
     public int assaultCounter;
     void Start()
     {
@@ -89,6 +95,12 @@ public class GunController : NetworkBehaviour {
         pa = GetComponent<playerAnimation>();
         Switch(selectedGun);
         ResetSlots();
+    }
+
+    [Command]
+    public void CmdResetAllAmmo(bool refillMag)
+    {
+        RpcResetAllAmmo(refillMag);
     }
 
     [ClientRpc]
@@ -154,7 +166,7 @@ public class GunController : NetworkBehaviour {
         }
         if (!locked)
         {
-            if (((automatic || minigun) && Input.GetButton("Fire1") || !(automatic || minigun) && Input.GetButtonDown("Fire1")) && Time.time >= fireDelay && !playerTarget._isDead)
+            if (((automatic || minigun || doozi) && Input.GetButton("Fire1") || !(automatic || minigun || doozi) && Input.GetButtonDown("Fire1")) && Time.time >= fireDelay && !playerTarget._isDead)
             {
                 fireDelay = Time.time + currentGun.fireRate;
                 Debug.Log(fireDelay - Time.time);
@@ -307,6 +319,24 @@ public class GunController : NetworkBehaviour {
         {
             spikeShot.Play();
         }
+        else if (gunChoice == 10)
+        {
+            if (assaultCounter == 0)
+            {
+                dooziOneShot.Play();
+                assaultCounter++;
+            }
+            else if (assaultCounter == 1)
+            {
+                dooziTwoShot.Play();
+                assaultCounter++;
+            }
+            else
+            {
+                dooziThreeShot.Play();
+                assaultCounter = 0;
+            }
+        }
     }
 
     void Shoot() {
@@ -320,7 +350,7 @@ public class GunController : NetworkBehaviour {
             if (currentGun.gunIndex != 0 && currentGun.gunIndex != 1 && currentGun.gunIndex != 3)
             {
                 Vector3 exit = barrellExit.position;
-                if (currentGun.gunIndex == 6)
+                if (currentGun.gunIndex == 6 || currentGun.gunIndex == 10)
                 {
                     exit = barrellExit.position + (fpsCamera.transform.forward.normalized * (barrellExit.position - transform.position).magnitude / 2f);
                 }
@@ -331,6 +361,10 @@ public class GunController : NetworkBehaviour {
                 }
                 CmdSpawnProjectile(team.team, team.playerID, currentGun.damage, currentGun.gunIndex, currentGun.range, pli.playerName, exit,
                     fpsCamera.transform.rotation, forward);
+                if (currentGun.gunIndex == 10)
+                {
+                    StartCoroutine(FireDelayer(.2f));
+                }
             }
             else
             {
@@ -457,7 +491,7 @@ public class GunController : NetworkBehaviour {
                 trueRot = trueRot * Quaternion.Euler(new Vector3(0f, -90f, 0f));
             }
             GameObject instance = Instantiate(gunChoice == 4 ? rocketPrefab : (gunChoice == 6 ? larpaPrefab : 
-                (gunChoice == 7 ? gaussPrefab : (gunChoice == 8 ? clusterPrefab : projectilePrefab))), position, trueRot);
+                (gunChoice == 7 ? gaussPrefab : (gunChoice == 8 ? clusterPrefab : (gunChoice == 10 ? dooziPrefab : projectilePrefab)))), position, trueRot);
             instance.GetComponent<Rigidbody>().AddForce(forward * rangeModifier);
             ProjectileController pc = instance.GetComponent<ProjectileController>();
             pc.firingTeam = team;
@@ -476,6 +510,10 @@ public class GunController : NetworkBehaviour {
             else if (gunChoice == 7)
             {
                 pc.projectileLifetime = 1.6f;
+            }
+            else if (gunChoice == 10)
+            {
+                pc.projectileLifetime = 1f;
             }
             NetworkServer.Spawn(instance);
             RpcUpdateProjectileData(instance.GetComponent<NetworkIdentity>().netId, team, playerID, damage, gunChoice, pc.projectileLifetime, playerName);
@@ -542,6 +580,7 @@ public class GunController : NetworkBehaviour {
         gauss = currentGun.gunIndex == 7;
         cluster = currentGun.gunIndex == 8;
         spikes = currentGun.gunIndex == 9;
+        doozi = currentGun.gunIndex == 10;
         gun.transform.GetChild(currentGun.gunIndex).gameObject.SetActive(true);
         barrellExit = gun.transform.GetChild(currentGun.gunIndex).GetChild(0);
 

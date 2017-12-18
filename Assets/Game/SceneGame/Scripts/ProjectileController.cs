@@ -12,7 +12,7 @@ public class ProjectileController : NetworkBehaviour {
     public GameObject hitEffect;
     public Quaternion originalRotation;
 
-    bool isLive = true;
+    public bool isLive = true;
     public bool isBouncy;
     public bool onlyHurtPlayer;
     public bool persistent;
@@ -257,7 +257,6 @@ public class ProjectileController : NetworkBehaviour {
         {
             if (isServer)
             {
-                
                 CmdHideProj();
             }
 
