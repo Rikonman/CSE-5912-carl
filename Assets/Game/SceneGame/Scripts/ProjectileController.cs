@@ -104,6 +104,90 @@ public class ProjectileController : NetworkBehaviour {
         targetRotation = rotation;
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Projectile" && !persistent)
+        {
+            return;
+        }
+        else if (other.gameObject.tag == "Projectile" && other.gameObject.GetComponent<ProjectileController>().persistent)
+        {
+            return;
+        }
+        else if (other.gameObject.tag == "Projectile" && other.gameObject.GetComponent<ProjectileController>().isLive)
+        {
+            if (isServer)
+            {
+                CmdHideProj();
+            }
+            return;
+        }
+        else if ((other.gameObject.tag == "Ground" || other.gameObject.tag == "Building") && persistent && !positionLocked)
+        {
+            rb.velocity = new Vector3(0f, rb.velocity.y, 0f);
+            Ray lowerRay = new Ray(transform.position, -Vector3.up);
+            RaycastHit lowerRayhit;
+
+            if (Physics.Raycast(lowerRay, out lowerRayhit, 0.3f))
+            {
+                if (lowerRayhit.transform.gameObject.tag == "Ground" || lowerRayhit.transform.gameObject.tag == "Building")
+                {
+                    rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ;
+                    positionLocked = true;
+                }
+            }
+        }
+        // if the projectile isn't live, leave (we only want to hit one thing and not go through objects)
+        if (!isLive)
+            return;
+
+        PlayerTeam collisionTeam = other.gameObject.GetComponent<PlayerTeam>();
+        
+        // if the projectile was fired by your team, leave
+        if (collisionTeam != null && collisionTeam.team == firingTeam ||
+            other.gameObject.tag == "RedSpawnCore" && firingTeam == 0 ||
+            other.gameObject.tag == "BlueSpawnCore" && firingTeam == 1 ||
+            onlyHurtPlayer && collisionTeam == null)
+        {
+            return;
+        }
+        BuildIdentifier collisionBID = other.gameObject.GetComponent<BuildIdentifier>();
+
+
+        if (!isBouncy)
+        {
+            if (isServer)
+            {
+
+                CmdHideProj();
+            }
+
+        }
+        
+        // show the explosion particle effect
+        GameObject tempHitEffect = Instantiate(hitEffect, gameObject.transform.position, Quaternion.LookRotation(gameObject.transform.forward, Vector3.up));
+        Destroy(tempHitEffect, 0.3f);
+
+        if (!isServer)
+            return;
+        Target collisionTarget;
+        bool hasParent = other.gameObject.transform.parent != null;
+        if (hasParent)
+        {
+            collisionTarget = other.gameObject.transform.parent.GetComponent<Target>();
+        }
+        else
+        {
+            collisionTarget = other.gameObject.GetComponent<Target>();
+        }
+        // if the projectile isn't lethal or it hit something that isn't a target, leave
+
+        if (!canKill || collisionTarget == null)
+            return;
+
+        collisionTarget.DamageTarget(firingPlayerName, firingTeam, firingGun, damage, 1f, collisionBID != null && collisionBID.team == firingTeam);
+    }
+
     void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Projectile" && !persistent)
@@ -173,6 +257,7 @@ public class ProjectileController : NetworkBehaviour {
         {
             if (isServer)
             {
+                
                 CmdHideProj();
             }
 
@@ -221,7 +306,7 @@ public class ProjectileController : NetworkBehaviour {
         RpcHideProj();
         if (persistent)
         {
-            Destroy(gameObject, .5f);
+            Destroy(gameObject);
         }
     }
 
@@ -234,7 +319,7 @@ public class ProjectileController : NetworkBehaviour {
         GetComponent<MeshRenderer>().enabled = false;
         if (persistent)
         {
-            Destroy(gameObject, .5f);
+            Destroy(gameObject);
         }
     }
 

@@ -112,7 +112,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_TransformSyncMode: 3
-  m_SendInterval: 0.2
+  m_SendInterval: 0.1
   m_SyncRotationAxis: 0
   m_RotationSyncCompression: 2
   m_SyncSpin: 0
@@ -171,6 +171,7 @@ MonoBehaviour:
   isBouncy: 0
   onlyHurtPlayer: 1
   persistent: 1
+  positionLocked: 0
   firingTeam: 0
   firingPlayer: 0
   firingPlayerName: 
@@ -185,7 +186,7 @@ SphereCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1266938302354856}
   m_Material: {fileID: 13400000, guid: e52fb17f9b1e7fd48b8955f1391d3688, type: 2}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.024179453
